@@ -1,0 +1,49 @@
+location:
+    city, street, cross street
+    mouse to pin: accident point --> marker
+    pencil: click on intersections to draw the route
+
+Collision Info:
+    month and year of accident
+    (time) mm/yyyy
+    Were you hit by a:
+    (Cartype)
+        Private car:
+        A cab or livery
+        Vehicle:
+        A Truck or van:
+        A bus:
+    Was a police report filed at the scene of the collision?
+    (PoliceFiled)
+        Yes:
+        No:
+    Were you provided medical evaluation or care at the scene of the collision?
+    (MedEvaluatedAtScene)
+        Yes:
+        No:
+    Were you taken from the scene of the collision to an emergency room or hospital?
+    (TakenToHosFromScene)
+        Yes:
+        No:
+    If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?
+    (SeekedCareAfterward)
+        Yes:
+        No:
+
+Personal info:
+    Please tell us about yourself.
+        Male:         Female:
+
+    Age:
+
+    Ethnicity:
+        Hispanic:
+        Non-Hispanic:
+
+    Race:
+        Asian:
+        Black:
+        White:
+        Other:
+
+Done!
