@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS Users CASCADE;
 CREATE TABLE Users(
     Uid bigserial PRIMARY KEY,
     Name TEXT,
-    Email TEXT,
+    Email TEXT UNIQUE,
     Pass TEXT,
     Gender char(7) check (Gender = 'male' or Gender = 'female'),
     Birthdate DATE, // YYYY-MM-DD

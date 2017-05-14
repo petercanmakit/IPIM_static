@@ -3,63 +3,7 @@
 <html lang="en">
 
   <head>
-
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <link href="http://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
-
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
-    
-    <script>
-
-      function initialize() {
-        // alert("Here are the centers that have been clustered.");
-        var myLatlng = new google.maps.LatLng(40.806514, -73.963702)
-        var mapOptions = {
-          zoom: 11,
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-		//color
-		var pinColor = "4DA6FA"; //blue
-    	var pinImageBlue = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        	new google.maps.Size(21, 34),
-        	new google.maps.Point(0,0),
-        	new google.maps.Point(10, 34));
-
-		var pinColor = "FE7569"; //red
-    	var pinImageRed = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        	new google.maps.Size(21, 34),
-        	new google.maps.Point(0,0),
-        	new google.maps.Point(10, 34));
-
-        i = 0;
-        var markers = [];
-        for ( pos in myData ) {
-            i = i + 1;
-            var row = myData[pos];
-		    window.console && console.log(row);
-            // if ( i < 3 ) { alert(row); }
-            var newLatlng = new google.maps.LatLng(row[0], row[1]);
-            var marker = new google.maps.Marker({
-                position: newLatlng,
-                map: map,
-                icon: pinImageRed,
-                title: row[2]
-            });
-            markers.push(marker);
-        }
-      }
-    </script>
-
+      <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -97,15 +41,8 @@
               position: relative;
           }
 
-
-          #email {
-
-              width: 300px;
-
-          }
-
-          #googleMap {
-              text-align: center;
+          #signupform {
+              text-align: right;
               margin-top:50px;
               margin-bottom: 50px;
           }
@@ -158,9 +95,6 @@
               <a class="nav-link" href="#jumbotron">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#googleMap">Map</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
@@ -189,29 +123,80 @@
                 <p>Want to know more? Join our mailing list!</p>
              </div>
 
-            <form class="form-inline" method="POST" action="/signup">
-              <div class="form-group">
-                <label class="sr-only" for="email">Email address</label>
-                <div class="input-group">
-                  <div class="input-group-addon">@</div>
-                  <input type="email" class="form-control" id="email" placeholder="Your email" name="email">
+        </div>
+
+
+        <div class="container" id="signupform">
+
+            <form class="form-horizontal" method="POST" action="/trysignup">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <div class="col-sm-10">
+                      {% if email %}
+                        <input type="email" class="form-control" id="email" value={{ email }}>
+                      {% else %}
+                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                      {% endif %}
+                    </div>
                 </div>
-              </div>
-              <input type="submit" class="btn btn-primary"></input>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="name">Nickname:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="name" placeholder="Enter nickname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="pwd">Password:</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="gender">Gender:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="gender">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select><br>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="birthdate">Birthdate:</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="birthdate" placeholder="mm/dd/yyyy">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="ethnicity">Ethnicity:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="ethnicity">
+                            <option>Hispanic</option>
+                            <option>Non-hispanic</option>
+                        </select><br>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="race">Race:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="ethnicity">
+                            <option>Asian</option>
+                            <option>Black</option>
+                            <option>White</option>
+                            <option>Other</option>
+                        </select><br>
+                    </div>
+                </div>
+
+                <div class="form-group" align="center">
+                    <div >
+                        <button type="submit" class="btn btn-primary">Sign up</button>
+                    </div>
+                </div>
             </form>
         </div>
 
 
-        <div class="container">
 
-          <div class="row" id="googleMap">
-              <h1>Google Maps</h1>
-              <p class="lead">You may see the positions on this map</p>
-              <div id="map_canvas" style="height: 500px"></div>
-
-            </div>
-
-        </div>
 
       <div class="container">
 

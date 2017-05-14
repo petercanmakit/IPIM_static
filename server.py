@@ -15,6 +15,94 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, flash
 
+import datetime
+class User(object):
+    """
+    """
+    uid = long(-1)
+    name = ""
+    email = ""
+    password = ""
+    gender = ""
+    birthdate = None # d1 = datetime.date(2008,3,1)
+    ethnicity = ""
+    race = ""
+
+    def __init__(self, email, password):
+        """Return a User object"""
+        self.email = email
+        self.password = password
+
+    def register(self, g, name, gender, birthdate, ethnicity, race):
+        """If it's a new user, register for it. return its uid
+        """
+        cur = g.conn.execute('''
+        SELECT 1 FROM Users WHERE Email=%s LIMIT 1;
+        ''', (self.email, ))
+        if cur[0] == 1:
+            print "This email already registed!"
+            cur.close()
+            return -1
+        else :
+            cur.close()
+            self.name = name
+            self.gender = gender
+            # birthdate str "YYYY-MM-DD"
+            birthdates = birthdates.split("-")
+            self.birthdate = datetime.date(int(birthdates[0]), int(birthdates[1]) ,int(birthdates[2]))
+            self.ethnicity = ethnicity
+            self.race = race
+            cur = g.conn.execute('''
+            INSERT INTO Users (Name,Email,Pass,Gender,Birthdate,Ethnicity,Race)
+            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            ''', (name, self.email, self.password, gender,
+            birthdate, ethnicity, race)
+            )
+            cur.close()
+            cur = g.conn.execute('''
+            SELECT u.Uid
+            FROM Users u
+            WHERE u.Email = %s
+            ''', (self.email, )
+            )
+            self.uid = cur[0]
+            cur.close()
+            print "Registed successfully, uid is ", self.uid
+            return self.uid
+
+    def login(self, g, email, password):
+        """Login in, return uid"""
+        cur = g.conn.execute('''
+        SELECT pass FROM Users WHERE Email=%s LIMIT 1;
+        ''', (self.email, )
+        )
+        if len(cur) == 0:
+            print "no such user ", self.email
+            return -1
+        elif password == cur[0]:
+            print "login successfully! ", self.email
+            cur.close()
+            cur = g.conn.execute('''
+            SELECT uid, name, gender, birthdate, ethnicity, race FROM Users WHERE Email=%s LIMIT 1;
+            ''', (self.email, )
+            )
+            if(len(cur) != 0):
+                self.uid = cur[0][0]
+                self.name = cur[0][1]
+                self.gender = cur[0][2]
+                birthdates = cur[0][3].split("-")
+                self.birthdate = datetime.date(int(birthdates[0]), int(birthdates[1]) ,int(birthdates[2]))
+                self.ethnicity = cur[0][4]
+                self.race = cur[0][5]
+            else:
+                self.uid = -1 # no such email
+            cur.close()
+            return self.uid
+        else:
+            print "wroing password ", self.email
+            return -1 # wrong password
+
+
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = "joyce"
@@ -87,7 +175,6 @@ def teardown_request(exception):
 #
 @app.route('/')
 def index():
-  global LoggedInUserID
   """
   request is a special object that Flask provides to access web request information:
 
@@ -99,7 +186,7 @@ def index():
   """
 
   # DEBUG: this is debugging code to see what request looks like
-  print request.args
+  # print request.args
 
   #########################
   # example of a database query
@@ -146,14 +233,24 @@ def index():
 
   return render_template("index.html")
 
-#
-# This is an example of a different path.  You can see it at
-#
-#     localhost:8111/another
-#
-# notice that the functio name is another() rather than index()
-# the functions for each app.route needs to have different names
-#
+@app.route('/signup', methods=['POST'])
+def signup():
+  email = request.form['email']
+  print "in signup() email is ", email
+  """
+  request is a special object that Flask provides to access web request information:
+
+  request.method:   "GET" or "POST"
+  request.form:     if the browser submitted a form, this contains the data in the form
+  request.args:     dictionary of URL arguments e.g., {a:1, b:2} for http://localhost?a=1&b=2
+
+  See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
+  """
+
+  # DEBUG: this is debugging code to see what request looks like
+  # print request.args
+
+  return render_template("signup.html", email = email)
 
 
 
