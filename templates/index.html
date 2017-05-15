@@ -15,7 +15,7 @@
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
-    
+
     <script>
 
       function initialize() {
@@ -167,9 +167,9 @@
               <a class="nav-link" href="#footer">Contact</a>
             </li>
           </ul>
-          <form class="form-inline pull-xs-right">
-            <input class="form-control" type="email" placeholder="Email">
-              <input class="form-control" type="password" placeholder="Password">
+          <form class="form-inline pull-xs-right" method="POST" action="/login">
+            <input class="form-control" name="email" type="email" placeholder="Email">
+            <input class="form-control" name="pwd" type="password" placeholder="Password">
             <button class="btn btn-success" type="submit">Login</button>
           </form>
         </nav>
@@ -203,14 +203,11 @@
 
 
         <div class="container">
-
           <div class="row" id="googleMap">
               <h1>Google Maps</h1>
               <p class="lead">You may see the positions on this map</p>
               <div id="map_canvas" style="height: 500px"></div>
-
-            </div>
-
+          </div>
         </div>
 
       <div class="container">

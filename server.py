@@ -33,67 +33,76 @@ class User(object):
         self.email = email
         self.password = password
 
-    def register(self, g, name, gender, birthdate, ethnicity, race):
+    def register(self, name, gender, birthdate, ethnicity, race):
         """If it's a new user, register for it. return its uid
         """
+        print "in register"
         cur = g.conn.execute('''
         SELECT 1 FROM Users WHERE Email=%s LIMIT 1;
-        ''', (self.email, ))
-        if cur[0] == 1:
-            print "This email already registed!"
-            cur.close()
-            return -1
-        else :
-            cur.close()
-            self.name = name
-            self.gender = gender
-            # birthdate str "YYYY-MM-DD"
-            birthdates = birthdates.split("-")
-            self.birthdate = datetime.date(int(birthdates[0]), int(birthdates[1]) ,int(birthdates[2]))
-            self.ethnicity = ethnicity
-            self.race = race
-            cur = g.conn.execute('''
-            INSERT INTO Users (Name,Email,Pass,Gender,Birthdate,Ethnicity,Race)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
-            ''', (name, self.email, self.password, gender,
-            birthdate, ethnicity, race)
-            )
-            cur.close()
-            cur = g.conn.execute('''
-            SELECT u.Uid
-            FROM Users u
-            WHERE u.Email = %s
-            ''', (self.email, )
-            )
-            self.uid = cur[0]
-            cur.close()
-            print "Registed successfully, uid is ", self.uid
-            return self.uid
+        ''', (self.email, )
+        )
+        for row in cur:
+            print row[0]
+            if row[0] == 1:
+                print "This email already registed!"
+                cur.close()
+                return -1
+            else :
+                pass
+        cur.close()
+        self.name = name
+        if gender == 'Female ':
+            self.gender = 'female'
+        else:
+            self.gender = 'male'
+        # birthdate str "YYYY-MM-DD"
+        birthdates = birthdate.split("-")
+        self.birthdate = datetime.date(int(birthdates[0]), int(birthdates[1]) ,int(birthdates[2]))
+        self.ethnicity = ethnicity
+        self.race = race
+        cur = g.conn.execute('''
+        INSERT INTO Users (Name,Email,Pass,Gender,Birthdate,Ethnicity,Race)
+        VALUES (%s,%s,%s,%s,%s,%s,%s)
+        ''', (name, self.email, self.password, gender,
+        birthdate, ethnicity, race)
+        )
+        cur.close()
+        cur = g.conn.execute('''
+        SELECT u.Uid
+        FROM Users u
+        WHERE u.Email = %s
+        ''', (self.email, )
+        )
+        for row in cur:
+            self.uid = row[0]
+        cur.close()
+        print "Registed successfully, uid is ", self.uid
+        return self.uid
 
-    def login(self, g, email, password):
+    def login(self):
         """Login in, return uid"""
         cur = g.conn.execute('''
         SELECT pass FROM Users WHERE Email=%s LIMIT 1;
         ''', (self.email, )
         )
-        if len(cur) == 0:
+        if cur.rowcount == 0:
             print "no such user ", self.email
             return -1
-        elif password == cur[0]:
+        elif self.password == cur.fetchone()[0]:
             print "login successfully! ", self.email
             cur.close()
             cur = g.conn.execute('''
             SELECT uid, name, gender, birthdate, ethnicity, race FROM Users WHERE Email=%s LIMIT 1;
             ''', (self.email, )
             )
-            if(len(cur) != 0):
-                self.uid = cur[0][0]
-                self.name = cur[0][1]
-                self.gender = cur[0][2]
-                birthdates = cur[0][3].split("-")
-                self.birthdate = datetime.date(int(birthdates[0]), int(birthdates[1]) ,int(birthdates[2]))
-                self.ethnicity = cur[0][4]
-                self.race = cur[0][5]
+            if(cur.rowcount != 0):
+                row = cur.fetchone();
+                self.uid = row[0]
+                self.name = row[1]
+                self.gender = row[2]
+                self.birthdate = row[3] # date()
+                self.ethnicity = row[4]
+                self.race = row[5]
             else:
                 self.uid = -1 # no such email
             cur.close()
@@ -251,6 +260,48 @@ def signup():
   # print request.args
 
   return render_template("signup.html", email = email)
+
+@app.route('/trysignup', methods=['POST'])
+def trysignup():
+  email = request.form['email']
+  nickname = request.form['nickname']
+  pwd = request.form['pwd']
+  gender = request.form['gender']
+  bod = request.form['bod']
+  ethn = request.form['ethn']
+  race = request.form['race']
+
+  print "in trysignup() signup info is: ", email, nickname, pwd, gender, bod, ethn, race
+  # create a new user instance
+  user = User(email, pwd)
+  registered = user.register(nickname, gender, bod, ethn, race)
+  if registered > 0:
+    print "new uid is ", user.uid
+    re = dict(nickname = nickname, success = 1)
+    return render_template("signup.html", **re)
+  else:
+    print "cannot register", user.uid
+    re = dict(email = email, registered = 1)
+    return render_template("signup.html", **re)
+
+@app.route('/login', methods=['POST'])
+def login():
+  email = request.form['email']
+  pwd = request.form['pwd']
+
+  print "in login() login info is: ", email, pwd
+  # create a new user instance
+  user = User(email, pwd)
+  logged = user.login()
+  print logged
+  if logged > 0:
+    print "logged, the uid is ", user.uid
+    re = dict(nickname = user.name, success = 1)
+    return render_template("index.html", **re)
+  else:
+    print "cannot login", user.uid
+    re = dict(failure = 1)
+    return render_template("signup.html", **re)
 
 
 

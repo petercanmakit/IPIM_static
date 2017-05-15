@@ -4,12 +4,14 @@ CREATE TABLE Users(
     Name TEXT,
     Email TEXT UNIQUE,
     Pass TEXT,
-    Gender char(7) check (Gender = 'male' or Gender = 'female'),
-    Birthdate DATE, // YYYY-MM-DD
-    Ethnicity char(13), // Hispanic, Non-Hispanic
-    Race char(6) // Asian, Black, White, Other
+    Gender text check (Gender = 'Male' or Gender = 'Female'),
+    Birthdate DATE,
+    Ethnicity TEXT,
+    Race TEXT
 );
-
+// YYYY-MM-DD
+// Hispanic, Non-Hispanic
+// Asian, Black, White, Other
 DROP TABLE IF EXISTS Collisions CASCADE;
 CREATE TABLE Collisions(
     Cid bigserial PRIMARY KEY,
@@ -21,6 +23,7 @@ CREATE TABLE Collisions(
     MedEvaluatedAtScene boolean,
     TakenToHosFromScene boolean,
     SeekedCareAfterward boolean,
-    geom geometry NOT NULL, // 'LINESTRING(0 0, 1 1, 2 1, 2 2)'
+    geom geometry NOT NULL,
     Uid int NOT NULL REFERENCES Users
 );
+// 'LINESTRING(0 0, 1 1, 2 1, 2 2)'
