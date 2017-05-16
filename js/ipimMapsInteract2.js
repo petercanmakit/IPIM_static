@@ -11,7 +11,7 @@ $(document).ready(function(){
 
   $('#locate_me_button').click(function(e){
       e.preventDefault();
-      alert("clicked!");
+      alert("Locating! Please allow the browser to locate.");
       GMaps.geolocate({
         success: function(position){
           map.setCenter(position.coords.latitude, position.coords.longitude);
