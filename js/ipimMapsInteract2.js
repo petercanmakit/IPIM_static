@@ -94,7 +94,7 @@ $(document).ready(function(){
       e.preventDefault();
       alert("put a pin");
       // document.getElementById('map').style.cursor='url(Pencil.cur), auto';
-      map.setOptions({draggableCursor:'url(./static/cursors/Locate.cur), auto'});
+      map.setOptions({draggableCursor:'url(static/cursors/Locate.cur), auto'});
 
       GMaps.on('click', map.map, function(event) {
         // var index = map.markers.length;
@@ -136,7 +136,7 @@ $(document).ready(function(){
   $('#draw_start').click(function(e){
       e.preventDefault();
       alert("start drawing!");
-      map.setOptions({draggableCursor:'url(./static/cursors/Pencil.cur), auto'});
+      map.setOptions({draggableCursor:'url(static/cursors/Pencil.cur), auto'});
 
       path = [start_point];
 
