@@ -4,6 +4,7 @@ var path;
 var acc_date;
 var txt_1, txt_2, txt_3, txt_4, txt_5;
 var step_1, step_2, step_3, step_4, step_5;
+var ctrl_rm_last_inter;
 
 $(document).ready(function(){
   var map = new GMaps({
@@ -140,7 +141,7 @@ $(document).ready(function(){
 
       path = [start_point];
 
-      map.addControl({
+      ctrl_rm_last_inter = map.addControl({
           position: 'BOTTOM_LEFT',
           content: 'remove last intersection',
           style: {
@@ -191,6 +192,7 @@ $(document).ready(function(){
           event.preventDefault();
       });
 
+      map.removeControl(ctrl_rm_last_inter);
       // hide step4, start step5
       step_4.style.display = 'none';
       step_5.style.display = 'block';

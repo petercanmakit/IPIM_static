@@ -12,7 +12,31 @@
     #map {
       height: 500px;
     }
+
+    .steps {
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+    }
   </style>
+
+    <script type="text/javascript">
+      var datefield=document.createElement("input")
+      datefield.setAttribute("type", "date")
+      if (datefield.type!="date"){ //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+        document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
+      }
+    </script>
+
+    <script>
+        if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
+           jQuery(function($){ //on document.ready
+               $('#accident_date').datepicker();
+           })
+        }
+    </script>
 
   <script type="text/javascript" src="../js/ipimMapsInteract.js"></script>
 </head>
@@ -24,37 +48,62 @@
     </div>
   </div>
   <br>
-  <div align="center">
-      <button id="locate_me_button">Locate me</button>
-  </div>
 
   <div align="center">
-      <form method="post" id="geocoding_form">
-        <div class="input">
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" />
-            <label for="street">Street:</label>
-            <input type="text" id="street" name="street" />
-            <label for="cross_street">Cross Street:</label>
-            <input type="text" id="cross_street" name="cross_street" />
-            <input type="submit" class="btn" value="Search" />
-        </div>
+      <span id="ins_box"></span>
+  </div>
+
+  <div class="steps" id="step1">
+      <form method="post" id="date_form">
+          <div class="input">
+              <label for="accident_date">Date:</label>
+              <input type="date" id="accident_date" name="accident_date"/>
+              <input type="submit" class="btn" value="Next" />
+          </div>
       </form>
   </div>
 
-  <div align="center">
-      <button id="place_pin">Place spot of accident</button>
-      <button id="place_pin_end">I have set the spot</button>
+  <div class="steps" id="step2">
+      <div align="center">
+          <button id="locate_me_button">Locate me</button>
+      </div>
+
+      <div align="center">
+          <form method="post" id="geocoding_form">
+            <div class="input">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" />
+                <label for="street">Street:</label>
+                <input type="text" id="street" name="street" />
+                <label for="cross_street">Cross Street:</label>
+                <input type="text" id="cross_street" name="cross_street" />
+                <input type="submit" class="btn" value="Search" />
+            </div>
+          </form>
+          <button class="btn" id="step2_next">Next</button>
+      </div>
   </div>
 
-  <div align="center">
-      <button id="draw_start">Start drawing route</button>
-      <button id="draw_end">End drawing</button>
+  <div class="steps" id="step3">
+      <div align="center">
+          <button id="place_pin">Place spot of accident</button>
+          <button id="place_pin_end">I have set the spot</button>
+      </div>
   </div>
 
-  <div align="center">
-      <button id="submit_route">submit your route</button>
+  <div class="steps" id="step4">
+      <div align="center">
+          <button id="draw_start">Start drawing route</button>
+          <button id="draw_end">End drawing</button>
+      </div>
   </div>
+
+  <div class="steps" id="step5">
+      <div align="center">
+          <button id="submit_route">submit your route</button>
+      </div>
+  </div>
+
   <div align="center" id="path_print"></div>
 
 </body>
