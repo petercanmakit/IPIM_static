@@ -141,7 +141,7 @@ $(document).ready(function(){
       path = [start_point];
 
       map.addControl({
-          position: 'bottom_center',
+          position: 'BOTTOM_LEFT',
           content: 'remove last intersection',
           style: {
             margin: '5px',
