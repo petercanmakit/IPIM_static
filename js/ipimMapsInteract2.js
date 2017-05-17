@@ -1,12 +1,43 @@
 var map;
 var start_point;
 var path;
+var acc_date;
+var txt_1, txt_2, txt_3, txt_4, txt_5;
+var step_1, step_2, step_3, step_4, step_5;
 
 $(document).ready(function(){
   var map = new GMaps({
     el: '#map',
-    lat: -12.043333,
-    lng: -77.028333
+    lat: 40.80754030525040,
+    lng: -73.96257877349854
+  });
+
+  ins_box = document.getElementById("ins_box");
+  txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the date on which you were injured. (mm/dd/yyyy)");
+  txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use locate me to let the browser use your current position.");
+  txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nPress \"Place spot of accident\" to start, Use the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"I have set the spot\" when finishing.");
+  txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
+  txt_5 = document.createTextNode("Step 5: Submit your route\nIf your toute is all set, please press \"Submit\"");
+  txt_6 = document.createTextNode("Completed: Your route is submitted.\nThank you!");
+  step_1 = document.getElementById('step1');
+  step_2 = document.getElementById('step2');
+  step_3 = document.getElementById('step3');
+  step_4 = document.getElementById('step4');
+  step_5 = document.getElementById('step5');
+
+  // step1 starts
+  step_1.style.display = 'block';
+  ins_box.innerText = txt_1.textContent;
+
+  $('#date_form').submit(function(e){
+      e.preventDefault();
+      acc_date = document.getElementById("accident_date");
+      alert("date is "+acc_date.value);
+
+      // hide step1, start step2
+      step_1.style.display = 'none';
+      step_2.style.display = 'block';
+      ins_box.innerText = txt_2.textContent;
   });
 
   $('#locate_me_button').click(function(e){
@@ -51,6 +82,14 @@ $(document).ready(function(){
     });
   });
 
+  $('#step2_next').click(function(e) {
+      e.preventDefault();
+      // hide step2, start step3
+      step_2.style.display = 'none';
+      step_3.style.display = 'block';
+      ins_box.innerText = txt_3.textContent;
+  })
+
   $('#place_pin').click(function(e){
       e.preventDefault();
       alert("put a pin");
@@ -87,6 +126,11 @@ $(document).ready(function(){
           event.preventDefault();
       });
 
+      // hide step3, start step4
+      step_3.style.display = 'none';
+      step_4.style.display = 'block';
+      ins_box.innerText = txt_4.textContent;
+
   });
 
   $('#draw_start').click(function(e){
@@ -97,7 +141,7 @@ $(document).ready(function(){
       path = [start_point];
 
       map.addControl({
-          position: 'top_right',
+          position: 'bottom_center',
           content: 'remove last intersection',
           style: {
             margin: '5px',
@@ -146,11 +190,23 @@ $(document).ready(function(){
       GMaps.off('click', map.map, function(event) {
           event.preventDefault();
       });
+
+      // hide step4, start step5
+      step_4.style.display = 'none';
+      step_5.style.display = 'block';
+      ins_box.innerText = txt_5.textContent;
   });
 
   $('#submit_route').click(function(e){
       e.preventDefault();
       alert("Submitting drawing!");
+      // hide step5
+      step_5.style.display = 'none';
+      ins_box.innerText = txt_6.textContent;
+
+      $('#path_print').append('<p>'+'Date is '+acc_date.value+'</p>');
+      $('#path_print').append('<p>'+'Spot is '+path[0]+'</p>');
+      $('#path_print').append('<p>'+'Route is '+'</p>');
       var s;
       for (s of path) {
           $('#path_print').append('<p>'+s+'</p>');
