@@ -5,6 +5,7 @@ var acc_date;
 var txt_1, txt_2, txt_3, txt_4, txt_5;
 var step_1, step_2, step_3, step_4, step_5;
 var ctrl_rm_last_inter;
+var answers = [];
 
 $(document).ready(function () {
     var map = new GMaps({
@@ -18,13 +19,15 @@ $(document).ready(function () {
   txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
   txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nUse the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"Next\" when finishing.");
   txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
-  txt_5 = document.createTextNode("Step 5: Submit your route\nIf your toute is all set, please press \"Submit\"");
-  txt_6 = document.createTextNode("Completed: Your route is submitted.\nThank you!");
+  txt_5 = document.createTextNode("Step 5: Other information\nPlease press \"Finish\" after answering all the questions below.");
+  txt_6 = document.createTextNode("Review: Here is all the information about this accident.\nPress \"Submit\"");
+  txt_7 = document.createTextNode("Completed: Your route is submitted.\nThank you!");
   step_1 = document.getElementById('step1');
   step_2 = document.getElementById('step2');
   step_3 = document.getElementById('step3');
   step_4 = document.getElementById('step4');
   step_5 = document.getElementById('step5');
+  srep_6 = document.getElementById('step6');
 
   // step1 starts
   step_1.style.display = 'block';
@@ -200,12 +203,9 @@ $(document).ready(function () {
       ins_box.innerText = txt_5.textContent;
   });
 
-  $('#submit_route').click(function(e){
+  $('#tell_end').click(function(e){
       e.preventDefault();
-      alert("Submitting drawing!");
-      // hide step5
-      step_5.style.display = 'none';
-      ins_box.innerText = txt_6.textContent;
+      alert("tell ending");
 
       $('#path_print').append('<p>'+'Date is '+acc_date.value+'</p>');
       $('#path_print').append('<p>'+'Spot is '+path[0]+'</p>');
@@ -214,6 +214,31 @@ $(document).ready(function () {
       for (s of path) {
           $('#path_print').append('<p>'+s+'</p>');
       }
+
+      var answer_list;
+      var answer_value;
+      for(var j = 1; j<6; j++) {
+          answer_list = document.getElementsByName('question'+j);
+          for(var i = 0; i < answer_list.length; i++){
+              if(answer_list[i].checked){
+                  answer_value = rates[i].value;
+                  answers.push(answers_value);
+                  alert("question"+j+" answer is "+answer_value);
+              }
+          }
+      }
+      // hide step5, start step6
+      step_5.style.display = 'none';
+      step_6.style.display = 'block';
+      ins_box.innerText = txt_6.textContent;
+  });
+
+  $('#submit_route').click(function(e){
+      e.preventDefault();
+      // alert("Submitting drawing!");
+      // hide step5
+      step_6.style.display = 'none';
+      ins_box.innerText = txt_7.textContent;
   });
 
 });

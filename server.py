@@ -13,9 +13,11 @@ Go to http://localhost:8111 in your browser
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response, flash
+from flask import Flask, session, request, render_template, g, redirect, Response, flash, url_for
+from flask_session import Session
 
 import datetime
+
 class User(object):
     """
     """
@@ -110,7 +112,6 @@ class User(object):
         else:
             print "wroing password ", self.email
             return -1 # wrong password
-
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -239,6 +240,10 @@ def index():
   # for example, the below file reads template/index.html
   #
 
+  if 'username' in session:
+      username = session['username']
+      return render_template("index.html", username = username)
+
 
   return render_template("index.html")
 
@@ -284,6 +289,39 @@ def trysignup():
     re = dict(email = email, registered = 1)
     return render_template("signup.html", **re)
 
+@app.route('/draw_route', methods=['GET', 'POST'])
+def draw_route():
+    print "in draw_route"
+    username = None
+    try:
+        if session['username']:
+            print session['username']
+            username = session['username']
+    except Exception as e:
+        print "session no username"
+
+    return render_template("draw_route.html", username = username)
+
+# submit_route
+@app.route('/submit_route', methods=['GET', 'POST'])
+def submit_route():
+    print "in submit_route"
+    username = None
+    try:
+        if session['username']:
+            print session['username']
+            username = session['username']
+    except Exception as e:
+        print "session no username"
+
+    answers = []
+    for i in range(1, 6):
+        print i
+        answers.append(request.form['answer' + str(i)])
+    print answers
+
+    return render_template("draw_route.html", username = username)
+
 @app.route('/login', methods=['POST'])
 def login():
   email = request.form['email']
@@ -297,13 +335,22 @@ def login():
   if logged > 0:
     print "logged, the uid is ", user.uid
     re = dict(nickname = user.name, success = 1)
-    return render_template("index.html", **re)
+    session['username'] = user.name
+    session['uid'] = user.uid
+    print "in session"
+    print session['username']
+    print session['uid']
+    return redirect('/')
   else:
     print "cannot login", user.uid
     re = dict(failure = 1)
     return render_template("signup.html", **re)
 
-
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.pop('username', None)
+    session.pop('uid', None)
+    return redirect('/')
 
 if __name__ == "__main__":
   import click

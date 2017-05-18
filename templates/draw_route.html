@@ -4,13 +4,14 @@
 
   <head>
       <meta charset="utf-8">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-      
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-      <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
-      <script type="text/javascript" src="../js/gmaps.js"></script>
-      <link rel="stylesheet" type="text/css" href="../css/examples.css" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+      <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDksCOY76WD68PM33lEu7o1YyMBnxcGXs4"></script>
+
+      <script type="text/javascript" src="../static/js/gmaps.js"></script>
+      <link rel="stylesheet" type="text/css" href="../static/css/examples.css" />
       <style>
 
           .jumbotron {
@@ -125,7 +126,7 @@
           }
       </script>
 
-      <script type="text/javascript" src="../js/ipimMapsInteract.js"></script>
+      <script type="text/javascript" src="../static/js/ipimMapsInteract.js"></script>
   </head>
 
   <body data-spy="scroll" data-target="#navbar" data-offset="150">
@@ -143,11 +144,18 @@
               <a class="nav-link" href="#footer">Contact</a>
             </li>
           </ul>
-          <form class="form-inline pull-xs-right" method="POST" action="/login">
-            <input class="form-control" name="email" type="email" placeholder="Email">
-            <input class="form-control" name="pwd" type="password" placeholder="Password">
-            <button class="btn btn-success" type="submit">Login</button>
-          </form>
+          {% if username %}
+              <div class="pull-xs-right">
+                  <span>Hello, {{ username }}!</span>
+                  <a class="btn btn-primary" href="/logout">Log out</a>
+              </div>
+          {% else %}
+              <form class="form-inline pull-xs-right" method="POST" action="/login">
+                <input class="form-control" name="email" type="email" placeholder="Email">
+                <input class="form-control" name="pwd" type="password" placeholder="Password">
+                <button class="btn btn-success" type="submit">Login</button>
+              </form>
+          {% endif %}
         </nav>
 
         <div class="jumbotron" id="jumbotron">
@@ -230,12 +238,109 @@
                 </div>
 
                 <div class="steps" id="step5">
+                        <form>
+
+                            <p>1. Were you hit by a:</p>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question1" value="Private car">
+                                    Private car
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
+                                    A cab or livery
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question1" value="A Truck or van">
+                                    A Truck or van
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question1" value="A bus">
+                                    A bus
+                                </label>
+                            </div>
+
+                            <p>2. Was a police report filed at the scene of the collision?</p>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question2" value="Yes"> Yes
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question2" value="No"> No
+                                </label>
+                            </div>
+
+                            <p>3. Were you provided medical evaluation or care at the scene of the collision?</p>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question3" value="Yes"> Yes
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question3" value="No"> No
+                                </label>
+                            </div>
+
+                            <p>4. Were you taken from the scene of the collision to an emergency room or hospital?</p>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question4" value="Yes"> Yes
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question4" value="No"> No
+                                </label>
+                            </div>
+
+                            <p>5. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question5" value="Yes"> Yes
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="question5" value="No"> No
+                                </label>
+                            </div>
+
+                     </form>
+                     <div align="center">
+                         <button class="btn btn-primary" id="tell_end">Finish</button>
+                     </div>
+
+                </div>
+
+                <div align="center" id="path_print"></div>
+                <div style="display:none">
+                    this is a submitting form
+                    <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
+                        <input type="text" name="answer1" id="answer1">
+                        <input type="text" name="answer2" id="answer2">
+                        <input type="text" name="answer3" id="answer3">
+                        <input type="text" name="answer4" id="answer4">
+                        <input type="text" name="answer5" id="answer5">
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+
+                <div class="steps" id="step6">
                     <div align="center">
                         <button class="btn btn-primary" id="submit_route">Submit</button>
                     </div>
                 </div>
 
-                <div align="center" id="path_print"></div>
+
 
             </div>
         </div>
