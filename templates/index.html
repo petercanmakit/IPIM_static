@@ -51,17 +51,20 @@
               position: relative;
           }
 
+          .card-deck {
+              width: 100%;
+          }
+
+          div.card-deck {
+              margin-left:10px;
+              margin-right:10px;
+          }
+
 
           #email {
 
               width: 300px;
 
-          }
-
-          #googleMap {
-              text-align: center;
-              margin-top:50px;
-              margin-bottom: 50px;
           }
 
           #appSummary {
@@ -112,20 +115,25 @@
               <a class="nav-link" href="#jumbotron">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#googleMap">Map</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#about">About</a>
+              <a class="nav-link" href="#reportCollision">Report a collision</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#footer">Contact</a>
             </li>
           </ul>
-          <form class="form-inline pull-xs-right" method="POST" action="/login">
-            <input class="form-control" name="email" type="email" placeholder="Email">
-            <input class="form-control" name="pwd" type="password" placeholder="Password">
-            <button class="btn btn-success" type="submit">Login</button>
-          </form>
+          {% if username %}
+              <div class="pull-xs-right">
+                  <span>Hello, {{ username }}!</span>
+                  <a class="btn btn-primary" href="/logout">Log out</a>
+              </div>
+          {% else %}
+              <form class="form-inline pull-xs-right" method="POST" action="/login">
+                <input class="form-control" name="email" type="email" placeholder="Email">
+                <input class="form-control" name="pwd" type="password" placeholder="Password">
+                <button class="btn btn-success" type="submit">Login</button>
+              </form>
+          {% endif %}
+
         </nav>
 
         <div class="jumbotron" id="jumbotron">
@@ -155,69 +163,66 @@
             </form>
         </div>
 
+        <div class="container" id="reportCollision">
 
-        <div class="container">
-          <div class="row" id="googleMap">
-              <h1>Google Maps</h1>
-              <p class="lead">You may see the positions on this map</p>
-              <div id="map_canvas" style="height: 200px"></div>
-          </div>
+          <div class="row">
+
+              <h2 align="center">Mapping tool</h2>
+
+              <p class="lead">Welcome to I-PIM, a crowd-sourcing research project from Columbia University that will help to reduce the number of pedestrian injuries and fatalities cause by car collisions. We hope to understand what aspects of streets and intersections put pedestrians at risk of being hit by automobiles. We would like you to use a mapping tool to provide us with information about how and where you were injured while out walking.</p>
+
+            </div>
+
         </div>
 
-      <div class="container">
 
-        <div class="row" id="appSummary">
 
-            <h1>What do you do when there is an ingury?</h1>
-            <p class="lead">You should do these:</p>
 
-          </div>
+<div class="container" >
+    <div class="card-deck-wrapper">
+      <div class="card-deck">
 
-      </div>
+            <div class="card">
+              <img class="card-img-top" src="../static/images/step1.jpeg" alt="Card image cap">
+              <div class="card-block">
+                <h4 class="card-title"><i class="fa fa-map"></i> Step 1</h4>
+                <p class="card-text">Use the mouse to place the pin at the place where you were hit by a vehicle.</p>
 
-      <div class="container" id="about">
-      <div class="card-deck-wrapper">
-  <div class="card-deck">
-    <div class="card">
-      <img class="card-img-top" src="../static/images/officer.jpg" alt="Card image cap">
-      <div class="card-block">
-        <h4 class="card-title"><i class="fa fa-anchor"></i> Situation 1</h4>
-        <p class="card-text">Our results show that:</p>
+              </div>
+            </div>
 
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top" src="../static/images/officer.jpg" alt="Card image cap">
-      <div class="card-block">
-        <h4 class="card-title"><i class="fa fa-bicycle"></i> Situation 2</h4>
-        <p class="card-text">You should do this.</p>
+            <div class="card">
+              <img class="card-img-top" src="../static/images/step2.jpeg" alt="Card image cap">
+              <div class="card-block">
+                <h4 class="card-title"><i class="fa fa-road"></i> Step 2</h4>
+                <p class="card-text">Use the pencil tool to draw lines on the map showing us the streets you walked along before you were hit.</p>
 
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top" src="../static/images/officer.jpg" alt="Card image cap">
-      <div class="card-block">
-        <h4 class="card-title"><i class="fa fa-birthday-cake"></i> Situation 3</h4>
-        <p class="card-text">Columbia’s epidemiology department, one of the oldest and most distinguished in the world, conducts cutting-edge research and trains tomorrow’s scientific leaders. Our faculty apply their extensive expertise and produce health discoveries that improve the lives of people in communities locally and globally.</p>
+              </div>
+            </div>
 
-      </div>
-    </div>
-  </div>
-</div>
-          </div>
+
+            <div class="card">
+              <img class="card-img-top" src="../static/images/step3.jpeg" alt="Card image cap">
+              <div class="card-block">
+                <h4 class="card-title"><i class="fa fa-ambulance"></i> Step 3</h4>
+                <p class="card-text">Please tell us a little more about yourself as well as the accident. If you are a signed up user, your information is already stored.</p>
+              </div>
+            </div>
+
+    </div></div>
+        </div>
+
 
       <div id="footer">
 
         <div class="row">
 
-                <h2>Contact us!</h2>
+            <h2>Contact us!</h2>
 
             <p class="lead">Really, do you want to upload an accident??</p>
 
             <p><a href=""><img id="appStoreIcon" src="../static/images/officer.jpg"></a></p>
             <p><a href="https://www.mailman.columbia.edu/become-student/departments/epidemiology"><img id="appStoreIcon" src="../static/images/cumc.png"></a></p>
-
-
 
           </div>
 
