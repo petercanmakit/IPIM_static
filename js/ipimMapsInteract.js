@@ -6,17 +6,17 @@ var txt_1, txt_2, txt_3, txt_4, txt_5;
 var step_1, step_2, step_3, step_4, step_5;
 var ctrl_rm_last_inter;
 
-$(document).ready(function(){
-  var map = new GMaps({
+$(document).ready(function () {
+    var map = new GMaps({
     el: '#map',
     lat: 40.80754030525040,
     lng: -73.96257877349854
   });
 
   ins_box = document.getElementById("ins_box");
-  txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the date on which you were injured. (mm/dd/yyyy)");
-  txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use locate me to let the browser use your current position.");
-  txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nPress \"Place spot of accident\" to start, Use the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"I have set the spot\" when finishing.");
+  txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the date on which you were injured. (mm/dd/yyyy) Press \"Next\" to continue.");
+  txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
+  txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nUse the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"Next\" when finishing.");
   txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
   txt_5 = document.createTextNode("Step 5: Submit your route\nIf your toute is all set, please press \"Submit\"");
   txt_6 = document.createTextNode("Completed: Your route is submitted.\nThank you!");
@@ -33,6 +33,10 @@ $(document).ready(function(){
   $('#date_form').submit(function(e){
       e.preventDefault();
       acc_date = document.getElementById("accident_date");
+      if(acc_date.value.length == 0) {
+          alert("Please input date.");
+          return;
+      }
       alert("date is "+acc_date.value);
 
       // hide step1, start step2
@@ -89,12 +93,7 @@ $(document).ready(function(){
       step_2.style.display = 'none';
       step_3.style.display = 'block';
       ins_box.innerText = txt_3.textContent;
-  })
 
-  $('#place_pin').click(function(e){
-      e.preventDefault();
-      alert("put a pin");
-      // document.getElementById('map').style.cursor='url(Pencil.cur), auto';
       map.setOptions({draggableCursor:'url(../static/cursors/Locate.cur), auto'});
 
       GMaps.on('click', map.map, function(event) {
@@ -112,15 +111,19 @@ $(document).ready(function(){
           lng: lng,
           title: 'Marker',
           infoWindow: {
-            content : "this is a spot of the accident: \n".concat([lat, lng])
+            content : "This is a spot of the accident: \n".concat([lat, lng])
           }
         });
       });
-  });
+  })
 
   $('#place_pin_end').click(function(e){
       e.preventDefault();
-      alert("Spot set!");
+      if(start_point == null) {
+          alert("Please set the spot of accident on the map.");
+          return;
+      }
+      // alert("Spot set!");
       map.setOptions({draggableCursor:''});
 
       GMaps.off('click', map.map, function(event) {
@@ -132,11 +135,7 @@ $(document).ready(function(){
       step_4.style.display = 'block';
       ins_box.innerText = txt_4.textContent;
 
-  });
-
-  $('#draw_start').click(function(e){
-      e.preventDefault();
-      alert("start drawing!");
+      // alert("start drawing!");
       map.setOptions({draggableCursor:'url(../static/cursors/Pencil.cur), auto'});
 
       path = [start_point];
@@ -152,7 +151,7 @@ $(document).ready(function(){
           },
           events: {
             click: function(){
-              if (path.length>0) {
+              if (path.length>1) {
                   path.pop();
                   map.removePolylines();
                   map.drawPolyline({
@@ -178,22 +177,22 @@ $(document).ready(function(){
           strokeOpacity: 0.6,
           strokeWeight: 6
         });
-
       });
-
   });
 
   $('#draw_end').click(function(e){
       e.preventDefault();
-      alert("end drawing!");
+      // alert("end drawing!");
+      if(path.length == 1) {
+          alert("Please draw the route with at least one intersection before the accident.");
+          return;
+      }
       // document.getElementById('map').style.cursor='url(Pencil.cur), auto';
       map.setOptions({draggableCursor:''});
       GMaps.off('click', map.map, function(event) {
           event.preventDefault();
       });
-      // var i = map.controls[google.maps.ControlPosition.BOTTOM_LEFT].getLength()-1;
-      // map.controls[google.maps.ControlPosition.BOTTOM_LEFT].removeAt(i);
-      // map.controls[google.maps.ControlPosition.BOTTOM_LEFT].clear();
+
       map.removeControl(ctrl_rm_last_inter);
       // hide step4, start step5
       step_4.style.display = 'none';
