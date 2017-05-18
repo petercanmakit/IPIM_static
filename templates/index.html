@@ -12,54 +12,6 @@
 
     <link href="http://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
 
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
-
-    <script>
-
-      function initialize() {
-        // alert("Here are the centers that have been clustered.");
-        var myLatlng = new google.maps.LatLng(40.806514, -73.963702)
-        var mapOptions = {
-          zoom: 11,
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-		//color
-		var pinColor = "4DA6FA"; //blue
-    	var pinImageBlue = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        	new google.maps.Size(21, 34),
-        	new google.maps.Point(0,0),
-        	new google.maps.Point(10, 34));
-
-		var pinColor = "FE7569"; //red
-    	var pinImageRed = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        	new google.maps.Size(21, 34),
-        	new google.maps.Point(0,0),
-        	new google.maps.Point(10, 34));
-
-        i = 0;
-        var markers = [];
-        for ( pos in myData ) {
-            i = i + 1;
-            var row = myData[pos];
-		    window.console && console.log(row);
-            // if ( i < 3 ) { alert(row); }
-            var newLatlng = new google.maps.LatLng(row[0], row[1]);
-            var marker = new google.maps.Marker({
-                position: newLatlng,
-                map: map,
-                icon: pinImageRed,
-                title: row[2]
-            });
-            markers.push(marker);
-        }
-      }
-    </script>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -75,21 +27,23 @@
 
           div.jumbo-head {
               /* color: black; */
-              /*height:200px;*/
+
+              height:250px;
               margin-top:10px;
-              margin-bottom: 10px;
+              margin-bottom: 0px;
               margin-left:10px;
               margin-right:10px;
               background-color: #ffffff;
               /* for IE */
-              filter:alpha(opacity=30);
+              filter:alpha(opacity=60);
               /* CSS3 standard */
-              opacity:0.3;
+              opacity:0.6;
           }
 
           div.jumbo-head-text
           {
-              margin-top:-206px;
+              height:250px;
+              margin-top:-250px;
               margin-bottom: 10px;
               margin-left:10px;
               margin-right:10px;
@@ -149,7 +103,7 @@
 
   </head>
 
-  <body data-spy="scroll" data-target="#navbar" data-offset="150" onload="initialize()">
+  <body data-spy="scroll" data-target="#navbar" data-offset="150">
 
         <nav class="navbar navbar-light bg-faded navbar-fixed-top" id="navbar">
           <a class="navbar-brand" href="#">Pedestrian Analysis</a>
@@ -206,7 +160,7 @@
           <div class="row" id="googleMap">
               <h1>Google Maps</h1>
               <p class="lead">You may see the positions on this map</p>
-              <div id="map_canvas" style="height: 500px"></div>
+              <div id="map_canvas" style="height: 200px"></div>
           </div>
         </div>
 
@@ -269,9 +223,10 @@
 
       </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
   </body>
 
