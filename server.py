@@ -17,6 +17,7 @@ from flask import Flask, session, request, render_template, g, redirect, Respons
 from flask_session import Session
 
 import datetime
+import time
 
 class User(object):
     """
@@ -112,6 +113,51 @@ class User(object):
         else:
             print "wroing password ", self.email
             return -1 # wrong password
+
+class Collision(object):
+    """docstring for Collision."""
+    cid = long(-1)
+    cartype = ""
+    city = ""
+    street = ""
+    cross_street = False
+    police_filed = False
+    med_evaluated_at_scene = False
+    taken_to_hos_from_scene = False
+    seeked_care_afterward = False
+    acc_date = None
+    geom = ""
+    uid = long(-1)
+
+    def __init__(self, answers_list, geo_list_str, acc_date_str_ms, st_cst_city):
+        self.cartype = answers_list[0]
+        self.police_filed = answers_list[1]
+        self.med_evaluated_at_scene = answers_list[2]
+        self.taken_to_hos_from_scene = answers_list[3]
+        self.seeked_care_afterward = answers_list[4]
+        geo_list_strs = geo_list_str.split(",")
+        geo_str = ""
+        for i in range(0, len(geo_list_strs)/2):
+            geo_str += geo_list_strs[i * 2]
+            geo_str += " "
+            geo_str += geo_list_strs[i * 2 + 1]
+            if i != (len(geo_list_strs)/2 - 1):
+                geo_str += ","
+        self.geom = 'LINESTRING(' + geo_str + ')'
+        if len(st_cst_city) !=0 :
+            st_cst_city_list = st_cst_city.split(", ")
+            self.street = st_cst_city[0].strip()
+            self.cross_street = st_cst_city[1].strip()
+            self.city = st_cst_city[2].strip()
+        time_ts = time.gmtime(long(acc_date_str_ms)/1000.0)
+        self.acc_date = datetime.datetime.fromtimestamp(time.mktime(time_ts))
+
+        # TODO check if all passed in are correct
+
+    # insert into collisions table
+    def syncToDB():
+        pass
+
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -316,9 +362,17 @@ def submit_route():
 
     answers = []
     for i in range(1, 6):
-        print i
         answers.append(request.form['answer' + str(i)])
     print answers
+    acc_date = request.form['answer_date'] # in string of milliseconds since midnight Jan 1 1970
+    geom = request.form['answer_route']
+    st_cst_city = request.form['answer_st_cst_city']
+    print "acc date", acc_date
+    print "geometry", geom
+    print "st_cst_city", st_cst_city
+
+    # answers_list, geo_list_str, acc_date_str_ms, st_cst_city
+    collision = Collision(answers, geom, acc_date, st_cst_city)
 
     return render_template("draw_route.html", username = username)
 

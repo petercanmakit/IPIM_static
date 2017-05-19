@@ -6,6 +6,7 @@ var txt_1, txt_2, txt_3, txt_4, txt_5;
 var step_1, step_2, step_3, step_4, step_5;
 var ctrl_rm_last_inter;
 var answers = [];
+var st_cst_city = "";
 
 $(document).ready(function () {
     var map = new GMaps({
@@ -33,6 +34,13 @@ $(document).ready(function () {
   step_1.style.display = 'block';
   ins_box.innerText = txt_1.textContent;
 
+  var now = new Date(),
+    maxDate = now.toLocaleDateString().substring(0,10);
+  // alert(maxDate);
+  var input_date = new Date();
+
+  $('#accident_date').prop('max', maxDate);
+
   $('#date_form').submit(function(e){
       e.preventDefault();
       acc_date = document.getElementById("accident_date");
@@ -40,7 +48,27 @@ $(document).ready(function () {
           alert("Please input date.");
           return;
       }
-      alert("date is "+acc_date.value);
+      // alert("date is "+acc_date.value);
+      acc_date_str = ""+acc_date.value
+      if(acc_date_str.includes("/")) {
+          // safari
+          acc_date_strs = acc_date_str.split("/");
+          mm = acc_date_strs[0];
+          dd = acc_date_strs[1];
+          yyyy = acc_date_strs[2];
+      }
+      else {
+          // chrome
+          acc_date_strs = acc_date_str.split("-");
+          yyyy = acc_date_strs[0];
+          mm = acc_date_strs[1];
+          dd = acc_date_strs[2];
+      }
+      input_date = new Date(yyyy, mm-1, dd);
+      if(input_date.getTime() > now.getTime()) {
+          alert("Date is in the future.");
+          return;
+      }
 
       // hide step1, start step2
       step_1.style.display = 'none';
@@ -74,7 +102,8 @@ $(document).ready(function () {
     var cross_street = $('#cross_street').val().trim();
     var address_list = [street, ', ', cross_street, ', ', city];
     var address_in = "".concat(...address_list);
-    alert(address_in);
+    // alert(address_in);
+    st_cst_city = address_in; // "street, cross_street, city"
     GMaps.geocode({
       address: address_in,
       callback: function(results, status){
@@ -205,7 +234,7 @@ $(document).ready(function () {
 
   $('#tell_end').click(function(e){
       e.preventDefault();
-      alert("tell ending");
+      // alert("tell ending");
 
       var answer_list;
       var answer_value;
@@ -215,11 +244,11 @@ $(document).ready(function () {
               if(answer_list[i].checked){
                   answer_value = answer_list[i].value;
                   answers.push(answer_value);
-                  alert("question"+j+" answer is "+answer_value);
+                  // alert("question"+j+" answer is "+answer_value);
               }
           }
       }
-      alert(answers.length);
+      // alert(answers.length);
       if(answers.length!=5) {
           alert("Please answer all the questions.");
           for (var i = answers.length; i > 0; i--) {
@@ -246,18 +275,14 @@ $(document).ready(function () {
       e.preventDefault();
       var answer_form = document.forms["answer_form"];
 
-      for(var j = 1; j<6; j++) {
+      for(var j = 1; j<=5; j++) {
           an_answer = answer_form['answer'+j];
           an_answer.value = answers[j-1];
           // alert(an_answer.value);
       }
-
-      var x = document.forms["answer_form"]["answer1"].value;
-      alert(x);
-      if (x == "") {
-          alert("Name must be filled out");
-          return false;
-      }
+      answer_form['answer_route'].value = path.toString();
+      answer_form['answer_st_cst_city'].value = st_cst_city;
+      answer_form['answer_date'].value = input_date.getTime();
 
       answer_form.submit();
       // alert("Submitting drawing!");
