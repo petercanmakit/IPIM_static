@@ -39,6 +39,10 @@ $(document).ready(function () {
   // alert(maxDate);
   var input_date = new Date();
 
+  var city = "";
+  var street = "";
+  var cross_street = "";
+
   $('#accident_date').prop('max', maxDate);
 
   $('#date_form').submit(function(e){
@@ -97,9 +101,9 @@ $(document).ready(function () {
 
   $('#geocoding_form').submit(function(e){
     e.preventDefault();
-    var city = $('#city').val().trim();
-    var street = $('#street').val().trim();
-    var cross_street = $('#cross_street').val().trim();
+    city = $('#city').val().trim();
+    street = $('#street').val().trim();
+    cross_street = $('#cross_street').val().trim();
     var address_list = [street, ', ', cross_street, ', ', city];
     var address_in = "".concat(...address_list);
     // alert(address_in);
@@ -257,17 +261,76 @@ $(document).ready(function () {
           return;
       }
 
-
-      $('#path_print').append('<p>'+'Date is '+acc_date.value+'</p>');
-      $('#path_print').append('<p>'+'Spot is '+path[0]+'</p>');
-      $('#path_print').append('<p>'+'Route is '+'</p>');
-      var s;
-      for (s of path) {
-          $('#path_print').append('<p>'+s+'</p>');
-      }
       // hide step5, start step6
       step_5.style.display = 'none';
       step_6.style.display = 'block';
+      var path_with_linebreak = [];
+      for(var a_spot of path) {
+          path_with_linebreak.push(a_spot+"\n");
+      }
+      $('#content_to_submmit').append(
+          '                                             \
+          <table class="table table-striped">           \
+              <tbody>                                   \
+                <tr>                                    \
+                  <th scope="row">1</th>                \
+                  <td>Date</td>                         \
+                  <td>'+ acc_date.value +'</td>     \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">2</th>                \
+                  <td>Accident spot</td>                \
+                  <td>'+ path[0] +'</td>            \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">3</th>                \
+                  <td>Route before accident</td>        \
+                  <td>'+ path_with_linebreak.toString() +'</td>        \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">4</th>                \
+                  <td>City</td>                         \
+                  <td>'+ city +'</td>               \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">5</th>                \
+                  <td>Street</td>                       \
+                  <td>'+ street +'</td>             \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">6</th>                \
+                  <td>Cross Street</td>                 \
+                  <td>'+ cross_street +'</td>       \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">7</th>                \
+                  <td>You were hit by a </td>           \
+                  <td>'+ answers[0] +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">8</th>                \
+                  <td>Was a police report filed at the scene of the collision?</td>           \
+                  <td>'+ answers[1] +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">9</th>                \
+                  <td>Were you provided medical evaluation or care at the scene of the collision?</td>           \
+                  <td>'+ answers[2] +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">10</th>                \
+                  <td>Were you taken from the scene of the collision to an emergency room or hospital?</td>           \
+                  <td>'+ answers[3] +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">11</th>                \
+                  <td>Did you later seek medical care for injuries occurring from the collision?</td>           \
+                  <td>'+ answers[4] +'</td>         \
+                </tr>                                   \
+              </tbody>                                  \
+            </table>                                    \
+          '
+      );
       ins_box.innerText = txt_6.textContent;
   });
 

@@ -76,10 +76,10 @@
           #footer {
 
               background-color: aqua;
-              padding-top: 150px;
+              padding-top: 60px;
               margin-top: 50px;
               text-align: center;
-              padding-bottom: 150px;
+              padding-bottom: 60px;
           }
 
           #map {
@@ -173,6 +173,18 @@
                 <p>We appreciate your contribution!</p>
              </div>
         </div>
+
+        {% if submit_success %}
+        <div class="container">
+            <p class=="lead">Thank you! We have received your valuable report.</p>
+        </div>
+        {% endif %}
+
+        {% if not_logged %}
+        <div class="container">
+            <p class=="lead">Sorry you are not logged in yet. You may upload your report after logging in. Or <a href="/signup">sign up</a> first.</p>
+        </div>
+        {% endif %}
 
         <div class="container">
             <div class="progress">
@@ -320,8 +332,6 @@
                      </div>
 
                 </div>
-
-                <div align="center" id="path_print"></div>
                 <div style="display:none">
                     this is a submitting form
                     <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
@@ -338,12 +348,11 @@
                 </div>
 
                 <div class="steps" id="step6">
+                    <p id="content_to_submmit"></p>
                     <div align="center">
                         <button class="btn btn-primary" id="submit_route">Submit</button>
                     </div>
                 </div>
-
-
 
             </div>
         </div>

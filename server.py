@@ -13,6 +13,7 @@ Go to http://localhost:8111 in your browser
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
+from sqlalchemy.orm import sessionmaker
 from flask import Flask, session, request, render_template, g, redirect, Response, flash, url_for
 from flask_session import Session
 
@@ -120,7 +121,7 @@ class Collision(object):
     cartype = ""
     city = ""
     street = ""
-    cross_street = False
+    cross_street = ""
     police_filed = False
     med_evaluated_at_scene = False
     taken_to_hos_from_scene = False
@@ -131,10 +132,10 @@ class Collision(object):
 
     def __init__(self, answers_list, geo_list_str, acc_date_str_ms, st_cst_city):
         self.cartype = answers_list[0]
-        self.police_filed = answers_list[1]
-        self.med_evaluated_at_scene = answers_list[2]
-        self.taken_to_hos_from_scene = answers_list[3]
-        self.seeked_care_afterward = answers_list[4]
+        self.police_filed = True if (answers_list[1] == "Yes") else False
+        self.med_evaluated_at_scene = True if (answers_list[2] == "Yes") else False
+        self.taken_to_hos_from_scene = True if (answers_list[3] == "Yes") else False
+        self.seeked_care_afterward = True if (answers_list[4] == "Yes") else False
         geo_list_strs = geo_list_str.split(",")
         geo_str = ""
         for i in range(0, len(geo_list_strs)/2):
@@ -146,17 +147,56 @@ class Collision(object):
         self.geom = 'LINESTRING(' + geo_str + ')'
         if len(st_cst_city) !=0 :
             st_cst_city_list = st_cst_city.split(", ")
-            self.street = st_cst_city[0].strip()
-            self.cross_street = st_cst_city[1].strip()
-            self.city = st_cst_city[2].strip()
+            self.street = st_cst_city_list[0].strip()
+            self.cross_street = st_cst_city_list[1].strip()
+            self.city = st_cst_city_list[2].strip()
         time_ts = time.gmtime(long(acc_date_str_ms)/1000.0)
         self.acc_date = datetime.datetime.fromtimestamp(time.mktime(time_ts))
+        self.printCollisionInfo()
 
-        # TODO check if all passed in are correct
 
     # insert into collisions table
-    def syncToDB():
-        pass
+    def syncToDBWithUid(self, uid, some_engine):
+        self.uid = uid
+
+        DB_Session = sessionmaker(bind=some_engine)
+        db_session = DB_Session()
+
+        try:
+            db_session.execute('''
+                INSERT INTO Collisions (City,Street,CrossStreet,Cartype,PoliceFiled,
+                MedEvaluatedAtScene,TakenToHosFromScene,SeekedCareAfterward,geom,Uid)
+                VALUES (:city,:street,:cross,:cartype,:police,:med,:taken,:seek,:geom,:uid)
+                ''', {"city":self.city, "street":self.street, "cross":self.cross_street, "cartype":self.cartype,
+                "police":str(self.police_filed), "med":str(self.med_evaluated_at_scene),
+                "taken":str(self.taken_to_hos_from_scene), "seek":str(self.seeked_care_afterward),
+                "geom":self.geom, "uid":str(self.uid) }
+            )
+            cur = db_session.execute('''
+                SELECT count(*)
+                FROM Collisions
+                '''
+            )
+            db_session.commit()
+            new_cid = cur.fetchone()
+            print "new cid is ", str(new_cid[0])
+        except:
+            db_session.rollback()
+            raise
+
+    def printCollisionInfo(self):
+        # check if all passed in are correct
+        print "a new collision instance"
+        print "cartype", self.cartype
+        print "city", self.city
+        print "street", self.street
+        print "cross_street", self.cross_street
+        print "police_filed", self.police_filed
+        print "med_evaluated_at_scene", self.med_evaluated_at_scene
+        print "taken_to_hos_from_scene", self.taken_to_hos_from_scene
+        print "seeked_care_afterward", self.seeked_care_afterward
+        print "acc_date", self.acc_date
+        print "geom", self.geom
 
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -373,8 +413,17 @@ def submit_route():
 
     # answers_list, geo_list_str, acc_date_str_ms, st_cst_city
     collision = Collision(answers, geom, acc_date, st_cst_city)
+    try:
+        if session['username']:
+            uid = long(session['uid'])
+            collision.syncToDBWithUid(uid, engine)
+            return render_template("draw_route.html", username = username, submit_success = 1)
+    except Exception as e:
+        print "not logged in"
+        return render_template("draw_route.html", not_logged = 1)
+    return redirect("/")
 
-    return render_template("draw_route.html", username = username)
+
 
 @app.route('/login', methods=['POST'])
 def login():
