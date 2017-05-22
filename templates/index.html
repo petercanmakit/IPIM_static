@@ -22,13 +22,14 @@
               background-image: url(../static/images/background.png);
               background-position: center;
               text-align: center;
-              margin-top: 50px;
+              margin-top: 20px;
+              height: 250px;
           }
 
           div.jumbo-head {
               /* color: black; */
 
-              height:250px;
+              height:130px;
               margin-top:10px;
               margin-bottom: 0px;
               margin-left:10px;
@@ -42,9 +43,9 @@
 
           div.jumbo-head-text
           {
-              height:250px;
-              margin-top:-250px;
-              margin-bottom: 10px;
+              height:130px;
+              margin-top:-130px;
+              margin-bottom: 0px;
               margin-left:10px;
               margin-right:10px;
               color: black;
@@ -88,17 +89,22 @@
           }
 
           #footer {
-
-              background-color: aqua;
-              padding-top: 60px;
-              margin-top: 50px;
+              background: linear-gradient(to right, #232526, #414345);
+              color:white;
+              padding-top: 20px;
+              margin-top: 20px;
               text-align: center;
-              padding-bottom: 60px;
+              padding-bottom: 20px;
+          }
+
+          #footer a {
+              color: #b3d9ff;
           }
 
           body {
 
               position: relative;
+              font-family: Georgia, Serif;
 
           }
 
@@ -109,7 +115,7 @@
   <body data-spy="scroll" data-target="#navbar" data-offset="150">
 
         <nav class="navbar navbar-light bg-faded navbar-fixed-top" id="navbar">
-          <a class="navbar-brand" href="#">Pedestrian Analysis</a>
+          <a class="navbar-brand" href="#">I-PIM</a>
           <ul class="nav navbar-nav">
             <li class="nav-item">
               <a class="nav-link" href="#jumbotron">Home <span class="sr-only">(current)</span></a>
@@ -121,46 +127,18 @@
               <a class="nav-link" href="#footer">Contact</a>
             </li>
           </ul>
-          {% if username %}
-              <div class="pull-xs-right">
-                  <span>Hello, {{ username }}!</span>
-                  <a class="btn btn-primary" href="/logout">Log out</a>
-              </div>
-          {% else %}
-              <form class="form-inline pull-xs-right" method="POST" action="/login">
-                <input class="form-control" name="email" type="email" placeholder="Email">
-                <input class="form-control" name="pwd" type="password" placeholder="Password">
-                <button class="btn btn-success" type="submit">Login</button>
-              </form>
-          {% endif %}
 
         </nav>
 
         <div class="jumbotron" id="jumbotron">
             <div class="jumbo-head" >
-                <h1 class="display-3">Welcome to PA!</h1>
-                <p class="lead">You can analyze here.</p>
-                <hr class="m-y-2">
-                <p>Want to know more? Join our mailing list!</p>
-
+                <h1 class="display-4">Welcome to I-PIM!</h1>
+                <p class="lead">Interactive Pedestrian Injury Mapper</p>
             </div>
             <div class="jumbo-head-text" >
-                <h1 class="display-3">Welcome to PA!</h1>
-                <p class="lead">You can analyze here.</p>
-                <hr class="m-y-2">
-                <p>Want to know more? Join our mailing list!</p>
+                <h1 class="display-4">Welcome to I-PIM!</h1>
+                <p class="lead">Interactive Pedestrian Injury Mapper</p>
              </div>
-
-            <form class="form-inline" method="POST" action="/signup">
-              <div class="form-group">
-                <label class="sr-only" for="email">Email address</label>
-                <div class="input-group">
-                  <div class="input-group-addon">@</div>
-                  <input type="email" class="form-control" id="email" placeholder="Your email" name="email">
-                </div>
-              </div>
-              <input type="submit" class="btn btn-primary"></input>
-            </form>
         </div>
 
         <div class="container" id="reportCollision">
@@ -169,7 +147,7 @@
 
               <h2 align="center">Mapping tool</h2>
 
-              <p class="lead">Welcome to I-PIM, a crowd-sourcing research project from Columbia University that will help to reduce the number of pedestrian injuries and fatalities cause by car collisions. We hope to understand what aspects of streets and intersections put pedestrians at risk of being hit by automobiles. We would like you to use a mapping tool to provide us with information about how and where you were injured while out walking. Press the below button to start.</p>
+              <p>Welcome to I-PIM, a crowd-sourcing research project from Columbia University that will help to reduce the number of pedestrian injuries and fatalities cause by car collisions. We hope to understand what aspects of streets and intersections put pedestrians at risk of being hit by automobiles. We would like you to use a mapping tool to provide us with information about how and where you were injured while out walking. Press the below button to start.</p>
               <p align="center"><a class="btn btn-primary" href="/draw_route">Report a collision</a></p>
             </div>
 
@@ -216,14 +194,15 @@
       <div id="footer">
 
         <div class="row">
-
-            <h2>Contact us!</h2>
-
-            <p class="lead">Really, do you want to upload an accident??</p>
-
-            <p><a href=""><img id="appStoreIcon" src="../static/images/officer.jpg"></a></p>
-            <p><a href="https://www.mailman.columbia.edu/become-student/departments/epidemiology"><img id="appStoreIcon" src="../static/images/cumc.png"></a></p>
-
+            <div>
+                <h3>Contact us!</h3>
+                <p><a href="https://www.mailman.columbia.edu/become-student/departments/epidemiology"><img id="appStoreIcon" src="../static/images/cumc.png"></a></p>
+            </div>
+            <div>
+                <p> <a href="https://www.mailman.columbia.edu/people/our-faculty/agr3">Andrew G. Rundle</a></p>
+                <p> <a href="https://epi.washington.edu/faculty/mooney-stephen">Stephen J. Mooney</a></p>
+                <p>Webpage constructed by <a href="https://github.com/petercanmakit/IPIM">Jiajun Zhang</a></p>
+            </div>
           </div>
 
       </div>
