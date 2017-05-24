@@ -178,12 +178,16 @@ $(document).ready(function () {
       path = [start_point];
 
       ctrl_rm_last_inter = map.addControl({
-          position: 'BOTTOM_LEFT',
+          position: 'TOP_RIGHT',
           content: 'remove last intersection',
           style: {
+            textAlign: 'center',
+            height: '30px',
+            lineHeight: '18px',
+            fontSize : '16px',
             margin: '5px',
             padding: '1px 6px',
-            border: 'solid 1px #717B87',
+            border: 'solid 4px #717B87',
             background: '#fff'
           },
           events: {
