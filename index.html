@@ -100,7 +100,6 @@
               margin-top:10px;
               margin-bottom: 10px;
               float: left;
-              border:1px solid #ccc;font:16px/26px;
               overflow:auto;
               -moz-box-shadow: 0px 5px 20px #ccc;
               -webkit-box-shadow: 0px 5px 20px #ccc;
@@ -137,21 +136,36 @@
       </style>
 
       <script type="text/javascript">
-        var datefield=document.createElement("input")
-        datefield.setAttribute("type", "date")
-        if (datefield.type!="date"){ //if browser doesn't support input type="date", load files for jQuery UI Date Picker
-          document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
-          // document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+        document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+          document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
           document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
-        }
+
       </script>
 
       <script>
-          if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
              jQuery(function($){ //on document.ready
-                 $('#accident_date').datepicker();
+                 $("#accident_date").datepicker({
+        dateFormat: 'MM yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).val($.datepicker.formatDate('MM yy', new Date(year, month, 1)));
+        }
+    });
+
+    $("#accident_date").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $("#ui-datepicker-div").position({
+            my: "center top",
+            at: "center bottom",
+            of: $(this)
+        });
+    });
              })
-          }
       </script>
 
       <script type="text/javascript" src="static/js/ipimMapsInteract2.js"></script>
@@ -204,7 +218,7 @@
                             <form method="post" id="date_form">
                                 <div class="input">
                                     <label for="accident_date">Date:</label>
-                                    <input type="date" id="accident_date" name="accident_date"/>
+                                    <input type="text" id="accident_date" name="accident_date" class="date-picker"/>
                                     <input type="submit" class="btn btn-primary" value="Next" />
                                 </div>
                             </form>

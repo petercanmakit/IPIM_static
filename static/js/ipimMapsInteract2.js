@@ -16,7 +16,7 @@ $(document).ready(function () {
   });
 
   ins_box = document.getElementById("ins_box");
-  txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the date on which you were injured. (mm/dd/yyyy) Press \"Next\" to continue.");
+  txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the Month/Year in which you were injured. Press \"Next\" to continue.");
   txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
   txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nUse the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"Next\" when finishing.");
   txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
@@ -43,36 +43,36 @@ $(document).ready(function () {
   var street = "";
   var cross_street = "";
 
-  $('#accident_date').prop('max', maxDate);
-
   $('#date_form').submit(function(e){
       e.preventDefault();
-      acc_date = document.getElementById("accident_date");
-      if(acc_date.value.length == 0) {
+      var acc_date_t = document.getElementById("accident_date");
+      if(acc_date_t.value.length==0) {
           alert("Please input date.");
           return;
       }
-      // alert("date is "+acc_date.value);
-      acc_date_str = ""+acc_date.value
-      if(acc_date_str.includes("/")) {
-          // safari
-          acc_date_strs = acc_date_str.split("/");
-          mm = acc_date_strs[0];
-          dd = acc_date_strs[1];
-          yyyy = acc_date_strs[2];
+      alert(acc_date_t.value);
+      var monthandyear = acc_date_t.value.split(" ");
+      var year = monthandyear[1].trim();
+      alert(parseInt(year));
+      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var months_1 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      var month = months_1.indexOf(monthandyear[0].trim());
+      if(month == -1)
+        month = months.indexOf(monthandyear[0].trim());
+      alert(month);
+      if(month == -1) {
+          alert('Please use the datepicker to select month/year. The format must be "mmm yyyy". Or you can use the correct spelling of a month such as "January 2015".');
+          return;
       }
-      else {
-          // chrome
-          acc_date_strs = acc_date_str.split("-");
-          yyyy = acc_date_strs[0];
-          mm = acc_date_strs[1];
-          dd = acc_date_strs[2];
-      }
-      input_date = new Date(yyyy, mm-1, dd);
+
+      input_date = new Date(parseInt(year), parseInt(month), 1);
+
+      // alert("date is "+input_date);
       if(input_date.getTime() > now.getTime()) {
           alert("Date is in the future.");
           return;
       }
+      acc_date = input_date;
 
       // hide step1, start step2
       step_1.style.display = 'none';
