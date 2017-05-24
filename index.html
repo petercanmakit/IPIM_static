@@ -219,71 +219,89 @@
                                 <div class="input">
                                     <label for="accident_date">Date:</label>
                                     <input type="text" id="accident_date" name="accident_date" class="date-picker"/>
-                                    <input type="submit" class="btn btn-primary" value="Next" />
+                                    <input type="submit" class="btn btn-primary btn-sm" value="Next" />
                                 </div>
                             </form>
                         </div>
 
                         <div class="steps" id="step2">
                             <div align="center">
-                                <button class="btn btn-primary" id="locate_me_button">Locate me</button>
+                                <button class="btn btn-primary btn-sm" id="locate_me_button">Locate me</button>
                             </div>
 
                             <div align="center">
                                 <form method="post" id="geocoding_form">
                                   <div class="input">
-                                      <label for="city">City:</label>
-                                      <input type="text" id="city" name="city" />
-                                      <label for="street">Street:</label>
-                                      <input type="text" id="street" name="street" />
-                                      <label for="cross_street">Cross Street:</label>
-                                      <input type="text" id="cross_street" name="cross_street" />
-                                      <input type="submit" class="btn" value="Search" />
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="city">City:</label>
+                                          <input class="col-sm-6" type="text" id="city" name="city" />
+                                      </div>
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="street">Street:</label>
+                                          <input class="col-sm-6" type="text" id="street" name="street" />
+                                      </div>
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="cross_street">Cross Street:</label>
+                                          <input class="col-sm-6" type="text" id="cross_street" name="cross_street" />
+                                      </div>
+                                      <div class="row">
+                                          <input type="submit" class="btn btn-sm" value="Search" />
+                                      </div>
                                   </div>
                                 </form>
-                                <button class="btn btn-primary" id="step2_next">Next</button>
+                                <button class="btn btn-primary btn-sm" id="step2_next">Next</button>
                             </div>
                         </div>
 
                         <div class="steps" id="step3">
                             <div align="center">
-                                <button class="btn btn-primary" id="place_pin_end">Next</button>
+                                <button class="btn btn-primary btn-sm" id="place_pin_end">Next</button>
                             </div>
                         </div>
 
                         <div class="steps" id="step4">
                             <div align="center">
-                                <button class="btn btn-primary" id="draw_end">Next</button>
+                                <button class="btn btn-primary btn-sm" id="draw_end">Next</button>
                             </div>
                         </div>
 
                         <div class="steps" id="step5">
                                 <form>
-
                                     <p>1. Were you hit by a:</p>
-                                    <div class="radio-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="question1" value="Private car">
-                                            Private car
-                                        </label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="Private car">
+                                                    Private car
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
+                                                    A cab or livery
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="radio-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
-                                            A cab or livery
-                                        </label>
-                                    </div>
-                                    <div class="radio-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="question1" value="A Truck or van">
-                                            A Truck or van
-                                        </label>
-                                    </div>
-                                    <div class="radio-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="question1" value="A bus">
-                                            A bus
-                                        </label>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A truck or van">A truck or van
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A bus">
+                                                    A bus
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <p>2. Was a police report filed at the scene of the collision?</p>
@@ -336,7 +354,7 @@
 
                              </form>
                              <div align="center">
-                                 <button class="btn btn-primary" id="tell_end">Finish</button>
+                                 <button class="btn btn-primary btn-sm" id="tell_end">Finish</button>
                              </div>
 
                         </div>
@@ -356,10 +374,10 @@
                         </div>
 
                         <div class="steps" id="step6">
-                            <p id="content_to_submmit"></p>
                             <div align="center">
-                                <button class="btn btn-primary" id="submit_route">Submit</button>
+                                <button class="btn btn-primary btn-sm" id="submit_route">Submit</button>
                             </div>
+                            <p id="content_to_submmit"></p>
                         </div>
                     </div>
                 </div>

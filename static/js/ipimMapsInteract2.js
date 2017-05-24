@@ -11,8 +11,9 @@ var st_cst_city = "";
 $(document).ready(function () {
     var map = new GMaps({
     el: '#map',
-    lat: 40.80754030525040,
-    lng: -73.96257877349854
+    lat: 40.74959782183326,
+    lng: -73.98781299591064,
+    zoom: 14
   });
 
   ins_box = document.getElementById("ins_box");
@@ -47,19 +48,19 @@ $(document).ready(function () {
       e.preventDefault();
       var acc_date_t = document.getElementById("accident_date");
       if(acc_date_t.value.length==0) {
-          alert("Please input date.");
+          alert("Please input Month/Year.");
           return;
       }
-      alert(acc_date_t.value);
+      // alert(acc_date_t.value);
       var monthandyear = acc_date_t.value.split(" ");
       var year = monthandyear[1].trim();
-      alert(parseInt(year));
+      // alert(parseInt(year));
       var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       var months_1 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var month = months_1.indexOf(monthandyear[0].trim());
       if(month == -1)
         month = months.indexOf(monthandyear[0].trim());
-      alert(month);
+      // alert(month);
       if(month == -1) {
           alert('Please use the datepicker to select month/year. The format must be "mmm yyyy". Or you can use the correct spelling of a month such as "January 2015".');
           return;
@@ -274,8 +275,8 @@ $(document).ready(function () {
               <tbody>                                   \
                 <tr>                                    \
                   <th scope="row">1</th>                \
-                  <td>Date</td>                         \
-                  <td>'+ acc_date.value +'</td>     \
+                  <td>Month/Year</td>                   \
+                  <td>'+ (acc_date.getMonth()+1)+'/'+(acc_date.getYear()+1900) +'</td>     \
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">2</th>                \
