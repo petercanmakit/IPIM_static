@@ -96,9 +96,15 @@
           }
 
           #ins_container {
-            float: left;
-            height: 50%;
-            margin-bottom: -120px;
+              height: 540px;
+              margin-top:10px;
+              margin-bottom: 10px;
+              float: left;
+              border:1px solid #ccc;font:16px/26px;
+              overflow:auto;
+              -moz-box-shadow: 0px 5px 20px #ccc;
+              -webkit-box-shadow: 0px 5px 20px #ccc;
+              box-shadow: 0px 5px 20px #ccc;
           }
 
           #ins_content {
@@ -112,7 +118,7 @@
           }
 
           .steps {
-              text-align: center;
+              text-align: left;
               margin-top: 10px;
               display: none;
           }
@@ -183,169 +189,166 @@
         <div class="container" >
             <div class="row">
                 <div class="col-sm-8" id="map_box" >
-
                     <div class="row">
-                      <div class="span11">
                         <div id="map"></div>
                       </div>
-                    </div>
                     <br>
                 </div>
                 <div class="col-sm-4" id="ins_container">
-                <div id="ins_content">
-                    <div align="left">
-                        <span id="ins_box"></span>
-                    </div>
-
-                    <div class="steps" id="step1">
-                        <form method="post" id="date_form">
-                            <div class="input">
-                                <label for="accident_date">Date:</label>
-                                <input type="date" id="accident_date" name="accident_date"/>
-                                <input type="submit" class="btn btn-primary" value="Next" />
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="steps" id="step2">
-                        <div align="center">
-                            <button class="btn btn-primary" id="locate_me_button">Locate me</button>
+                    <div id="ins_content">
+                        <div align="left">
+                            <span id="ins_box"></span>
                         </div>
 
-                        <div align="center">
-                            <form method="post" id="geocoding_form">
-                              <div class="input">
-                                  <label for="city">City:</label>
-                                  <input type="text" id="city" name="city" />
-                                  <label for="street">Street:</label>
-                                  <input type="text" id="street" name="street" />
-                                  <label for="cross_street">Cross Street:</label>
-                                  <input type="text" id="cross_street" name="cross_street" />
-                                  <input type="submit" class="btn" value="Search" />
-                              </div>
+                        <div class="steps" id="step1">
+                            <form method="post" id="date_form">
+                                <div class="input">
+                                    <label for="accident_date">Date:</label>
+                                    <input type="date" id="accident_date" name="accident_date"/>
+                                    <input type="submit" class="btn btn-primary" value="Next" />
+                                </div>
                             </form>
-                            <button class="btn btn-primary" id="step2_next">Next</button>
                         </div>
-                    </div>
 
-                    <div class="steps" id="step3">
-                        <div align="center">
-                            <button class="btn btn-primary" id="place_pin_end">Next</button>
+                        <div class="steps" id="step2">
+                            <div align="center">
+                                <button class="btn btn-primary" id="locate_me_button">Locate me</button>
+                            </div>
+
+                            <div align="center">
+                                <form method="post" id="geocoding_form">
+                                  <div class="input">
+                                      <label for="city">City:</label>
+                                      <input type="text" id="city" name="city" />
+                                      <label for="street">Street:</label>
+                                      <input type="text" id="street" name="street" />
+                                      <label for="cross_street">Cross Street:</label>
+                                      <input type="text" id="cross_street" name="cross_street" />
+                                      <input type="submit" class="btn" value="Search" />
+                                  </div>
+                                </form>
+                                <button class="btn btn-primary" id="step2_next">Next</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="steps" id="step4">
-                        <div align="center">
-                            <button class="btn btn-primary" id="draw_end">Next</button>
+                        <div class="steps" id="step3">
+                            <div align="center">
+                                <button class="btn btn-primary" id="place_pin_end">Next</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="steps" id="step5">
-                            <form>
+                        <div class="steps" id="step4">
+                            <div align="center">
+                                <button class="btn btn-primary" id="draw_end">Next</button>
+                            </div>
+                        </div>
 
-                                <p>1. Were you hit by a:</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="Private car">
-                                        Private car
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
-                                        A cab or livery
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="A Truck or van">
-                                        A Truck or van
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="A bus">
-                                        A bus
-                                    </label>
-                                </div>
+                        <div class="steps" id="step5">
+                                <form>
 
-                                <p>2. Was a police report filed at the scene of the collision?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question2" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question2" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>1. Were you hit by a:</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question1" value="Private car">
+                                            Private car
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
+                                            A cab or livery
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question1" value="A Truck or van">
+                                            A Truck or van
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question1" value="A bus">
+                                            A bus
+                                        </label>
+                                    </div>
 
-                                <p>3. Were you provided medical evaluation or care at the scene of the collision?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question3" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question3" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>2. Was a police report filed at the scene of the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question2" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question2" value="No"> No
+                                        </label>
+                                    </div>
 
-                                <p>4. Were you taken from the scene of the collision to an emergency room or hospital?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question4" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question4" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>3. Were you provided medical evaluation or care at the scene of the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question3" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question3" value="No"> No
+                                        </label>
+                                    </div>
 
-                                <p>5. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question5" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question5" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>4. Were you taken from the scene of the collision to an emergency room or hospital?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question4" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question4" value="No"> No
+                                        </label>
+                                    </div>
 
-                         </form>
-                         <div align="center">
-                             <button class="btn btn-primary" id="tell_end">Finish</button>
-                         </div>
+                                    <p>5. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question5" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question5" value="No"> No
+                                        </label>
+                                    </div>
 
-                    </div>
-                    <div style="display:none">
-                        this is a submitting form
-                        <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
-                            <input type="text" name="answer1" id="answer1">
-                            <input type="text" name="answer2" id="answer2">
-                            <input type="text" name="answer3" id="answer3">
-                            <input type="text" name="answer4" id="answer4">
-                            <input type="text" name="answer5" id="answer5">
-                            <input type="text" name="answer_date" id="answer_date">
-                            <input type="text" name="answer_route" id="answer_route">
-                            <input type="text" name="answer_st_cst_city" id="answer_st_cst_city">
-                            <input type="submit" value="Submit">
-                        </form>
-                    </div>
+                             </form>
+                             <div align="center">
+                                 <button class="btn btn-primary" id="tell_end">Finish</button>
+                             </div>
 
-                    <div class="steps" id="step6">
-                        <p id="content_to_submmit"></p>
-                        <div align="center">
-                            <button class="btn btn-primary" id="submit_route">Submit</button>
+                        </div>
+                        <div style="display:none">
+                            this is a submitting form
+                            <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
+                                <input type="text" name="answer1" id="answer1">
+                                <input type="text" name="answer2" id="answer2">
+                                <input type="text" name="answer3" id="answer3">
+                                <input type="text" name="answer4" id="answer4">
+                                <input type="text" name="answer5" id="answer5">
+                                <input type="text" name="answer_date" id="answer_date">
+                                <input type="text" name="answer_route" id="answer_route">
+                                <input type="text" name="answer_st_cst_city" id="answer_st_cst_city">
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
+
+                        <div class="steps" id="step6">
+                            <p id="content_to_submmit"></p>
+                            <div align="center">
+                                <button class="btn btn-primary" id="submit_route">Submit</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
 
