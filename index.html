@@ -447,15 +447,26 @@
         </div>
 
         <script>
-            // witre content of consent form
-            var consent_box = document.getElementById('consent_text');
+        // witre content of consent form
+        var consent_box = document.getElementById('consent_text');
+        function readTextFile(file)
+        {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, true);
+            rawFile.onreadystatechange = function () {
+                if(rawFile.readyState === 4) {
+                    if(rawFile.status === 200 || rawFile.status == 0) {
+                        var allText = rawFile.responseText;
+                        consent_box.innerText = allText
+                    }
+                }
+            }
+            rawFile.send(null);
+        }
 
-            var client = new XMLHttpRequest();
-            client.open('GET', 'static/text/consent_form.txt', true);
-            client.send(null);
-            consent_box.innerText = client.responseText;
+        readTextFile("static/text/consent_form.txt");
 
-            // Get the modal
+        // Get the modal
             var modal = document.getElementById('myModal');
 
             var agree_btn = document.getElementById("i_agree");
