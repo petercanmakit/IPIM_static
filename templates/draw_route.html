@@ -10,142 +10,210 @@
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
       <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDksCOY76WD68PM33lEu7o1YyMBnxcGXs4"></script>
 
+      <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
       <script type="text/javascript" src="../static/js/gmaps.js"></script>
       <link rel="stylesheet" type="text/css" href="../static/css/examples.css" />
       <style>
 
-          .jumbotron {
-              background-image: url(../static/images/background_walk.png);
-              background-position: center;
-              text-align: center;
-              margin-top: 20px;
-              height: 250px;
-          }
+        .jumbotron {
+            background-image: url(../static/images/background_walk.png);
+            background-position: center;
+            text-align: center;
+            margin-top: 20px;
+            height: 250px;
+        }
 
-          div.jumbo-head {
-              /* color: black; */
+        div.jumbo-head {
+            /* color: black; */
 
-              height:130px;
-              margin-top:10px;
-              margin-bottom: 0px;
-              margin-left:10px;
-              margin-right:10px;
-              background-color: #ffffff;
-              /* for IE */
-              filter:alpha(opacity=60);
-              /* CSS3 standard */
-              opacity:0.6;
-          }
+            height:130px;
+            margin-top:10px;
+            margin-bottom: 0px;
+            margin-left:10px;
+            margin-right:10px;
+            background-color: #ffffff;
+            /* for IE */
+            filter:alpha(opacity=60);
+            /* CSS3 standard */
+            opacity:0.6;
+        }
 
-          div.jumbo-head-text
-          {
-              height:130px;
-              margin-top:-130px;
-              margin-bottom: 10px;
-              margin-left:10px;
-              margin-right:10px;
-              color: black;
-              position: relative;
-          }
+        div.jumbo-head-text
+        {
+            height:130px;
+            margin-top:-130px;
+            margin-bottom: 10px;
+            margin-left:10px;
+            margin-right:10px;
+            color: black;
+            position: relative;
+        }
 
-          #signupform {
-              text-align: right;
-              margin-top:50px;
-              margin-bottom: 50px;
-          }
+        #signupform {
+            text-align: right;
+            margin-top:50px;
+            margin-bottom: 50px;
+        }
 
-          #appSummary {
+        #appSummary {
 
-              text-align: center;
-              margin-top:50px;
-              margin-bottom: 50px;
+            text-align: center;
+            margin-top:50px;
+            margin-bottom: 50px;
 
-          }
+        }
 
-          .card-img-top {
+        .card-img-top {
 
-              width: 100%;
+            width: 100%;
 
-          }
+        }
 
-          #appStoreIcon {
+        #appStoreIcon {
 
-              width: 200px;
+            width: 200px;
 
-          }
+        }
 
-          #footer {
-              background: linear-gradient(to right, #232526, #414345);
-              color:white;
-              padding-top: 20px;
-              margin-top: 20px;
-              text-align: center;
-              padding-bottom: 20px;
-          }
+        #footer {
+            background: linear-gradient(to right, #232526, #414345);
+            color:white;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            padding-bottom: 20px;
+        }
 
-          #footer a {
-              color: #b3d9ff;
-          }
+        #footer a {
+            color: #b3d9ff;
+        }
 
-          #map {
+        #map {
             height: 540px;
             margin-top:10px;
             margin-bottom: 10px;
             margin-left:10px;
             margin-right:10px;
-          }
+        }
 
-          #ins_container {
+        #ins_container {
+            height: 540px;
+            margin-top:10px;
+            margin-bottom: 10px;
             float: left;
-            height: 50%;
-            margin-bottom: -120px;
-          }
+            overflow:auto;
+            -moz-box-shadow: 0px 5px 20px #ccc;
+            -webkit-box-shadow: 0px 5px 20px #ccc;
+            box-shadow: 0px 5px 20px #ccc;
+        }
 
-          #ins_content {
+        #ins_content {
             clear: both;
             height: 240px;
             position: relative;
-          }
+        }
 
-          #ins_box {
+        #ins_box {
             text-align: left;
-          }
+        }
 
-          .steps {
-              text-align: center;
-              margin-top: 10px;
-              display: none;
-          }
+        .steps {
+            text-align: left;
+            margin-top: 10px;
+            display: none;
+        }
 
-          .progress{
-              width: 260px;
-          }
+        .progress{
+            width: 260px;
+        }
 
-          body {
+        body {
 
-              position: relative;
-              font-family: Georgia, Serif;
+            position: relative;
+            font-family: Georgia, Serif;
 
-          }
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #000;
+            /* float: right;*/
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        #i_agree {
+            position:relative;
+            top: 20px;
+            right: 20px;
+        }
+
+        .close:after {
+            content: 'I agree';
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
       </style>
 
-      <script type="text/javascript">
-        var datefield=document.createElement("input")
-        datefield.setAttribute("type", "date")
-        if (datefield.type!="date"){ //if browser doesn't support input type="date", load files for jQuery UI Date Picker
-          document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
-          // document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
-          document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
-        }
-      </script>
-
       <script>
-          if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
-             jQuery(function($){ //on document.ready
-                 $('#accident_date').datepicker();
-             })
-          }
+            // for month and year picker UI
+            jQuery(function($){ //on document.ready
+                $("#accident_date").datepicker({
+                    dateFormat: 'MM yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    showButtonPanel: true,
+
+                    onClose: function(dateText, inst) {
+                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).val($.datepicker.formatDate('MM yy', new Date(year, month, 1)));
+                    }
+                });
+
+                $("#accident_date").focus(function () {
+                    $(".ui-datepicker-calendar").hide();
+                    $("#ui-datepicker-div").position({
+                        my: "center top",
+                        at: "center bottom",
+                        of: $(this)
+                    });
+                });
+            });
       </script>
 
       <script type="text/javascript" src="../static/js/ipimMapsInteract.js"></script>
@@ -180,181 +248,233 @@
              </div>
         </div>
 
-        {% if submit_success %}
-        <div class="container">
-            <p class=="lead">Thank you! We have received your valuable report.</p>
-        </div>
-        {% endif %}
-
         <div class="container" >
             <div class="row">
                 <div class="col-sm-8" id="map_box" >
-
                     <div class="row">
-                      <div class="span11">
                         <div id="map"></div>
                       </div>
-                    </div>
                     <br>
                 </div>
                 <div class="col-sm-4" id="ins_container">
-                <div id="ins_content">
-                    <div align="left">
-                        <span id="ins_box"></span>
-                    </div>
-
-                    <div class="steps" id="step1">
-                        <form method="post" id="date_form">
-                            <div class="input">
-                                <label for="accident_date">Date:</label>
-                                <input type="date" id="accident_date" name="accident_date"/>
-                                <input type="submit" class="btn btn-primary" value="Next" />
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="steps" id="step2">
-                        <div align="center">
-                            <button class="btn btn-primary" id="locate_me_button">Locate me</button>
+                    <div id="ins_content">
+                        <div align="left">
+                            <span id="ins_box"></span>
                         </div>
 
-                        <div align="center">
-                            <form method="post" id="geocoding_form">
-                              <div class="input">
-                                  <label for="city">City:</label>
-                                  <input type="text" id="city" name="city" />
-                                  <label for="street">Street:</label>
-                                  <input type="text" id="street" name="street" />
-                                  <label for="cross_street">Cross Street:</label>
-                                  <input type="text" id="cross_street" name="cross_street" />
-                                  <input type="submit" class="btn" value="Search" />
-                              </div>
+                        <div class="steps" id="step1">
+                            <form method="post" id="date_form">
+                                <div class="input" align="center">
+                                    <label for="accident_date">Month and Year:</label>
+                                    <input type="text" id="accident_date" name="accident_date" class="date-picker"/>
+                                    <input type="submit" class="btn btn-primary btn-sm" value="Next" />
+                                </div>
                             </form>
-                            <button class="btn btn-primary" id="step2_next">Next</button>
                         </div>
-                    </div>
 
-                    <div class="steps" id="step3">
-                        <div align="center">
-                            <button class="btn btn-primary" id="place_pin_end">Next</button>
+                        <div class="steps" id="step2">
+                            <div align="center">
+                                <button class="btn btn-primary btn-sm" id="locate_me_button">Locate me</button>
+                            </div>
+
+                            <div align="center">
+                                <form method="post" id="geocoding_form">
+                                  <div class="input">
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="city">City:</label>
+                                          <input class="col-sm-6" type="text" id="city" name="city" />
+                                      </div>
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="street">Street:</label>
+                                          <input class="col-sm-6" type="text" id="street" name="street" />
+                                      </div>
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="cross_street">Cross Street:</label>
+                                          <input class="col-sm-6" type="text" id="cross_street" name="cross_street" />
+                                      </div>
+                                      <div class="row">
+                                          <input type="submit" class="btn btn-sm" value="Search" />
+                                      </div>
+                                  </div>
+                                </form>
+                                <button class="btn btn-primary btn-sm" id="step2_next">Next</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="steps" id="step4">
-                        <div align="center">
-                            <button class="btn btn-primary" id="draw_end">Next</button>
+                        <div class="steps" id="step3">
+                            <div align="center">
+                                <button class="btn btn-primary btn-sm" id="place_pin_end">Next</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="steps" id="step5">
-                            <form>
+                        <div class="steps" id="step4">
+                            <div align="center">
+                                <button class="btn btn-primary btn-sm" id="draw_end">Next</button>
+                            </div>
+                        </div>
 
-                                <p>1. Were you hit by a:</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="Private car">
-                                        Private car
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
-                                        A cab or livery
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="A Truck or van">
-                                        A Truck or van
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question1" value="A bus">
-                                        A bus
-                                    </label>
-                                </div>
+                        <div class="steps" id="step5">
+                                <form>
+                                    <p>1. Were you hit by a:</p>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="Private car">
+                                                    Private car
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
+                                                    A cab or livery
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A truck or van">A truck or van
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A bus">
+                                                    A bus
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <p>2. Was a police report filed at the scene of the collision?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question2" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question2" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>2. Was a police report filed at the scene of the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question2" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question2" value="No"> No
+                                        </label>
+                                    </div>
 
-                                <p>3. Were you provided medical evaluation or care at the scene of the collision?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question3" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question3" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>3. Were you provided medical evaluation or care at the scene of the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question3" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question3" value="No"> No
+                                        </label>
+                                    </div>
 
-                                <p>4. Were you taken from the scene of the collision to an emergency room or hospital?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question4" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question4" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>4. Were you taken from the scene of the collision to an emergency room or hospital?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question4" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question4" value="No"> No
+                                        </label>
+                                    </div>
 
-                                <p>5. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question5" value="Yes"> Yes
-                                    </label>
-                                </div>
-                                <div class="radio-inline">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="question5" value="No"> No
-                                    </label>
-                                </div>
+                                    <p>5. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question5" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question5" value="No"> No
+                                        </label>
+                                    </div>
 
-                         </form>
-                         <div align="center">
-                             <button class="btn btn-primary" id="tell_end">Finish</button>
-                         </div>
+                             </form>
+                             <div align="center">
+                                 <button class="btn btn-primary btn-sm" id="tell_end">Finish</button>
+                             </div>
 
-                    </div>
-                    <div style="display:none">
-                        this is a submitting form
-                        <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
-                            <input type="text" name="answer1" id="answer1">
-                            <input type="text" name="answer2" id="answer2">
-                            <input type="text" name="answer3" id="answer3">
-                            <input type="text" name="answer4" id="answer4">
-                            <input type="text" name="answer5" id="answer5">
-                            <input type="text" name="answer_date" id="answer_date">
-                            <input type="text" name="answer_route" id="answer_route">
-                            <input type="text" name="answer_st_cst_city" id="answer_st_cst_city">
-                            <input type="submit" value="Submit">
-                        </form>
-                    </div>
+                        </div>
+                        <div style="display:none">
+                            this is a submitting form
+                            <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
+                                <input type="text" name="answer1" id="answer1">
+                                <input type="text" name="answer2" id="answer2">
+                                <input type="text" name="answer3" id="answer3">
+                                <input type="text" name="answer4" id="answer4">
+                                <input type="text" name="answer5" id="answer5">
+                                <input type="text" name="answer_date" id="answer_date">
+                                <input type="text" name="answer_route" id="answer_route">
+                                <input type="text" name="answer_st_cst_city" id="answer_st_cst_city">
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
 
-                    <div class="steps" id="step6">
-                        <p id="content_to_submmit"></p>
-                        <div align="center">
-                            <button class="btn btn-primary" id="submit_route">Submit</button>
+                        <div class="steps" id="step6">
+                            <div align="center">
+                                <button class="btn btn-primary btn-sm" id="submit_route">Submit</button>
+                            </div>
+                            <p id="content_to_submmit"></p>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
 
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="row modal-content">
+            <p class="col-sm-9" id="consent_text" style="overflow:auto;height:400px;"> This is consent form
+            </p>
+            <div align="center" class="col-sm-3">
+                <button  class="btn btn-primary" id="i_agree">I agree</button>
+            </div>
+          </div>
+
+        </div>
+
+        <script>
+            // witre content of consent form
+            var consent_box = document.getElementById('consent_text');
+            function readTextFile(file)
+            {
+                var rawFile = new XMLHttpRequest();
+                rawFile.open("GET", file, true);
+                rawFile.onreadystatechange = function () {
+                    if(rawFile.readyState === 4) {
+                        if(rawFile.status === 200 || rawFile.status == 0) {
+                            var allText = rawFile.responseText;
+                            consent_box.innerText = allText
+                        }
+                    }
+                }
+                rawFile.send(null);
+            }
+
+            readTextFile("../static/text/consent_form.txt");
+
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            var agree_btn = document.getElementById("i_agree");
+
+            agree_btn.onclick = function() {
+                modal.style.display = "none";
+            }
+        </script>
         <div id="footer">
 
           <div class="row">
