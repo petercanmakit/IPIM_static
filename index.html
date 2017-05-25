@@ -454,11 +454,11 @@
             var client = new XMLHttpRequest();
             client.open('GET', 'static/text/consent_form.txt');
             client.onreadystatechange = function() {
-              alert(client.responseText);
+             consent_content = client.responseText.textContent;
             }
             client.send();
 
-            consent_box.innerText = consent_content.textContent;
+            consent_box.innerText = consent_content;
             // Get the modal
             var modal = document.getElementById('myModal');
 
