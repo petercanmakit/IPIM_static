@@ -451,7 +451,7 @@
             var consent_box = document.getElementById('consent_text');
 
             var client = new XMLHttpRequest();
-            client.open('GET', 'static/text/consent_form.txt', false);
+            client.open('GET', 'static/text/consent_form.txt', true);
             client.send(null);
             consent_box.innerText = client.responseText;
 
