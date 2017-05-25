@@ -449,14 +449,10 @@
         <script>
             // witre content of consent form
             var consent_box = document.getElementById('consent_text');
-            var consent_content;
 
             var client = new XMLHttpRequest();
             client.open('GET', 'static/text/consent_form.txt', false);
             client.send(null);
-            consent_content = client.responseText;
-            alert("client.responseText"+client.responseText);
-            alert("consent_content"+consent_content);
             consent_box.innerText = client.responseText;
 
             // Get the modal
