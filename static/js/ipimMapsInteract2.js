@@ -109,6 +109,8 @@ $(document).ready(function () {
     var address_in = "".concat(...address_list);
     // alert(address_in);
     st_cst_city = address_in; // "street, cross_street, city"
+    address_list = [street, ' & ', cross_street, ', ', city];
+    address_in = "".concat(...address_list);
     GMaps.geocode({
       address: address_in,
       callback: function(results, status){

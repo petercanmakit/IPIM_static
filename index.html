@@ -10,162 +10,210 @@
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
       <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDksCOY76WD68PM33lEu7o1YyMBnxcGXs4"></script>
 
+      <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
       <script type="text/javascript" src="static/js/gmaps.js"></script>
       <link rel="stylesheet" type="text/css" href="static/css/examples.css" />
       <style>
 
-          .jumbotron {
-              background-image: url(static/images/background_walk.png);
-              background-position: center;
-              text-align: center;
-              margin-top: 20px;
-              height: 250px;
-          }
+        .jumbotron {
+            background-image: url(static/images/background_walk.png);
+            background-position: center;
+            text-align: center;
+            margin-top: 20px;
+            height: 250px;
+        }
 
-          div.jumbo-head {
-              /* color: black; */
+        div.jumbo-head {
+            /* color: black; */
 
-              height:130px;
-              margin-top:10px;
-              margin-bottom: 0px;
-              margin-left:10px;
-              margin-right:10px;
-              background-color: #ffffff;
-              /* for IE */
-              filter:alpha(opacity=60);
-              /* CSS3 standard */
-              opacity:0.6;
-          }
+            height:130px;
+            margin-top:10px;
+            margin-bottom: 0px;
+            margin-left:10px;
+            margin-right:10px;
+            background-color: #ffffff;
+            /* for IE */
+            filter:alpha(opacity=60);
+            /* CSS3 standard */
+            opacity:0.6;
+        }
 
-          div.jumbo-head-text
-          {
-              height:130px;
-              margin-top:-130px;
-              margin-bottom: 10px;
-              margin-left:10px;
-              margin-right:10px;
-              color: black;
-              position: relative;
-          }
+        div.jumbo-head-text
+        {
+            height:130px;
+            margin-top:-130px;
+            margin-bottom: 10px;
+            margin-left:10px;
+            margin-right:10px;
+            color: black;
+            position: relative;
+        }
 
-          #signupform {
-              text-align: right;
-              margin-top:50px;
-              margin-bottom: 50px;
-          }
+        #signupform {
+            text-align: right;
+            margin-top:50px;
+            margin-bottom: 50px;
+        }
 
-          #appSummary {
+        #appSummary {
 
-              text-align: center;
-              margin-top:50px;
-              margin-bottom: 50px;
+            text-align: center;
+            margin-top:50px;
+            margin-bottom: 50px;
 
-          }
+        }
 
-          .card-img-top {
+        .card-img-top {
 
-              width: 100%;
+            width: 100%;
 
-          }
+        }
 
-          #appStoreIcon {
+        #appStoreIcon {
 
-              width: 200px;
+            width: 200px;
 
-          }
+        }
 
-          #footer {
-              background: linear-gradient(to right, #232526, #414345);
-              color:white;
-              padding-top: 20px;
-              margin-top: 20px;
-              text-align: center;
-              padding-bottom: 20px;
-          }
+        #footer {
+            background: linear-gradient(to right, #232526, #414345);
+            color:white;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            padding-bottom: 20px;
+        }
 
-          #footer a {
-              color: #b3d9ff;
-          }
+        #footer a {
+            color: #b3d9ff;
+        }
 
-          #map {
+        #map {
             height: 540px;
             margin-top:10px;
             margin-bottom: 10px;
             margin-left:10px;
             margin-right:10px;
-          }
+        }
 
-          #ins_container {
-              height: 540px;
-              margin-top:10px;
-              margin-bottom: 10px;
-              float: left;
-              overflow:auto;
-              -moz-box-shadow: 0px 5px 20px #ccc;
-              -webkit-box-shadow: 0px 5px 20px #ccc;
-              box-shadow: 0px 5px 20px #ccc;
-          }
+        #ins_container {
+            height: 540px;
+            margin-top:10px;
+            margin-bottom: 10px;
+            float: left;
+            overflow:auto;
+            -moz-box-shadow: 0px 5px 20px #ccc;
+            -webkit-box-shadow: 0px 5px 20px #ccc;
+            box-shadow: 0px 5px 20px #ccc;
+        }
 
-          #ins_content {
+        #ins_content {
             clear: both;
             height: 240px;
             position: relative;
-          }
+        }
 
-          #ins_box {
+        #ins_box {
             text-align: left;
-          }
+        }
 
-          .steps {
-              text-align: left;
-              margin-top: 10px;
-              display: none;
-          }
+        .steps {
+            text-align: left;
+            margin-top: 10px;
+            display: none;
+        }
 
-          .progress{
-              width: 260px;
-          }
+        .progress{
+            width: 260px;
+        }
 
-          body {
+        body {
 
-              position: relative;
-              font-family: Georgia, Serif;
+            position: relative;
+            font-family: Georgia, Serif;
 
-          }
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #000;
+            /* float: right;*/
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        #i_agree {
+            position:relative;
+            top: 20px;
+            right: 20px;
+        }
+
+        .close:after {
+            content: 'I agree';
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
       </style>
 
-      <script type="text/javascript">
-        document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
-          document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
-          document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
-
-      </script>
-
       <script>
-             jQuery(function($){ //on document.ready
-                 $("#accident_date").datepicker({
-        dateFormat: 'MM yy',
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
+            // for month and year picker UI
+            jQuery(function($){ //on document.ready
+                $("#accident_date").datepicker({
+                    dateFormat: 'MM yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    showButtonPanel: true,
 
-        onClose: function(dateText, inst) {
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-            $(this).val($.datepicker.formatDate('MM yy', new Date(year, month, 1)));
-        }
-    });
+                    onClose: function(dateText, inst) {
+                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).val($.datepicker.formatDate('MM yy', new Date(year, month, 1)));
+                    }
+                });
 
-    $("#accident_date").focus(function () {
-        $(".ui-datepicker-calendar").hide();
-        $("#ui-datepicker-div").position({
-            my: "center top",
-            at: "center bottom",
-            of: $(this)
-        });
-    });
-             })
+                $("#accident_date").focus(function () {
+                    $(".ui-datepicker-calendar").hide();
+                    $("#ui-datepicker-div").position({
+                        my: "center top",
+                        at: "center bottom",
+                        of: $(this)
+                    });
+                });
+            });
       </script>
 
       <script type="text/javascript" src="static/js/ipimMapsInteract2.js"></script>
@@ -383,6 +431,44 @@
                 </div>
             </div>
         </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="row modal-content">
+            <p class="col-sm-9" id="consent_text" style="overflow:auto;height:400px;"> This is consent form
+            </p>
+            <div align="center" class="col-sm-3">
+                <button  class="btn btn-primary" id="i_agree">I agree</button>
+            </div>
+          </div>
+
+        </div>
+
+        <script>
+            // witre content of consent form
+            var consent_box = document.getElementById('consent_text');
+            var consent_content = "try";
+
+            var client = new XMLHttpRequest();
+            client.open('GET', 'static/text/consent_form.txt');
+            client.onreadystatechange = function() {
+              alert(client.responseText);
+            }
+            client.send();
+
+            consent_box.innerText = consent_content.textContent;
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            var agree_btn = document.getElementById("i_agree");
+
+            // When the user clicks on <span> (x), close the modal
+            agree_btn.onclick = function() {
+                modal.style.display = "none";
+            }
+        </script>
 
         <div id="footer">
 
