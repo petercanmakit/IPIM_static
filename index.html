@@ -449,16 +449,16 @@
         <script>
             // witre content of consent form
             var consent_box = document.getElementById('consent_text');
-            var consent_content = "try";
+            var consent_content;
 
             var client = new XMLHttpRequest();
             client.open('GET', 'static/text/consent_form.txt');
             client.onreadystatechange = function() {
-             consent_content = client.responseText.textContent;
+             consent_content = document.createTextNode(client.responseText);
             }
-            client.send();
+            client.send(null);
 
-            consent_box.innerText = consent_content;
+            consent_box.innerText = consent_content.textContent;
             // Get the modal
             var modal = document.getElementById('myModal');
 
