@@ -20,101 +20,6 @@ from flask_session import Session
 import datetime
 import time
 
-class User(object):
-    """
-    """
-    uid = long(-1)
-    name = ""
-    email = ""
-    password = ""
-    gender = ""
-    birthdate = None # d1 = datetime.date(2008,3,1)
-    ethnicity = ""
-    race = ""
-
-    def __init__(self, email, password):
-        """Return a User object"""
-        self.email = email
-        self.password = password
-
-    def register(self, name, gender, birthdate, ethnicity, race):
-        """If it's a new user, register for it. return its uid
-        """
-        print "in register"
-        cur = g.conn.execute('''
-        SELECT 1 FROM Users WHERE Email=%s LIMIT 1;
-        ''', (self.email, )
-        )
-        for row in cur:
-            print row[0]
-            if row[0] == 1:
-                print "This email already registed!"
-                cur.close()
-                return -1
-            else :
-                pass
-        cur.close()
-        self.name = name
-        if gender == 'Female ':
-            self.gender = 'female'
-        else:
-            self.gender = 'male'
-        # birthdate str "YYYY-MM-DD"
-        birthdates = birthdate.split("-")
-        self.birthdate = datetime.date(int(birthdates[0]), int(birthdates[1]) ,int(birthdates[2]))
-        self.ethnicity = ethnicity
-        self.race = race
-        cur = g.conn.execute('''
-        INSERT INTO Users (Name,Email,Pass,Gender,Birthdate,Ethnicity,Race)
-        VALUES (%s,%s,%s,%s,%s,%s,%s)
-        ''', (name, self.email, self.password, gender,
-        birthdate, ethnicity, race)
-        )
-        cur.close()
-        cur = g.conn.execute('''
-        SELECT u.Uid
-        FROM Users u
-        WHERE u.Email = %s
-        ''', (self.email, )
-        )
-        for row in cur:
-            self.uid = row[0]
-        cur.close()
-        print "Registed successfully, uid is ", self.uid
-        return self.uid
-
-    def login(self):
-        """Login in, return uid"""
-        cur = g.conn.execute('''
-        SELECT pass FROM Users WHERE Email=%s LIMIT 1;
-        ''', (self.email, )
-        )
-        if cur.rowcount == 0:
-            print "no such user ", self.email
-            return -1
-        elif self.password == cur.fetchone()[0]:
-            print "login successfully! ", self.email
-            cur.close()
-            cur = g.conn.execute('''
-            SELECT uid, name, gender, birthdate, ethnicity, race FROM Users WHERE Email=%s LIMIT 1;
-            ''', (self.email, )
-            )
-            if(cur.rowcount != 0):
-                row = cur.fetchone();
-                self.uid = row[0]
-                self.name = row[1]
-                self.gender = row[2]
-                self.birthdate = row[3] # date()
-                self.ethnicity = row[4]
-                self.race = row[5]
-            else:
-                self.uid = -1 # no such email
-            cur.close()
-            return self.uid
-        else:
-            print "wroing password ", self.email
-            return -1 # wrong password
-
 class Collision(object):
     """docstring for Collision."""
     cid = long(-1)
@@ -127,10 +32,15 @@ class Collision(object):
     taken_to_hos_from_scene = False
     seeked_care_afterward = False
     acc_date = None
-    geom = ""
-    uid = long(-1)
 
-    def __init__(self, answers_list, geo_list_str, acc_date_str_ms, st_cst_city):
+    geom = ""
+
+    gender = ""
+    age = 0
+    ethnicity = ""
+    race = ""
+
+    def __init__(self, answers_list, geo_list_str, acc_date_str_ms, st_cst_city, genderIn, ageIn, ethnIn, raceIn):
         self.cartype = answers_list[0]
         self.police_filed = True if (answers_list[1] == "Yes") else False
         self.med_evaluated_at_scene = True if (answers_list[2] == "Yes") else False
@@ -152,6 +62,10 @@ class Collision(object):
             self.city = st_cst_city_list[2].strip()
         time_ts = time.gmtime(long(acc_date_str_ms)/1000.0)
         self.acc_date = datetime.datetime.fromtimestamp(time.mktime(time_ts))
+        self.gender = genderIn
+        self.age = ageIn
+        self.ethnicity = ethnIn
+        self.race = raceIn
         self.printCollisionInfo()
 
 
@@ -197,11 +111,15 @@ class Collision(object):
         print "seeked_care_afterward", self.seeked_care_afterward
         print "acc_date", self.acc_date
         print "geom", self.geom
+        print "gender", self.gender
+        print "age", self.age
+        print "ethn", self.ethnicity
+        print "race", self.race
 
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-app.secret_key = "joyce"
+app.secret_key = "joyce_secret_hhhh"
 
 
 #
@@ -325,80 +243,16 @@ def index():
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-
-  if 'username' in session:
-      username = session['username']
-      return render_template("index.html", username = username)
-
-
   return render_template("index.html")
-
-@app.route('/signup', methods=['POST'])
-def signup():
-  email = request.form['email']
-  print "in signup() email is ", email
-  """
-  request is a special object that Flask provides to access web request information:
-
-  request.method:   "GET" or "POST"
-  request.form:     if the browser submitted a form, this contains the data in the form
-  request.args:     dictionary of URL arguments e.g., {a:1, b:2} for http://localhost?a=1&b=2
-
-  See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
-  """
-
-  # DEBUG: this is debugging code to see what request looks like
-  # print request.args
-
-  return render_template("signup.html", email = email)
-
-@app.route('/trysignup', methods=['POST'])
-def trysignup():
-  email = request.form['email']
-  nickname = request.form['nickname']
-  pwd = request.form['pwd']
-  gender = request.form['gender']
-  bod = request.form['bod']
-  ethn = request.form['ethn']
-  race = request.form['race']
-
-  print "in trysignup() signup info is: ", email, nickname, pwd, gender, bod, ethn, race
-  # create a new user instance
-  user = User(email, pwd)
-  registered = user.register(nickname, gender, bod, ethn, race)
-  if registered > 0:
-    print "new uid is ", user.uid
-    re = dict(nickname = nickname, success = 1)
-    return render_template("signup.html", **re)
-  else:
-    print "cannot register", user.uid
-    re = dict(email = email, registered = 1)
-    return render_template("signup.html", **re)
 
 @app.route('/draw_route', methods=['GET', 'POST'])
 def draw_route():
-    print "in draw_route"
-    username = None
-    try:
-        if session['username']:
-            print session['username']
-            username = session['username']
-    except Exception as e:
-        print "session no username"
-
-    return render_template("draw_route.html", username = username)
+    return render_template("draw_route.html")
 
 # submit_route
 @app.route('/submit_route', methods=['GET', 'POST'])
 def submit_route():
     print "in submit_route"
-    username = None
-    try:
-        if session['username']:
-            print session['username']
-            username = session['username']
-    except Exception as e:
-        print "session no username"
 
     answers = []
     for i in range(1, 6):
@@ -407,24 +261,28 @@ def submit_route():
     acc_date = request.form['answer_date'] # in string of milliseconds since midnight Jan 1 1970
     geom = request.form['answer_route']
     st_cst_city = request.form['answer_st_cst_city']
+
+    gender = request.form['answer_gender']
+    age = request.form['answer_age']
+    ethnicity = request.form['answer_ethnicity']
+    race = request.form['answer_race']
+
     print "acc date", acc_date
     print "geometry", geom
     print "st_cst_city", st_cst_city
 
+    print "gender", gender
+    print "age", age
+    print "enthnicity", ethnicity
+    print "race", race
+
     # answers_list, geo_list_str, acc_date_str_ms, st_cst_city
-    collision = Collision(answers, geom, acc_date, st_cst_city)
-    try:
-        if session['username']:
-            uid = long(session['uid'])
-            collision.syncToDBWithUid(uid, engine)
-            return render_template("draw_route.html", username = username, submit_success = 1)
-    except Exception as e:
-        print "not logged in"
-        return render_template("draw_route.html", not_logged = 1)
+    collision = Collision(answers, geom, acc_date, st_cst_city, gender, age, ethnicity, race)
+
+    flash("Your submission is successful. Thank you very much!")
     return redirect("/")
 
-
-
+'''
 @app.route('/login', methods=['POST'])
 def login():
   email = request.form['email']
@@ -454,6 +312,7 @@ def logout():
     session.pop('username', None)
     session.pop('uid', None)
     return redirect('/')
+'''
 
 if __name__ == "__main__":
   import click
