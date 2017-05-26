@@ -8,6 +8,11 @@ var ctrl_rm_last_inter;
 var answers = [];
 var st_cst_city = "";
 
+var gender = "";
+var age = 0;
+var ethnicity = "";
+var race = "";
+
 $(document).ready(function () {
     var map = new GMaps({
     el: '#map',
@@ -21,15 +26,17 @@ $(document).ready(function () {
   txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
   txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nUse the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"Next\" when finishing.");
   txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
-  txt_5 = document.createTextNode("Step 5: Other information\nPlease press \"Finish\" after answering all the questions below.");
-  txt_6 = document.createTextNode("Review: Here is all the information about this accident.\nPress \"Submit\"");
-  txt_7 = document.createTextNode("Completed: Your route is submitted.\nThank you!");
+  txt_5 = document.createTextNode("Step 5: Accident information\nPlease press \"Next\" after answering all the questions below.");
+  txt_6 = document.createTextNode("Step 6: A little bit about youserlf\nPlease answer them and then press \"Finish\"");
+  txt_7 = document.createTextNode("Review: Here is all the information about this accident.\nPress \"Submit\"");
+  txt_8 = document.createTextNode("Completed: Your report is submitted.\nThank you!");
   step_1 = document.getElementById('step1');
   step_2 = document.getElementById('step2');
   step_3 = document.getElementById('step3');
   step_4 = document.getElementById('step4');
   step_5 = document.getElementById('step5');
   step_6 = document.getElementById('step6');
+  step_7 = document.getElementById('step7');
 
   // step1 starts
   step_1.style.display = 'block';
@@ -271,6 +278,22 @@ $(document).ready(function () {
       // hide step5, start step6
       step_5.style.display = 'none';
       step_6.style.display = 'block';
+      ins_box.innerText = txt_6.textContent;
+  });
+
+  $('#persopn_info_form').submit(function(e){
+      e.preventDefault();
+
+      // hide step6, start step7
+      step_6.style.display = 'none';
+      step_7.style.display = 'block';
+      ins_box.innerText = txt_7.textContent;
+
+      gender = $('#gender').val().trim();
+      age = $('#age').val();
+      ethnicity = $('#ethn').val().trim();
+      race = $('#race').val().trim();
+
       var path_with_linebreak = [];
       for(var a_spot of path) {
           path_with_linebreak.push(a_spot+"\n");
@@ -334,11 +357,31 @@ $(document).ready(function () {
                   <td>Did you later seek medical care for injuries occurring from the collision?</td>           \
                   <td>'+ answers[4] +'</td>         \
                 </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">12</th>                \
+                  <td>Gender: </td>           \
+                  <td>'+ gender +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">13</th>                \
+                  <td>Age:</td>           \
+                  <td>'+ age +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">14</th>                \
+                  <td>Ethnicity</td>           \
+                  <td>'+ ethnicity +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">15</th>                \
+                  <td>race</td>           \
+                  <td>'+ race +'</td>         \
+                </tr>                                   \
               </tbody>                                  \
             </table>                                    \
           '
       );
-      ins_box.innerText = txt_6.textContent;
+      ins_box.innerText = txt_7.textContent;
   });
 
   $('#submit_route').click(function(e){
@@ -352,13 +395,18 @@ $(document).ready(function () {
       }
       answer_form['answer_route'].value = path.toString();
       answer_form['answer_st_cst_city'].value = st_cst_city;
-      answer_form['answer_date'].value = input_date.getTime();
+      answer_form['answer_date'].value = acc_date.getTime();
+      answer_form['answer_gender'].value = gender;
+      answer_form['answer_ethnicity'].value = ethnicity;
+      answer_form['answer_race'].value = race;
+      answer_form['answer_age'].value = age;
+
 
       answer_form.submit();
       // alert("Submitting drawing!");
-      // hide step5
-      step_6.style.display = 'none';
-      ins_box.innerText = txt_7.textContent;
+      // hide step7
+      step_7.style.display = 'none';
+      ins_box.innerText = txt_8.textContent;
   });
 
 });
