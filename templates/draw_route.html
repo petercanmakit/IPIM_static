@@ -249,7 +249,7 @@
         </div>
 
         <div class="container" >
-            <!-- flash message -->
+            <!-- flash message
             <p>
                 {% with messages = get_flashed_messages() %}
                    {% if messages %}
@@ -259,6 +259,7 @@
                    {% endif %}
                 {% endwith %}
             </p>
+            -->
             <div class="row">
                 <div class="col-sm-8" id="map_box" >
                     <div class="row">
@@ -498,8 +499,7 @@
 
           <!-- Modal content -->
           <div class="row modal-content">
-            <p class="col-sm-9" id="consent_text" style="overflow:auto;height:400px;"> This is consent form
-            </p>
+            <iframe class="col-sm-9" id="consent_text" src="../static/text/ConsentForm2.pdf" style="overflow:auto;height:400px;" frameborder="0"></iframe>
             <div align="center" class="col-sm-3">
                 <button  class="btn btn-primary" id="i_agree">I agree</button>
             </div>
@@ -508,7 +508,8 @@
         </div>
 
         <script>
-            // witre content of consent form
+            // witre content of consent form by reading textfile
+            /*
             var consent_box = document.getElementById('consent_text');
             function readTextFile(file)
             {
@@ -526,6 +527,7 @@
             }
 
             readTextFile("../static/text/consent_form.txt");
+            */
 
             // Get the modal
             var modal = document.getElementById('myModal');
