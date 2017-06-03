@@ -1,29 +1,30 @@
-var map;
-var start_point;
-var path;
-var acc_date;
-var txt_1, txt_2, txt_3, txt_4, txt_5;
-var step_1, step_2, step_3, step_4, step_5;
-var ctrl_rm_last_inter;
-var answers = [];
-var st_cst_city = "";
-
-var gender = "";
-var age = 0;
-var ethnicity = "";
-var race = "";
-
 $(document).ready(function () {
-    var map = new GMaps({
+
+    var map;
+    var start_point;
+    var path;
+    var acc_date;
+    var txt_1, txt_2, txt_3, txt_4, txt_5;
+    var step_1, step_2, step_3, step_4, step_5;
+    var ctrl_rm_last_inter;
+    var answers = [];
+    var state_st_cst_city = "";
+
+    var gender = "";
+    var age = 0;
+    var ethnicity = "";
+    var race = "";
+
+    map = new GMaps({
     el: '#map',
     lat: 40.74959782183326,
     lng: -73.98781299591064,
     zoom: 14
-  });
+    });
 
   ins_box = document.getElementById("ins_box");
   txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the Month/Year in which you were injured. Press \"Next\" to continue.");
-  txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the city and street and nearest cross-street where you were hit by a vehicle. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
+  txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the state, city, street and nearest cross-street where you were hit by a vehicle to locate the maps. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
   txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nUse the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"Next\" when finishing.");
   txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
   txt_5 = document.createTextNode("Step 5: Accident information\nPlease press \"Next\" after answering all the questions below.");
@@ -47,6 +48,7 @@ $(document).ready(function () {
   // alert(maxDate);
   var input_date = new Date();
 
+  var state = "";
   var city = "";
   var street = "";
   var cross_street = "";
@@ -109,14 +111,17 @@ $(document).ready(function () {
 
   $('#geocoding_form').submit(function(e){
     e.preventDefault();
+    state = $('#state').val().trim();
     city = $('#city').val().trim();
     street = $('#street').val().trim();
     cross_street = $('#cross_street').val().trim();
-    var address_list = [street, ', ', cross_street, ', ', city];
+
+    var address_list = [street, ', ', cross_street, ', ', city, ', ', state];
     var address_in = "".concat(...address_list);
     // alert(address_in);
-    st_cst_city = address_in; // "street, cross_street, city"
-    address_list = [street, ' & ', cross_street, ', ', city];
+    state_st_cst_city = address_in; // "street, cross_street, city, state"
+    // e.g. Main Street & everett st, Lafayette, IN
+    address_list = [street, ' & ', cross_street, ', ', city, ', ', state];
     address_in = "".concat(...address_list);
     GMaps.geocode({
       address: address_in,
@@ -124,10 +129,13 @@ $(document).ready(function () {
         if(status=='OK'){
           var latlng = results[0].geometry.location;
           map.setCenter(latlng.lat(), latlng.lng());
+          /*
           map.addMarker({
             lat: latlng.lat(),
             lng: latlng.lng()
           });
+          */
+          map.setZoom(17);
         }
       }
     });
@@ -256,7 +264,7 @@ $(document).ready(function () {
 
       var answer_list;
       var answer_value;
-      for(var j = 1; j<6; j++) {
+      for(var j = 1; j<=6; j++) {
           answer_list = document.getElementsByName('question'+j);
           for(var i = 0; i < answer_list.length; i++){
               if(answer_list[i].checked){
@@ -267,7 +275,7 @@ $(document).ready(function () {
           }
       }
       // alert(answers.length);
-      if(answers.length!=5) {
+      if(answers.length!=6) {
           alert("Please answer all the questions.");
           for (var i = answers.length; i > 0; i--) {
               answers.pop();
@@ -319,8 +327,13 @@ $(document).ready(function () {
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">4</th>                \
+                  <td>State</td>                        \
+                  <td>'+ state +'</td>                  \
+                </tr>                                   \
+                <tr>                                    \
+                  <th scope="row">4.5</th>                \
                   <td>City</td>                         \
-                  <td>'+ city +'</td>               \
+                  <td>'+ city +'</td>                   \
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">5</th>                \
@@ -338,24 +351,29 @@ $(document).ready(function () {
                   <td>'+ answers[0] +'</td>         \
                 </tr>                                   \
                 <tr>                                    \
+                  <th scope="row">7.1</th>                \
+                  <td>You were hit during </td>           \
+                  <td>'+ answers[1] +'</td>         \
+                </tr>                                   \
+                <tr>                                    \
                   <th scope="row">8</th>                \
                   <td>Was a police report filed at the scene of the collision?</td>           \
-                  <td>'+ answers[1] +'</td>         \
+                  <td>'+ answers[2] +'</td>         \
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">9</th>                \
                   <td>Were you provided medical evaluation or care at the scene of the collision?</td>           \
-                  <td>'+ answers[2] +'</td>         \
+                  <td>'+ answers[3] +'</td>         \
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">10</th>                \
                   <td>Were you taken from the scene of the collision to an emergency room or hospital?</td>           \
-                  <td>'+ answers[3] +'</td>         \
+                  <td>'+ answers[4] +'</td>         \
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">11</th>                \
                   <td>Did you later seek medical care for injuries occurring from the collision?</td>           \
-                  <td>'+ answers[4] +'</td>         \
+                  <td>'+ answers[5] +'</td>         \
                 </tr>                                   \
                 <tr>                                    \
                   <th scope="row">12</th>                \
@@ -388,13 +406,13 @@ $(document).ready(function () {
       e.preventDefault();
       var answer_form = document.forms["answer_form"];
 
-      for(var j = 1; j<=5; j++) {
+      for(var j = 1; j<=6; j++) {
           an_answer = answer_form['answer'+j];
           an_answer.value = answers[j-1];
           // alert(an_answer.value);
       }
       answer_form['answer_route'].value = path.toString();
-      answer_form['answer_st_cst_city'].value = st_cst_city;
+      answer_form['answer_state_st_cst_city'].value = state_st_cst_city;
       answer_form['answer_date'].value = acc_date.getTime();
       answer_form['answer_gender'].value = gender;
       answer_form['answer_ethnicity'].value = ethnicity;
@@ -402,11 +420,13 @@ $(document).ready(function () {
       answer_form['answer_age'].value = age;
 
 
-      answer_form.submit();
+      // answer_form.submit(); // TODO goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
       step_7.style.display = 'none';
       ins_box.innerText = txt_8.textContent;
   });
+
+
 
 });

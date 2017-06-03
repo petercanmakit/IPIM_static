@@ -215,10 +215,10 @@ var GMaps = (function(global) {
         zoomControl = valueOrDefault(options.zoomControl, true),
         zoomControlOpt = options.zoomControlOpt || {
           style: 'DEFAULT',
-          position: 'TOP_LEFT'
+          position: 'RIGHT_BOTTOM'
         },
         zoomControlStyle = zoomControlOpt.style || 'DEFAULT',
-        zoomControlPosition = zoomControlOpt.position || 'TOP_LEFT',
+        zoomControlPosition = zoomControlOpt.position || 'RIGHT_BOTTOM',
         panControl = valueOrDefault(options.panControl, true),
         mapTypeControl = valueOrDefault(options.mapTypeControl, true),
         scaleControl = valueOrDefault(options.scaleControl, true),

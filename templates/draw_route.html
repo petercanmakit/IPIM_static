@@ -92,18 +92,19 @@
             color: #b3d9ff;
         }
 
-        #map {
-            height: 540px;
-            margin-top:10px;
+        #map_container {
+            margin-top:40px;
             margin-bottom: 10px;
-            margin-left:10px;
-            margin-right:10px;
+            text-align:center;
+        }
+
+        #map {
+            height: 600px;
+            margin-right:30px;
         }
 
         #ins_container {
-            height: 540px;
-            margin-top:10px;
-            margin-bottom: 10px;
+            height: 600px;
             float: left;
             overflow:auto;
             -moz-box-shadow: 0px 5px 20px #ccc;
@@ -112,6 +113,7 @@
         }
 
         #ins_content {
+            margin-top:10px;
             clear: both;
             height: 240px;
             position: relative;
@@ -140,7 +142,7 @@
 
         /* The Modal (background) */
         .modal {
-            display: block; /* Hidden by default */
+            display: block; /* block by default */
             position: fixed; /* Stay in place */
             z-index: 1; /* Sit on top */
             padding-top: 100px; /* Location of the box */
@@ -187,6 +189,10 @@
             cursor: pointer;
         }
 
+        #thanksScreen {
+            display: none;
+        }
+
       </style>
 
       <script>
@@ -219,36 +225,9 @@
       <script type="text/javascript" src="../static/js/ipimMapsInteract.js"></script>
   </head>
 
-  <body data-spy="scroll" data-target="#navbar" data-offset="150">
+  <body >
 
-        <nav class="navbar navbar-light bg-faded navbar-fixed-top" id="navbar">
-          <a class="navbar-brand" href="#">I-PIM</a>
-          <ul class="nav navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#jumbotron">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#map_box">Map</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#footer">Contact</a>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="jumbotron" id="jumbotron">
-            <div class="jumbo-head" >
-                <h1 class="display-4">Draw the route.</h1>
-                <p class="lead">We would like you to place a pin at the location where you were hit by a car and use the drawing tool to draw the route your were walking up to the place where you were injured.</p>
-
-            </div>
-            <div class="jumbo-head-text" >
-                <h1 class="display-4">Draw the route.</h1>
-                <p class="lead">We would like you to place a pin at the location where you were hit by a car and use the drawing tool to draw the route your were walking up to the place where you were injured.</p>
-             </div>
-        </div>
-
-        <div class="container" >
+        <div class="container" id="map_container">
             <!-- flash message
             <p>
                 {% with messages = get_flashed_messages() %}
@@ -261,13 +240,13 @@
             </p>
             -->
             <div class="row">
-                <div class="col-sm-8" id="map_box" >
+                <div class="col-sm-9 col-lg-9" id="map_box" >
                     <div class="row">
                         <div id="map"></div>
                       </div>
                     <br>
                 </div>
-                <div class="col-sm-4" id="ins_container">
+                <div class="col-sm-3 col-lg-3" id="ins_container">
                     <div id="ins_content">
                         <div align="left">
                             <span id="ins_box"></span>
@@ -291,6 +270,62 @@
                             <div align="center">
                                 <form method="post" id="geocoding_form">
                                   <div class="input">
+                                      <div class="row">
+                                          <label align="right" class="col-sm-4" for="state">State:</label>
+                                          <select class="col-sm-6" type="text" id="state" name="state">
+                                            	<option value="AL">Alabama</option>
+                                            	<option value="AK">Alaska</option>
+                                            	<option value="AZ">Arizona</option>
+                                            	<option value="AR">Arkansas</option>
+                                            	<option value="CA">California</option>
+                                            	<option value="CO">Colorado</option>
+                                            	<option value="CT">Connecticut</option>
+                                            	<option value="DE">Delaware</option>
+                                            	<option value="DC">District Of Columbia</option>
+                                            	<option value="FL">Florida</option>
+                                            	<option value="GA">Georgia</option>
+                                            	<option value="HI">Hawaii</option>
+                                            	<option value="ID">Idaho</option>
+                                            	<option value="IL">Illinois</option>
+                                            	<option value="IN">Indiana</option>
+                                            	<option value="IA">Iowa</option>
+                                            	<option value="KS">Kansas</option>
+                                            	<option value="KY">Kentucky</option>
+                                            	<option value="LA">Louisiana</option>
+                                            	<option value="ME">Maine</option>
+                                            	<option value="MD">Maryland</option>
+                                            	<option value="MA">Massachusetts</option>
+                                            	<option value="MI">Michigan</option>
+                                            	<option value="MN">Minnesota</option>
+                                            	<option value="MS">Mississippi</option>
+                                            	<option value="MO">Missouri</option>
+                                            	<option value="MT">Montana</option>
+                                            	<option value="NE">Nebraska</option>
+                                            	<option value="NV">Nevada</option>
+                                            	<option value="NH">New Hampshire</option>
+                                            	<option value="NJ">New Jersey</option>
+                                            	<option value="NM">New Mexico</option>
+                                            	<option value="NY">New York</option>
+                                            	<option value="NC">North Carolina</option>
+                                            	<option value="ND">North Dakota</option>
+                                            	<option value="OH">Ohio</option>
+                                            	<option value="OK">Oklahoma</option>
+                                            	<option value="OR">Oregon</option>
+                                            	<option value="PA">Pennsylvania</option>
+                                            	<option value="RI">Rhode Island</option>
+                                            	<option value="SC">South Carolina</option>
+                                            	<option value="SD">South Dakota</option>
+                                            	<option value="TN">Tennessee</option>
+                                            	<option value="TX">Texas</option>
+                                            	<option value="UT">Utah</option>
+                                            	<option value="VT">Vermont</option>
+                                            	<option value="VA">Virginia</option>
+                                            	<option value="WA">Washington</option>
+                                            	<option value="WV">West Virginia</option>
+                                            	<option value="WI">Wisconsin</option>
+                                            	<option value="WY">Wyoming</option>
+                                            </select>
+                                      </div>
                                       <div class="row">
                                           <label align="right" class="col-sm-4" for="city">City:</label>
                                           <input class="col-sm-6" type="text" id="city" name="city" />
@@ -362,20 +397,19 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <p>2. Was a police report filed at the scene of the collision?</p>
-                                    <div class="radio-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="question2" value="Yes"> Yes
-                                        </label>
-                                    </div>
-                                    <div class="radio-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="radio" name="question2" value="No"> No
-                                        </label>
-                                    </div>
-
-                                    <p>3. Were you provided medical evaluation or care at the scene of the collision?</p>
+                                    <p>2. Were you hit during the:
+                                        <div class="radio-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="question2" value="Night time"> Night time
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="question2" value="Day time"> Day time
+                                            </label>
+                                        </div>
+                                    </p>
+                                    <p>3. Was a police report filed at the scene of the collision?</p>
                                     <div class="radio-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="question3" value="Yes"> Yes
@@ -387,7 +421,7 @@
                                         </label>
                                     </div>
 
-                                    <p>4. Were you taken from the scene of the collision to an emergency room or hospital?</p>
+                                    <p>4. Were you provided medical evaluation or care at the scene of the collision?</p>
                                     <div class="radio-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="question4" value="Yes"> Yes
@@ -399,7 +433,7 @@
                                         </label>
                                     </div>
 
-                                    <p>5. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
+                                    <p>5. Were you taken from the scene of the collision to an emergency room or hospital?</p>
                                     <div class="radio-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="question5" value="Yes"> Yes
@@ -408,6 +442,18 @@
                                     <div class="radio-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="question5" value="No"> No
+                                        </label>
+                                    </div>
+
+                                    <p>6. If you did not visit an emergency room or hospital on the day of the collision, did you later seek medical care for injuries occurring from the collision?</p>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question6" value="Yes"> Yes
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="question6" value="No"> No
                                         </label>
                                     </div>
 
@@ -458,7 +504,7 @@
                                     </div>
 
                                     <div align="center">
-                                        <button type="submit" class="btn btn-primary btn-sm" >Next</button>
+                                        <button type="submit" class="btn btn-primary btn-sm" >Done</button>
                                     </div>
                                 </div>
                             </form>
@@ -466,15 +512,16 @@
 
                         <div style="display:none">
                             this is a submitting form
-                            <form id="answer_form" name="answer_form" method="POST" action="/submit_route">
+                            <form id="answer_form" name="answer_form" method="POST" action="thanks.html">
                                 <input type="text" name="answer1" id="answer1">
                                 <input type="text" name="answer2" id="answer2">
                                 <input type="text" name="answer3" id="answer3">
                                 <input type="text" name="answer4" id="answer4">
                                 <input type="text" name="answer5" id="answer5">
+                                <input type="text" name="answer6" id="answer6">
                                 <input type="text" name="answer_date" id="answer_date">
                                 <input type="text" name="answer_route" id="answer_route">
-                                <input type="text" name="answer_st_cst_city" id="answer_st_cst_city">
+                                <input type="text" name="answer_state_st_cst_city" id="answer_state_st_cst_city">
                                 <input type="text" name="answer_gender" id="answer_gender">
                                 <input type="number" name="answer_age" id="answer_age">
                                 <input type="text" name="answer_ethnicity" id="answer_ethnicity">
@@ -484,10 +531,10 @@
                         </div>
 
                         <div class="steps" id="step7">
-                            <div align="center">
+                            <div align="center" >
                                 <button class="btn btn-primary btn-sm" id="submit_route">Submit</button>
                             </div>
-                            <p id="content_to_submmit"></p>
+                            <p id="content_to_submmit" ></p>style="display: none"
                         </div>
                     </div>
                 </div>
