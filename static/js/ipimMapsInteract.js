@@ -420,7 +420,7 @@ $(document).ready(function () {
       answer_form['answer_age'].value = age;
 
 
-      // answer_form.submit(); // TODO goto thanks screen
+      answer_form.submit(); // goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
       step_7.style.display = 'none';
