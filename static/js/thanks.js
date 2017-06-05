@@ -98,7 +98,7 @@ var drawRoute = function(path, map) {
     var walk = start_point;
     var walk_next;
     for(var j = 1; j<path.length; j++) {
-        alert("a");
+        // alert("a");
         walk_next = path[j];
         map.drawRoute({
             origin: [walk[0], walk[1]],

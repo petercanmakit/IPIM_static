@@ -419,7 +419,7 @@ $(document).ready(function () {
       answer_form['answer_race'].value = race;
       answer_form['answer_age'].value = age;
 
-
+      alert(window.location.hostname);
       answer_form.submit(); // goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
