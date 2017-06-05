@@ -212,12 +212,16 @@ $(document).ready(function () {
               if (path.length>1) {
                   path.pop();
                   map.removePolylines();
+                  drawRoute(path, map);
+                  /*
+                  map.removePolylines();
                   map.drawPolyline({
                     path: path,
                     strokeColor: '#131540',
                     strokeOpacity: 0.6,
                     strokeWeight: 6
                   });
+                  */
               }
             }
           }
@@ -228,6 +232,8 @@ $(document).ready(function () {
         var lng = event.latLng.lng();
         path.push([lat, lng]);
 
+        drawRouteOneStep(path, map);
+        /*
         map.removePolylines();
         map.drawPolyline({
           path: path,
@@ -235,6 +241,7 @@ $(document).ready(function () {
           strokeOpacity: 0.6,
           strokeWeight: 6
         });
+        */
       });
   });
 
@@ -289,7 +296,7 @@ $(document).ready(function () {
       ins_box.innerText = txt_6.textContent;
   });
 
-  $('#persopn_info_form').submit(function(e){
+  $('#person_info_form').submit(function(e){
       e.preventDefault();
 
       // hide step6, start step7
@@ -302,6 +309,7 @@ $(document).ready(function () {
       ethnicity = $('#ethn').val().trim();
       race = $('#race').val().trim();
 
+      /*
       var path_with_linebreak = [];
       for(var a_spot of path) {
           path_with_linebreak.push(a_spot+"\n");
@@ -400,7 +408,9 @@ $(document).ready(function () {
           '
       );
       ins_box.innerText = txt_7.textContent;
+      */
   });
+
 
   $('#submit_route').click(function(e){
       e.preventDefault();
@@ -421,15 +431,48 @@ $(document).ready(function () {
 
       var hostname = ""+window.location.hostname;
       if(hostname == "petercanmakit.github.io" || hostname == "") {
-          window.location.replace("thanks.html");
+          // var child_thankspage = window.open("thanks.html");
+          window.location.assign("thanks.html");
       }
       else answer_form.submit(); // goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
       step_7.style.display = 'none';
       ins_box.innerText = txt_8.textContent;
+      sessionStorage.setItem('path', path);
   });
 
-
-
 });
+
+var drawRouteOneStep = function(path, map) {
+    var walk = path[path.length-2];
+    var walk_next = path[path.length-1];
+
+    map.drawRoute({
+        origin: [walk[0], walk[1]],
+        destination: [walk_next[0], walk_next[1]],
+
+        strokeColor: '#131540',
+        strokeOpacity: 0.6,
+        strokeWeight: 6
+    });
+    walk = walk_next;
+};
+
+var drawRoute = function(path, map) {
+    var start_point = path[0];
+    var walk = start_point;
+    var walk_next;
+    for(var j = 1; j<path.length; j++) {
+        walk_next = path[j];
+        map.drawRoute({
+            origin: [walk[0], walk[1]],
+            destination: [walk_next[0], walk_next[1]],
+            // travelMode: 'driving', // default walking
+            strokeColor: '#131540',
+            strokeOpacity: 0.6,
+            strokeWeight: 6
+        });
+        walk = walk_next;
+    }
+};

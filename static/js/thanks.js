@@ -2,7 +2,16 @@ $(document).ready(function () {
     var path = []; // [[lat, lng], [lat, lng], ...]
     var map;
 
-    path = [[40.763836272185216,-73.9619779586792], [40.749922934625694,-73.97219181060791 ], [40.75336903249924,-73.9813756942749], [40.7649414124685,-73.97244930267334]];
+    // path = [[40.763836272185216,-73.9619779586792], [40.749922934625694,-73.97219181060791 ], [40.75336903249924,-73.9813756942749], [40.7649414124685,-73.97244930267334]];
+    var path_str = sessionStorage.getItem('path');
+
+    var path_strs = path_str.split(",");
+
+    for(var i=0; i<path_strs.length; i+=2) {
+        var lati = parseFloat(path_strs[i]);
+        var lngi = parseFloat(path_strs[i+1]);
+        path.push([lati, lngi]);
+    }
 
     map = presentRoute(path, '#map');
 
@@ -58,7 +67,6 @@ var presentRoute = function(path, mapElement) {
     var lng_max = start_point[1];
     for(var cord of path) {
         lat_lng_object_array.push(new google.maps.LatLng(cord[0], cord[1]));
-        // alert(cord);
         if(lat_max < cord[0])
             lat_max = cord[0];
         if(lat_min > cord[0])
@@ -78,7 +86,6 @@ var presentRoute = function(path, mapElement) {
     });
     map.setCenter(center_lat, center_lng);
     map.fitLatLngBounds(lat_lng_object_array);
-
     map.addMarker({
       lat: start_point[0],
       lng: start_point[1],
@@ -87,9 +94,7 @@ var presentRoute = function(path, mapElement) {
         content : "This is a spot of the accident: \n".concat([start_point[0], start_point[1]])
       }
     });
-
     drawRoute(path, map);
-
     return map;
 };
 
@@ -98,7 +103,6 @@ var drawRoute = function(path, map) {
     var walk = start_point;
     var walk_next;
     for(var j = 1; j<path.length; j++) {
-        // alert("a");
         walk_next = path[j];
         map.drawRoute({
             origin: [walk[0], walk[1]],
