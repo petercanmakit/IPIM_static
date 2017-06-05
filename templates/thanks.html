@@ -77,6 +77,27 @@ Thank you screen
 
   <body data-spy="scroll" data-target="#navbar" data-offset="150">
 
+      <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '1062123463887287',
+              xfbml      : true,
+              version    : 'v2.9'
+            });
+            FB.AppEvents.logPageView();
+          };
+
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "https://connect.facebook.net/en_US/sdk.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+        </script>
+
+
+
         <nav class="navbar navbar-light bg-faded navbar-fixed-top" id="navbar">
           <a class="navbar-brand" href="index.html">I-PIM</a>
           <ul class="nav navbar-nav">
@@ -102,6 +123,13 @@ Thank you screen
                 <h1 class="display-4">Thank you!</h1>
                 <p class="lead">You have reported successfully! You may go back to home page or report an another collision using the navigation bar above.</p>
              </div>
+        </div>
+
+        <div
+          class="fb-like"
+          data-share="true"
+          data-width="450"
+          data-show-faces="true">
         </div>
 
         <div class="container" id="map_container">
