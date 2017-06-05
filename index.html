@@ -1,7 +1,5 @@
 <html>
-
-<body>
-    <head >
+    <head>
         <meta property="og:url"                content="https://petercanmakit.github.io/IPIM/" />
         <meta property="og:type"               content="article" />
         <meta property="og:title"              content="I-PIM: Interactive Pedestrian Injury Mapper" />
@@ -11,34 +9,36 @@
 
     </head>
 
-<iframe src="templates/index.html" scrolling="no" frameborder="0" height="100%" id="mainFrame" width="100%" onload='IFrameReSize("mainFrame");IFrameReSizeWidth("mainFrame");'></iframe>
-<script>
-    //iframe高度自适应
-    function IFrameReSize(iframename) {
-        var pTar = document.getElementById(iframename);
-        if (pTar) { //ff
-            if (pTar.contentDocument && pTar.contentDocument.body.offsetHeight) {
-                pTar.height = pTar.contentDocument.body.offsetHeight;
-            } //ie
-            else if (pTar.Document && pTar.Document.body.scrollHeight) {
-                pTar.height = pTar.Document.body.scrollHeight;
-            }
-        }
-    }
+    <body>
 
-    //iframe宽度自适应
-    function IFrameReSizeWidth(iframename) {
-        var pTar = document.getElementById(iframename);
-        if (pTar) { //ff
-            if (pTar.contentDocument && pTar.contentDocument.body.offsetWidth) {
-                pTar.width = pTar.contentDocument.body.offsetWidth;
-            }   //ie
-            else if (pTar.Document && pTar.Document.body.scrollWidth) {
-                pTar.width = pTar.Document.body.scrollWidth;
+        <iframe src="templates/index.html" scrolling="no" frameborder="0" height="100%" id="mainFrame" width="100%" onload='IFrameReSize("mainFrame");IFrameReSizeWidth("mainFrame");'></iframe>
+        <script>
+            //iframe高度自适应
+            function IFrameReSize(iframename) {
+                var pTar = document.getElementById(iframename);
+                if (pTar) { //ff
+                    if (pTar.contentDocument && pTar.contentDocument.body.offsetHeight) {
+                        pTar.height = pTar.contentDocument.body.offsetHeight;
+                    } //ie
+                    else if (pTar.Document && pTar.Document.body.scrollHeight) {
+                        pTar.height = pTar.Document.body.scrollHeight;
+                    }
+                }
             }
-        }
-    }
-</script>
 
-</body>
+            //iframe宽度自适应
+            function IFrameReSizeWidth(iframename) {
+                var pTar = document.getElementById(iframename);
+                if (pTar) { //ff
+                    if (pTar.contentDocument && pTar.contentDocument.body.offsetWidth) {
+                        pTar.width = pTar.contentDocument.body.offsetWidth;
+                    }   //ie
+                    else if (pTar.Document && pTar.Document.body.scrollWidth) {
+                        pTar.width = pTar.Document.body.scrollWidth;
+                    }
+                }
+            }
+        </script>
+
+    </body>
 </html>
