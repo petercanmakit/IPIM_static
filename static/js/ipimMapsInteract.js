@@ -323,18 +323,18 @@ $(document).ready(function () {
       answer_form['answer_ethnicity'].value = ethnicity;
       answer_form['answer_race'].value = race;
       answer_form['answer_age'].value = age;
-
+      sessionStorage.setItem('path', path);
       var hostname = ""+window.location.hostname;
       if(hostname == "petercanmakit.github.io" || hostname == "") {
           // var child_thankspage = window.open("thanks.html");
           window.location.assign("thanks.html");
       }
-      else answer_form.submit(); // goto thanks screen
+      else answer_form.submit(); // server will ask it goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
       step_7.style.display = 'none';
       ins_box.innerText = txt_8.textContent;
-      sessionStorage.setItem('path', path);
+
 
       /*
       var path_with_linebreak = [];
