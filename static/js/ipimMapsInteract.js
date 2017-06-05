@@ -419,8 +419,11 @@ $(document).ready(function () {
       answer_form['answer_race'].value = race;
       answer_form['answer_age'].value = age;
 
-      alert(window.location.hostname);
-      answer_form.submit(); // goto thanks screen
+      var hostname = ""+window.location.hostname;
+      if(hostname == "petercanmakit.github.io" || hostname == "") {
+          window.location.replace("thanks.html");
+      }
+      else answer_form.submit(); // goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
       step_7.style.display = 'none';
