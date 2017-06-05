@@ -76,6 +76,34 @@
             margin-right:30px;
         }
 
+        /* Style all font awesome icons */
+.fa {
+    padding: 20px;
+    font-size: 30px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+    opacity: 0.7;
+}
+
+/* Set a specific color for each brand */
+
+/* Facebook */
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+/* Twitter */
+.fa-twitter {
+    background: #55ACEE;
+    color: white;
+}
+
         body {
             position: relative;
             font-family: Georgia, Serif;
@@ -148,11 +176,17 @@
             data-layout="button_count">
           </div>
         <!-- tweet button code -->
-        <!--
-        <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://petercanmakit.github.io/IPIM/" data-text="hello, world.">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    -->
+
+        <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            </script>
           <a class="twitter-share-button" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fpetercanmakit.github.io%2FIPIM%2F&text=I%20have%20reported%20a%20collision%20on%20I-PIM%2C%20which%20contributes%20to%20the%20research%20at%20Department%20of%20Epidemiology%2CCUMC%2E">
           Tweet</a>
+          <!--Facebook-->
+<button type="button" class="btn btn-fb"><i class="fa fa-facebook"></i></button>
+<!--Twitter-->
+<button type="button" class="btn btn-tw"><i class="fa fa-twitter"></i></button>
+
         <div class="container" id="map_container">
             <div class="row">
                 <div id="map"></div>
