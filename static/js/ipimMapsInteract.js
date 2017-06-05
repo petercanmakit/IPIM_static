@@ -29,7 +29,7 @@ $(document).ready(function () {
   txt_4 = document.createTextNode("Step 4: Draw the route\nUse the pencil tool to draw lines on the map showing us the streets you walked along before you were hit. Move the pencil to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
   txt_5 = document.createTextNode("Step 5: Accident information\nPlease press \"Next\" after answering all the questions below.");
   txt_6 = document.createTextNode("Step 6: A little bit about youserlf\nPlease answer them and then press \"Finish\"");
-  txt_7 = document.createTextNode("Review: Here is all the information about this accident.\nPress \"Submit\"");
+  // txt_7 = document.createTextNode("Review: Here is all the information about this accident.\nPress \"Submit\"");
   txt_8 = document.createTextNode("Completed: Your report is submitted.\nThank you!");
   step_1 = document.getElementById('step1');
   step_2 = document.getElementById('step2');
@@ -302,12 +302,39 @@ $(document).ready(function () {
       // hide step6, start step7
       step_6.style.display = 'none';
       step_7.style.display = 'block';
-      ins_box.innerText = txt_7.textContent;
+      ins_box.innerText = txt_8.textContent;
 
       gender = $('#gender').val().trim();
       age = $('#age').val();
       ethnicity = $('#ethn').val().trim();
       race = $('#race').val().trim();
+
+      var answer_form = document.forms["answer_form"];
+
+      for(var j = 1; j<=6; j++) {
+          an_answer = answer_form['answer'+j];
+          an_answer.value = answers[j-1];
+          // alert(an_answer.value);
+      }
+      answer_form['answer_route'].value = path.toString();
+      answer_form['answer_state_st_cst_city'].value = state_st_cst_city;
+      answer_form['answer_date'].value = acc_date.getTime();
+      answer_form['answer_gender'].value = gender;
+      answer_form['answer_ethnicity'].value = ethnicity;
+      answer_form['answer_race'].value = race;
+      answer_form['answer_age'].value = age;
+
+      var hostname = ""+window.location.hostname;
+      if(hostname == "petercanmakit.github.io" || hostname == "") {
+          // var child_thankspage = window.open("thanks.html");
+          window.location.assign("thanks.html");
+      }
+      else answer_form.submit(); // goto thanks screen
+      // alert("Submitting drawing!");
+      // hide step7
+      step_7.style.display = 'none';
+      ins_box.innerText = txt_8.textContent;
+      sessionStorage.setItem('path', path);
 
       /*
       var path_with_linebreak = [];
@@ -412,35 +439,6 @@ $(document).ready(function () {
   });
 
 
-  $('#submit_route').click(function(e){
-      e.preventDefault();
-      var answer_form = document.forms["answer_form"];
-
-      for(var j = 1; j<=6; j++) {
-          an_answer = answer_form['answer'+j];
-          an_answer.value = answers[j-1];
-          // alert(an_answer.value);
-      }
-      answer_form['answer_route'].value = path.toString();
-      answer_form['answer_state_st_cst_city'].value = state_st_cst_city;
-      answer_form['answer_date'].value = acc_date.getTime();
-      answer_form['answer_gender'].value = gender;
-      answer_form['answer_ethnicity'].value = ethnicity;
-      answer_form['answer_race'].value = race;
-      answer_form['answer_age'].value = age;
-
-      var hostname = ""+window.location.hostname;
-      if(hostname == "petercanmakit.github.io" || hostname == "") {
-          // var child_thankspage = window.open("thanks.html");
-          window.location.assign("thanks.html");
-      }
-      else answer_form.submit(); // goto thanks screen
-      // alert("Submitting drawing!");
-      // hide step7
-      step_7.style.display = 'none';
-      ins_box.innerText = txt_8.textContent;
-      sessionStorage.setItem('path', path);
-  });
 
 });
 
