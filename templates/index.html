@@ -104,8 +104,12 @@
               padding-bottom: 20px;
           }
 
-          #footer a {
+          #links a {
               color: #b3d9ff;
+          }
+
+          #admin_entrance {
+              color: #1a6bad;
           }
 
           body {
@@ -155,7 +159,7 @@
               <h2 align="center">Mapping tool</h2>
 
               <p>Welcome to I-PIM, a crowd-sourcing research project from Columbia University that will help to reduce the number of pedestrian injuries and fatalities cause by car collisions. We hope to understand what aspects of streets and intersections put pedestrians at risk of being hit by automobiles. <br>We would like you to use a mapping tool to provide us with information about how and where you were injured while out walking. <br>We would like you to place a pin at the location where you were hit by a car and use the drawing tool to draw the route your were walking up to the place where you were injured.  You can also write in text to tell us more about what happened when you were hit by the vehicle. Press the below button to start.</p>
-              <p align="center"><a class="btn btn-primary" href="draw_route.html">Start I-PIM</a></p>
+              <p align="center"><a class="btn btn-primary" href="/draw_route/">Start I-PIM</a></p>
             </div>
 
         </div>
@@ -200,7 +204,7 @@
 
         <div id="footer">
 
-            <div class="row">
+            <div class="row" id="links">
                 <div>
                     <h3>Contact us!</h3>
                     <p><a href="https://www.mailman.columbia.edu/become-student/departments/epidemiology"><img id="appStoreIcon" src="../static/images/logo-mailman.png"><br></a>Department of Epidemiology</p>
@@ -210,8 +214,8 @@
                     <p> <a href="https://epi.washington.edu/faculty/mooney-stephen">Dr. Stephen J. Mooney</a></p>
                     <p>Webpage constructed by <a href="https://github.com/petercanmakit/IPIM">Jiajun Zhang</a></p>
                 </div>
-              </div>
-
+            </div>
+            <a href="/admin_login/" id="admin_entrance">Admin Entrance</a>
           </div>
 
 

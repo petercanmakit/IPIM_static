@@ -14,24 +14,31 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import sessionmaker
-from flask import Flask, session, request, render_template, g, redirect, Response, flash, url_for
+from flask import Flask, session, request, render_template, g, redirect, Response, flash, url_for, make_response
 from flask_session import Session
+from jinja2 import Template
 
 import datetime
 import time
 
 class Collision(object):
-    """docstring for Collision."""
+    __tablename__ = 'collisions'
+
     cid = long(-1)
-    cartype = ""
+
+    acc_date = None
+
+    state = ""
     city = ""
     street = ""
     cross_street = ""
+
+    cartype = ""
+    time_of_day = ""
     police_filed = False
     med_evaluated_at_scene = False
     taken_to_hos_from_scene = False
     seeked_care_afterward = False
-    acc_date = None
 
     geom = ""
 
@@ -40,12 +47,41 @@ class Collision(object):
     ethnicity = ""
     race = ""
 
-    def __init__(self, answers_list, geo_list_str, acc_date_str_ms, st_cst_city, genderIn, ageIn, ethnIn, raceIn):
-        self.cartype = answers_list[0]
-        self.police_filed = True if (answers_list[1] == "Yes") else False
-        self.med_evaluated_at_scene = True if (answers_list[2] == "Yes") else False
-        self.taken_to_hos_from_scene = True if (answers_list[3] == "Yes") else False
-        self.seeked_care_afterward = True if (answers_list[4] == "Yes") else False
+    def __init__(self, form):
+
+        self.gender = ""
+        self.age = 0
+        self.ethnicity = ""
+        self.race = ""
+
+        # parse date
+        acc_date_str_ms = form['answer_date'] # in string of milliseconds since midnight Jan 1 1970
+        time_ts = time.gmtime(long(acc_date_str_ms)/1000.0)
+        self.acc_date = datetime.datetime.fromtimestamp(time.mktime(time_ts))
+
+        # parse "state, city, street, cross_street"
+        state_city_st_cst = form['answer_state_city_st_cst']
+        if len(state_city_st_cst) !=0 :
+            state_city_st_cst_list = state_city_st_cst.split(", ")
+            self.state = state_city_st_cst_list[0].strip()
+            self.city = state_city_st_cst_list[1].strip()
+            self.street = state_city_st_cst_list[2].strip()
+            self.cross_street = state_city_st_cst_list[3].strip()
+
+        # parse answer 1 ~ 6 :
+        answer_list = []
+        for i in range(1, 7):
+            answer_list.append(form['answer' + str(i)])
+
+        self.cartype = answer_list[0]
+        self.time_of_day = answer_list[1]
+        self.police_filed = True if (answer_list[2] == "Yes") else False
+        self.med_evaluated_at_scene = True if (answer_list[3] == "Yes") else False
+        self.taken_to_hos_from_scene = True if (answer_list[4] == "Yes") else False
+        self.seeked_care_afterward = True if (answer_list[5] == "Yes") else False
+
+        # parse geom
+        geo_list_str = form['answer_route']
         geo_list_strs = geo_list_str.split(",")
         geo_str = ""
         for i in range(0, len(geo_list_strs)/2):
@@ -55,36 +91,43 @@ class Collision(object):
             if i != (len(geo_list_strs)/2 - 1):
                 geo_str += ","
         self.geom = 'LINESTRING(' + geo_str + ')'
-        if len(st_cst_city) !=0 :
-            st_cst_city_list = st_cst_city.split(", ")
-            self.street = st_cst_city_list[0].strip()
-            self.cross_street = st_cst_city_list[1].strip()
-            self.city = st_cst_city_list[2].strip()
-        time_ts = time.gmtime(long(acc_date_str_ms)/1000.0)
-        self.acc_date = datetime.datetime.fromtimestamp(time.mktime(time_ts))
-        self.gender = genderIn
-        self.age = ageIn
-        self.ethnicity = ethnIn
-        self.race = raceIn
+
+        # parse user info
+        self.gender = form['answer_gender']
+        self.age = form['answer_age']
+        self.ethnicity = form['answer_ethnicity']
+        self.race = form['answer_race']
+
         self.printCollisionInfo()
 
-
     # insert into collisions table
-    def syncToDBWithUid(self, uid, some_engine):
-        self.uid = uid
+    def syncToDBWithUid(self, some_engine):
 
         DB_Session = sessionmaker(bind=some_engine)
         db_session = DB_Session()
 
         try:
             db_session.execute('''
-                INSERT INTO Collisions (City,Street,CrossStreet,Cartype,PoliceFiled,
-                MedEvaluatedAtScene,TakenToHosFromScene,SeekedCareAfterward,geom,Uid)
-                VALUES (:city,:street,:cross,:cartype,:police,:med,:taken,:seek,:geom,:uid)
-                ''', {"city":self.city, "street":self.street, "cross":self.cross_street, "cartype":self.cartype,
+                INSERT INTO Collisions (
+                AccDate, State, City, Street, CrossStreet,
+                Cartype, TimeOfDay,
+                PoliceFiled, MedEvaluatedAtScene, TakenToHosFromScene, SeekedCareAfterward,
+                geom,
+                Gender, Age, Ethnicity, Race )
+                VALUES (
+                :acc_date, :state, :city, :street, :cross,
+                :cartype, :time_of_day,
+                :police, :med, :taken, :seek,
+                :geom,
+                :gender, :age, :enth, :race )
+                ''', {
+                "acc_date":self.acc_date,"state":self.state,"city":self.city, "street":self.street, "cross":self.cross_street,
+                "cartype":self.cartype, "time_of_day": self.time_of_day,
                 "police":str(self.police_filed), "med":str(self.med_evaluated_at_scene),
                 "taken":str(self.taken_to_hos_from_scene), "seek":str(self.seeked_care_afterward),
-                "geom":self.geom, "uid":str(self.uid) }
+                "geom":self.geom,
+                "gender":self.gender, "age":self.age, "enth":self.ethnicity, "race":self.race
+                }
             )
             cur = db_session.execute('''
                 SELECT count(*)
@@ -94,6 +137,7 @@ class Collision(object):
             db_session.commit()
             new_cid = cur.fetchone()
             print "new cid is ", str(new_cid[0])
+            self.cid = new_cid;
         except:
             db_session.rollback()
             raise
@@ -102,8 +146,10 @@ class Collision(object):
         # check if all passed in are correct
         print "a new collision instance"
         print "cartype", self.cartype
+        print "state", self.state
         print "city", self.city
         print "street", self.street
+        print "time_of_day", self.time_of_day
         print "cross_street", self.cross_street
         print "police_filed", self.police_filed
         print "med_evaluated_at_scene", self.med_evaluated_at_scene
@@ -116,34 +162,31 @@ class Collision(object):
         print "ethn", self.ethnicity
         print "race", self.race
 
+def adminLogin(name, password):
+    cur = g.conn.execute('''
+        SELECT pass FROM Users WHERE name=%s LIMIT 1;
+        ''', (name, )
+        )
+    pswd = cur.fetchone()[0]
+    print "in adminLogin: name is " + name + "pswd is " + pswd
+    print "password is " + password
+    if pswd == password :
+        return True
+    else :
+        return False
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = "joyce_secret_hhhh"
 
 
-#
-# The following uses the postgresql test.db -- you can use this for debugging purposes
-# However for the project you will need to connect to your Part 2 database in order to use the
-# data
-#
-# XXX: The URI should be in the format of:
-#
-#     postgresql://USER:PASSWORD@<IP_OF_POSTGRE_SQL_SERVER>/postgres
-#
-# For example, if you had username ewu2493, password foobar, then the following line would be:
-#
-#     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
-#
-# Swap out the URI below with the URI for the database created in part 2
+##
 #DATABASEURI = "sqlite:///test.db"
 #DATABASEURI = "postgresql://jz2793:pvs9w@104.196.175.120/postgres"
 DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo"
-
-
 #
 # This line creates a database engine that knows how to connect to the URI above
-#
+##
 engine = create_engine(DATABASEURI)
 
 @app.before_request
@@ -245,74 +288,106 @@ def index():
   #
   return render_template("index.html")
 
-@app.route('/draw_route', methods=['GET', 'POST'])
+@app.route('/draw_route/', methods=['GET', 'POST'])
 def draw_route():
     return render_template("draw_route.html")
 
 # submit_route
-@app.route('/submit_route', methods=['GET', 'POST'])
+@app.route('/submit_route/', methods=['GET', 'POST'])
 def submit_route():
     print "in submit_route"
+    form = request.form
+    collision = Collision(form)
+    collision.syncToDBWithUid(engine)
+    print collision.cid
 
-    answers = []
-    for i in range(1, 6):
-        answers.append(request.form['answer' + str(i)])
-    print answers
-    acc_date = request.form['answer_date'] # in string of milliseconds since midnight Jan 1 1970
-    geom = request.form['answer_route']
-    st_cst_city = request.form['answer_st_cst_city']
+    # flash("Your submission is successful. Thank you very much!")
+    return render_template("thanks.html")
 
-    gender = request.form['answer_gender']
-    age = request.form['answer_age']
-    ethnicity = request.form['answer_ethnicity']
-    race = request.form['answer_race']
+# admin login
+@app.route('/admin_login/', methods=['GET', 'POST'])
+def admin_login():
+    return render_template("admin_login.html")
 
-    print "acc date", acc_date
-    print "geometry", geom
-    print "st_cst_city", st_cst_city
+# admin interface admin.html
+@app.route('/admin_page/', methods=['GET', 'POST'])
+def admin_page():
 
-    print "gender", gender
-    print "age", age
-    print "enthnicity", ethnicity
-    print "race", race
+  username = request.form['username']
+  pswd = request.form['password']
+  print "in login() login info is: ", username, pswd
 
-    # answers_list, geo_list_str, acc_date_str_ms, st_cst_city
-    collision = Collision(answers, geom, acc_date, st_cst_city, gender, age, ethnicity, race)
+  logged = adminLogin(username, pswd)
 
-    flash("Your submission is successful. Thank you very much!")
-    return redirect("/")
+  if logged:
+    print "logged"
+    # total number
+    cur = g.conn.execute('''
+    SELECT count(*)
+    FROM Collisions
+    ''')
+    total_number = cur.fetchone()[0]
+    cur.close()
 
-'''
-@app.route('/login', methods=['POST'])
-def login():
-  email = request.form['email']
-  pwd = request.form['pwd']
+    # analyzed number
+    cur = g.conn.execute('''
+    SELECT count(*)
+    FROM Collisions c
+    WHERE c.analyzed = 't'
+    ''')
+    analyzed_number = cur.fetchone()[0]
+    cur.close()
 
-  print "in login() login info is: ", email, pwd
-  # create a new user instance
-  user = User(email, pwd)
-  logged = user.login()
-  print logged
-  if logged > 0:
-    print "logged, the uid is ", user.uid
-    re = dict(nickname = user.name, success = 1)
-    session['username'] = user.name
-    session['uid'] = user.uid
-    print "in session"
-    print session['username']
-    print session['uid']
-    return redirect('/')
+    print total_number, analyzed_number
+    print type(total_number), type(analyzed_number)
+
+    re = dict(total_number = total_number, analyzed_number = analyzed_number)
+
+    return render_template('admin.html', **re)
   else:
-    print "cannot login", user.uid
+    print "cannot login"
     re = dict(failure = 1)
-    return render_template("signup.html", **re)
+    return render_template("admin_login.html", **re)
 
-@app.route('/logout', methods=['GET'])
-def logout():
-    session.pop('username', None)
-    session.pop('uid', None)
-    return redirect('/')
-'''
+# download all
+@app.route('/download/', methods=['POST', 'GET'])
+def download():
+    cur = g.conn.execute('''
+    SELECT ST_asText(c.geom)
+    FROM Collisions c
+    ''')
+    results = cur.fetchall()
+    print results
+    print type(results[0])
+    for a_row in results:
+        print a_row
+        print type(a_row)
+        for a_ele in a_row:
+            print a_ele
+            print type(a_ele)
+
+    t = Template('''
+    <html>
+        {% for n in data %}
+             <div>{{n}}</div>
+        {% endfor %}
+    </html>
+    ''')
+    # return render_template(t, data = results)
+
+    csv = """"REVIEW_DATE","AUTHOR","ISBN","DISCOUNTED_PRICE"
+    "1985/01/21","Douglas Adams",0345391802,5.95
+    "1990/01/12","Douglas Hofstadter",0465026567,9.95
+    "1998/07/15","Timothy ""The Parser"" Campbell",0968411304,18.99
+    "1999/12/03","Richard Friedman",0060630353,5.95
+    "2004/10/04","Randel Helms",0879755725,4.50"""
+    # We need to modify the response, so the first thing we
+    # need to do is create a response out of the CSV string
+    response = make_response(csv)
+    # This is the key: Set the right header for the response
+    # to be downloaded, instead of just printed on the browser
+    response.headers["Content-Disposition"] = "attachment; filename=books.csv"
+    return response
 
 if __name__ == "__main__":
   import click

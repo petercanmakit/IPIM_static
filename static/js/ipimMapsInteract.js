@@ -8,7 +8,7 @@ $(document).ready(function () {
     var step_1, step_2, step_3, step_4, step_5;
     var ctrl_rm_last_inter;
     var answers = [];
-    var state_st_cst_city = "";
+    var state_city_st_cst = "";
 
     var gender = "";
     var age = 0;
@@ -19,7 +19,8 @@ $(document).ready(function () {
     el: '#map',
     lat: 40.74959782183326,
     lng: -73.98781299591064,
-    zoom: 14
+    zoom: 14,
+    clickableIcons: false
     });
 
   ins_box = document.getElementById("ins_box");
@@ -116,10 +117,10 @@ $(document).ready(function () {
     street = $('#street').val().trim();
     cross_street = $('#cross_street').val().trim();
 
-    var address_list = [street, ', ', cross_street, ', ', city, ', ', state];
+    var address_list = [state, ', ', city, ', ', street, ', ', cross_street];
     var address_in = "".concat(...address_list);
     // alert(address_in);
-    state_st_cst_city = address_in; // "street, cross_street, city, state"
+    state_city_st_cst = address_in; // "state, city, street, cross_street"
     // e.g. Main Street & everett st, Lafayette, IN
     address_list = [street, ' & ', cross_street, ', ', city, ', ', state];
     address_in = "".concat(...address_list);
@@ -317,7 +318,7 @@ $(document).ready(function () {
           // alert(an_answer.value);
       }
       answer_form['answer_route'].value = path.toString();
-      answer_form['answer_state_st_cst_city'].value = state_st_cst_city;
+      answer_form['answer_state_city_st_cst'].value = state_city_st_cst;
       answer_form['answer_date'].value = acc_date.getTime();
       answer_form['answer_gender'].value = gender;
       answer_form['answer_ethnicity'].value = ethnicity;

@@ -5,14 +5,20 @@ CREATE TABLE Users(
     Pass TEXT
 );
 
+uid | name  |   pass
+-----+-------+-----------
+  1 | admin | ipimadmin
+
 DROP TABLE IF EXISTS Collisions CASCADE;
 CREATE TABLE Collisions(
     Cid bigserial PRIMARY KEY,
+    AccDate Date,
     State TEXT,
     City TEXT,
     Street TEXT,
     CrossStreet TEXT,
     Cartype TEXT,
+    TimeOfDay TEXT,
     PoliceFiled boolean,
     MedEvaluatedAtScene boolean,
     TakenToHosFromScene boolean,
@@ -22,8 +28,10 @@ CREATE TABLE Collisions(
     Age int,
     Ethnicity TEXT,
     Race TEXT,
-    Uid int NOT NULL REFERENCES Users
+    Analyzed boolean default 'false'
 );
 // 'LINESTRING(0 0, 1 1, 2 1, 2 2)'
 // Hispanic, Non-Hispanic
 // Asian, Black, White, Other
+
+// psql postgres
