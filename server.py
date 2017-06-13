@@ -20,6 +20,7 @@ from jinja2 import Template
 
 import datetime
 import time
+from cStringIO import StringIO # for stringbuilder
 
 class Collision(object):
     __tablename__ = 'collisions'
@@ -310,14 +311,23 @@ def admin_login():
     return render_template("admin_login.html")
 
 # admin interface admin.html
-@app.route('/admin_page/', methods=['GET', 'POST'])
-def admin_page():
+@app.route('/admin/', methods=['GET', 'POST'])
+def admin():
+  logged = False
+  if request.method == 'POST':
+      username = request.form['username']
+      pswd = request.form['password']
+      print "in login() login info is: ", username, pswd
 
-  username = request.form['username']
-  pswd = request.form['password']
-  print "in login() login info is: ", username, pswd
+      logged = adminLogin(username, pswd)
+      if logged:
+          session['username'] = username
+      else:
+          if session['username']:
+              session.pop('username', None)
 
-  logged = adminLogin(username, pswd)
+  if 'username' in session and session['username'] == 'admin' :
+      logged = True
 
   if logged:
     print "logged"
@@ -343,51 +353,74 @@ def admin_page():
 
     re = dict(total_number = total_number, analyzed_number = analyzed_number)
 
-    return render_template('admin.html', **re)
+    return render_template('/admin/index.html', **re)
   else:
     print "cannot login"
     re = dict(failure = 1)
     return render_template("admin_login.html", **re)
 
-# download all
-@app.route('/download/', methods=['POST', 'GET'])
+
+# admin see the collisions
+@app.route('/admin/collisions/', methods=['POST', 'GET'])
+def collisions():
+    return "website under constraction"
+
+# download dashboard
+@app.route('/admin/download/', methods=['GET'])
 def download():
+    return render_template("/admin/download.html")
+
+# download all
+@app.route('/admin/download_all/', methods=['POST', 'GET'])
+def download_all():
     cur = g.conn.execute('''
-    SELECT ST_asText(c.geom)
+    SELECT c.cid, ST_asText(c.geom)
     FROM Collisions c
     ''')
+    stringIO = StringIO()
     results = cur.fetchall()
-    print results
-    print type(results[0])
     for a_row in results:
-        print a_row
-        print type(a_row)
-        for a_ele in a_row:
-            print a_ele
-            print type(a_ele)
-
-    t = Template('''
-    <html>
-        {% for n in data %}
-             <div>{{n}}</div>
-        {% endfor %}
-    </html>
-    ''')
-    # return render_template(t, data = results)
-
-    csv = """"REVIEW_DATE","AUTHOR","ISBN","DISCOUNTED_PRICE"
-    "1985/01/21","Douglas Adams",0345391802,5.95
-    "1990/01/12","Douglas Hofstadter",0465026567,9.95
-    "1998/07/15","Timothy ""The Parser"" Campbell",0968411304,18.99
-    "1999/12/03","Richard Friedman",0060630353,5.95
-    "2004/10/04","Randel Helms",0879755725,4.50"""
+        for an_ele in a_row:
+            stringIO.write(str(an_ele))
+            # stringIO.write(an_ele.encode('utf-8'))
+            stringIO.write(',')
+        stringIO.seek(-1,2) # SEEK_END = 2
+        stringIO.write("\n")
+    csv = stringIO.getvalue()
     # We need to modify the response, so the first thing we
     # need to do is create a response out of the CSV string
     response = make_response(csv)
     # This is the key: Set the right header for the response
     # to be downloaded, instead of just printed on the browser
-    response.headers["Content-Disposition"] = "attachment; filename=books.csv"
+    response.headers["Content-Disposition"] = "attachment; filename=query_results.csv"
+
     return response
+
+# mark_analyze
+@app.route('/admin/mark_analyzed/', methods=['POST', 'GET'])
+def mark_analyzed():
+    print "in mark_analyzed"
+    if request.method == 'POST':
+        print
+        cid = request.form['cid']
+        print cid, type(cid)
+        is_mark = request.form['is_mark']
+        if is_mark == 'mark':
+            print "mark"
+            cur = g.conn.execute('''
+                UPDATE Collisions
+                SET analyzed = true
+                WHERE cid = %s;
+            ''',(str(cid),) )
+        else: # 'unmark'
+            print "unmark"
+            cur = g.conn.execute('''
+                UPDATE Collisions
+                SET analyzed = false
+                WHERE cid = %s;
+            ''',(str(cid),) )
+    return render_template("/admin/mark_analyzed.html")
+
 
 if __name__ == "__main__":
   import click
