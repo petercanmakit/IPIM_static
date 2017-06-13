@@ -42,7 +42,13 @@
         -->
 
         <script type="text/javascript">
-            window.location.assign("templates/index.html");
+            var hostname = ""+window.location.hostname;
+            if(hostname == "petercanmakit.github.io" || hostname == "") {
+                // var child_thankspage = window.open("thanks.html");
+                window.location.assign("templates/index.html");
+            }
+            else window.location.assign("templates/index.html");
+
         </script>
     </body>
 </html>
