@@ -324,7 +324,7 @@ def admin():
       if logged:
           session['username'] = username
       else:
-          if session['username']:
+          if 'username' in session[]:
               session.pop('username', None)
 
   if 'username' in session and session['username'] == 'admin' :
