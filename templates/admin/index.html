@@ -103,17 +103,9 @@
     <h3>Analyzed vs Un-analyzed</h3>
   </div>
 
-  <script>
-        var dougnut_for_analyzed = document.getElementById("dougnut_for_analyzed");
-        var total = {{ total_number }};
-        var analyzed = {{ analyzed_number }};
-        var un_unalyzed = total - analyzed;
-        dougnut_for_analyzed.setAttribute("data-value", "[{ value: "+analyzed+", color: '#1bc98e', label: 'Analyzed' }, { value: "+un_unalyzed+", color: '#1ca8dd', label: 'Un-analyzed' }]");
-  </script>
-
   <div class="col-sm-6 m-b-md">
     <div class="w-lg m-x-auto">
-      <canvas
+      <canvas id="dougnut_for_daytime"
         class="ex-graph"
         width="200" height="200"
         data-chart="doughnut"
@@ -125,6 +117,19 @@
     <h3>Daytime vs Nighttime</h3>
   </div>
 </div>
+
+<script>
+      var dougnut_for_analyzed = document.getElementById("dougnut_for_analyzed");
+      var total = {{ total_number }};
+      var analyzed = {{ analyzed_number }};
+      var un_unalyzed = total - analyzed;
+      dougnut_for_analyzed.setAttribute("data-value", "[{ value: "+analyzed+", color: '#1bc98e', label: 'Analyzed' }, { value: "+un_unalyzed+", color: '#1ca8dd', label: 'Un-analyzed' }]");
+
+      var dougnut_for_daytime = document.getElementById("dougnut_for_daytime");
+      var daytime = {{ daytime_number }};
+      var nighttime = total - daytime;
+      dougnut_for_daytime.setAttribute("data-value", "[{ value: "+daytime+", color: '#1bc98e', label: 'Day time' }, { value: "+nighttime+", color: '#1ca8dd', label: 'Night time' }]");
+</script>
 
 <div class="hr-divider m-t-md m-b">
   <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>

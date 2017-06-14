@@ -99,7 +99,7 @@ class Collision(object):
         self.ethnicity = form['answer_ethnicity']
         self.race = form['answer_race']
 
-        self.printCollisionInfo()
+        # self.printCollisionInfo()
 
     # insert into collisions table
     def syncToDBWithUid(self, some_engine):
@@ -137,7 +137,7 @@ class Collision(object):
             )
             db_session.commit()
             new_cid = cur.fetchone()
-            print "new cid is ", str(new_cid[0])
+            # print "new cid is ", str(new_cid[0])
             self.cid = new_cid;
         except:
             db_session.rollback()
@@ -169,8 +169,8 @@ def adminLogin(name, password):
         ''', (name, )
         )
     pswd = cur.fetchone()[0]
-    print "in adminLogin: name is " + name + "pswd is " + pswd
-    print "password is " + password
+    # print "in adminLogin: name is " + name + "pswd is " + pswd
+    # print "password is " + password
     if pswd == password :
         return True
     else :
@@ -184,8 +184,8 @@ app.secret_key = "joyce_secret_hhhh"
 ##
 #DATABASEURI = "sqlite:///test.db"
 #DATABASEURI = "postgresql://jz2793:pvs9w@104.196.175.120/postgres"
-# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo"
-DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim"
+DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
+# DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
 #
 # This line creates a database engine that knows how to connect to the URI above
 ##
@@ -297,11 +297,11 @@ def draw_route():
 # submit_route
 @app.route('/submit_route/', methods=['GET', 'POST'])
 def submit_route():
-    print "in submit_route"
+    # print "in submit_route"
     form = request.form
     collision = Collision(form)
     collision.syncToDBWithUid(engine)
-    print collision.cid
+    # print collision.cid
 
     # flash("Your submission is successful. Thank you very much!")
     return render_template("thanks.html")
@@ -318,7 +318,7 @@ def admin():
   if request.method == 'POST':
       username = request.form['username']
       pswd = request.form['password']
-      print "in login() login info is: ", username, pswd
+      # print "in login() login info is: ", username, pswd
 
       logged = adminLogin(username, pswd)
       if logged:
@@ -331,7 +331,7 @@ def admin():
       logged = True
 
   if logged:
-    print "logged"
+    # print "logged"
     # total number
     cur = g.conn.execute('''
     SELECT count(*)
@@ -349,14 +349,23 @@ def admin():
     analyzed_number = cur.fetchone()[0]
     cur.close()
 
-    print total_number, analyzed_number
-    print type(total_number), type(analyzed_number)
+    # daytime number
+    cur = g.conn.execute('''
+    SELECT count(*)
+    FROM Collisions c
+    WHERE c.TimeOfDay = 'Day time'
+    ''')
+    daytime_number = cur.fetchone()[0]
+    cur.close()
 
-    re = dict(total_number = total_number, analyzed_number = analyzed_number)
+    # nighttime number
+    # nighttime_number = total_number - daytime_number
+
+    re = dict(total_number = total_number, analyzed_number = analyzed_number, daytime_number = daytime_number)
 
     return render_template('/admin/index.html', **re)
   else:
-    print "cannot login"
+    # print "cannot login"
     re = dict(failure = 1)
     return render_template("admin_login.html", **re)
 
@@ -400,21 +409,18 @@ def download_all():
 # mark_analyze
 @app.route('/admin/mark_analyzed/', methods=['POST', 'GET'])
 def mark_analyzed():
-    print "in mark_analyzed"
+    # print "in mark_analyzed"
     if request.method == 'POST':
-        print
         cid = request.form['cid']
-        print cid, type(cid)
+        # print cid, type(cid)
         is_mark = request.form['is_mark']
         if is_mark == 'mark':
-            print "mark"
             cur = g.conn.execute('''
                 UPDATE Collisions
                 SET analyzed = true
                 WHERE cid = %s;
             ''',(str(cid),) )
         else: # 'unmark'
-            print "unmark"
             cur = g.conn.execute('''
                 UPDATE Collisions
                 SET analyzed = false
