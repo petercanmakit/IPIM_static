@@ -185,8 +185,8 @@ app.secret_key = "joyce_secret_hhhh"
 
 ##
 # DATABASEURI = "sqlite:///test.db"
-# DATABASEURI = "postgresql://jz2793:pvs9w@104.196.175.120/postgres"
-DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
+DATABASEURI = "postgresql://jz2793:pvs9w@104.196.175.120/postgres"
+# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
 # DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
 #
 # This line creates a database engine that knows how to connect to the URI above
