@@ -1,0 +1,1 @@
+on thank you page: after submitting refreshing the page will submit it again.

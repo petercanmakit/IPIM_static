@@ -174,6 +174,10 @@ def adminLogin(name, password):
     else :
         return False
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = "joyce_secret_hhhh"
@@ -182,8 +186,8 @@ app.secret_key = "joyce_secret_hhhh"
 ##
 # DATABASEURI = "sqlite:///test.db"
 # DATABASEURI = "postgresql://jz2793:pvs9w@104.196.175.120/postgres"
-# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
-DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
+# DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
 #
 # This line creates a database engine that knows how to connect to the URI above
 ##
@@ -371,7 +375,39 @@ def admin():
 # admin see the collisions
 @app.route('/admin/collisions/', methods=['POST', 'GET'])
 def collisions():
-    return "website under constraction"
+    if request.method == 'POST':
+        cid = request.form['cid']
+        if cid != "":
+            cur = g.conn.execute('''
+                SELECT ST_asText(c.geom), c.analyzed
+                FROM Collisions c
+                WHERE c.cid = %s
+            ''', (str(cid),)
+            )
+            result = cur.fetchone()
+            path = lineStringToArray(str(result[0]))
+            analyzed = str(result[1])
+            # print analyzed
+            cur.close()
+
+            re = dict(path = path, collisionId = cid, analyzed = analyzed)
+            # print path, cid
+            cur.close()
+            return render_template('/admin/collisions.html', **re)
+    # print "just get"
+    return render_template('/admin/collisions.html')
+
+def lineStringToArray(line_str): #'LINESTRING(0 0, 1 1, 2 1, 2 2)'
+    # in js: var path = []; // [[lat, lng], [lat, lng], ...]
+
+    line_str = line_str.replace("LINESTRING(", "").replace(")","")
+    line_strs = line_str.split(",")
+    path = []
+    for str_pair in line_strs:
+        str_pairs = str_pair.split(" ")
+        path.append(float(str_pairs[0]))
+        path.append(float(str_pairs[1]))
+    return path
 
 # download dashboard
 @app.route('/admin/download/', methods=['GET'])
@@ -384,6 +420,7 @@ def download_all():
     cur = g.conn.execute('''
     SELECT c.cid, ST_asText(c.geom)
     FROM Collisions c
+    ORDER BY c.cid
     ''')
     stringIO = StringIO()
     results = cur.fetchall()

@@ -5,9 +5,12 @@ CREATE TABLE Users(
     Pass TEXT
 );
 
+INSERT INTO Users(uid, name, pass)
+VALUES (1, 'admin', 'ipim_admin');
+
 uid | name  |   pass
 -----+-------+-----------
-  1 | admin | ipimadmin
+  1 | admin | ipim_admin
 
 DROP TABLE IF EXISTS Collisions CASCADE;
 CREATE TABLE Collisions(
