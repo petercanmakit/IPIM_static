@@ -50,3 +50,8 @@ ssh-keygen -t rsa -f ~/.ssh/my-ssh-key -C zhangjj2016
 Pass: zjj940611
 
 ssh -i ~/.ssh/my-ssh-key zhangjj2016@130.211.230.203
+
+
+
+apache: mod_wsgi
+apt-get install libapache2-mod-wsgi
