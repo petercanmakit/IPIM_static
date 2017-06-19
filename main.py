@@ -186,8 +186,9 @@ app.secret_key = "joyce_secret_hhhh"
 ##
 # DATABASEURI = "sqlite:///test.db"
 # DATABASEURI = "postgresql://jz2793:pvs9w@104.196.175.120/postgres"
-# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
-DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
+# DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+# DATABASEURI = "postgresql://postgres:ipim_postgres@35.196.28.190/postgres" # gg cloud post db instance
 #
 # This line creates a database engine that knows how to connect to the URI above
 ##
@@ -487,7 +488,12 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print "running on %s:%d" % (HOST, PORT)
-    app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+
+    
+
+    context = ('ipim.crt', 'ipim.key')
+
+    app.run(host=HOST, port=PORT, debug=debug, threaded=threaded, ssl_context=context)
 
 
   run()

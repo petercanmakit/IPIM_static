@@ -15,7 +15,6 @@
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-
       <script type="text/javascript" src="../static/js/gmaps.js"></script>
       <link rel="stylesheet" type="text/css" href="../static/css/examples.css" />
       <style>
@@ -194,6 +193,26 @@
             display: none;
         }
 
+        #confirmBox button {
+    background-color: #ccc;
+    display: inline-block;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+    padding: 2px;
+    text-align: center;
+    width: 80px;
+    cursor: pointer;
+}
+#confirmBox button:hover
+{
+    background-color: #ddd;
+}
+#confirmBox .message
+{
+    text-align: left;
+    margin-bottom: 8px;
+}
+
       </style>
 
       <script>
@@ -364,7 +383,7 @@
                                 <form>
                                     <p>1. Were you hit by a:</p>
                                     <div class="row">
-                                        <div class="col-lg-6 col-sm-12">
+                                        <div class="col-lg-5 col-sm-12">
                                             <div class="radio-inline">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" name="question1" value="Private car">
@@ -372,7 +391,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-sm-12">
+                                        <div class="col-lg-7 col-sm-12">
                                             <div class="radio-inline">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" name="question1" value="A cab or livery">
@@ -382,14 +401,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6 col-sm-12">
-                                            <div class="radio-inline">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="question1" value="A truck or van">A truck or van
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12">
+                                        <div class="col-lg-5 col-sm-12">
                                             <div class="radio-inline">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" name="question1" value="A bus">
@@ -397,18 +409,33 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <div class="col-lg-7 col-sm-12">
+                                            <div class="radio-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="question1" value="A truck or van">
+                                                    A truck or van
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <p>2. Were you hit during the:
-                                        <div class="radio-inline">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="radio" name="question2" value="Night time"> Night time
-                                            </label>
+                                        <div class="row">
+                                            <div class="col-lg-5 col-sm-12">
+                                                <div class="radio-inline">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="radio" name="question2" value="Day time"> Day time
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7 col-sm-12">
+                                                <div class="radio-inline">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="radio" name="question2" value="Night time"> Night time
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="radio-inline">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="radio" name="question2" value="Day time"> Day time
-                                            </label>
-                                        </div>
+
                                     </p>
                                     <p>3. Was a police report filed at the scene of the collision?</p>
                                     <div class="radio-inline">
@@ -586,6 +613,20 @@
                 modal.style.display = "none";
             }
         </script>
+
+        <!-- Pop up for anserwing all questions in step 5 -->
+        <div id="confirmBox" class="modal" style="display: none;">
+          <!-- Modal content -->
+          <div class="row modal-content">
+              <div >
+                <div class="message"></div>
+                <button class="yes">Yes</button>
+                <button class="no">No</button>
+              </div>
+          </div>
+        </div>
+
+
         <div id="footer">
 
           <div class="row">
@@ -594,8 +635,7 @@
                   <p><a href="https://www.mailman.columbia.edu/become-student/departments/epidemiology"><img id="appStoreIcon" src="../static/images/logo-mailman.png"><br></a>Department of Epidemiology</p>
               </div>
               <div id="persons">
-                  <p> <a href="https://www.mailman.columbia.edu/people/our-faculty/agr3">Prof. Andrew G. Rundle</a></p>
-                  <p> <a href="https://epi.washington.edu/faculty/mooney-stephen">Dr. Stephen J. Mooney</a></p>
+                  <p> Researchers: <a href="https://epi.washington.edu/faculty/mooney-stephen">Dr. Stephen J. Mooney</a> and <a href="https://www.mailman.columbia.edu/people/our-faculty/agr3">Dr. Andrew G. Rundle</a></p>
                   <p>Webpage constructed by <a href="https://github.com/petercanmakit/IPIM">Jiajun Zhang</a></p>
               </div>
             </div>
