@@ -329,11 +329,9 @@ $(document).ready(function () {
       gender = $('#gender').val().trim();
       var age_element = document.getElementById('age');
       if(age_element.value == ""){
-          alert("age is null");
           age = -1;
       }
       else {
-          alert("age is not null");
           age = $('#age').val();
       }
       ethnicity = $('#ethn').val().trim();
@@ -352,7 +350,6 @@ $(document).ready(function () {
       answer_form['answer_gender'].value = gender;
       answer_form['answer_ethnicity'].value = ethnicity;
       answer_form['answer_race'].value = race;
-      alert(age);
       answer_form['answer_age'].value = age;
       sessionStorage.setItem('path', path);
       var hostname = ""+window.location.hostname;
