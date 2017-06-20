@@ -27,7 +27,7 @@ CREATE TABLE Collisions(
     TakenToHosFromScene boolean,
     SeekedCareAfterward boolean,
     geom geometry NOT NULL,
-    Gender text check (Gender = 'Male' or Gender = 'Female'),
+    Gender text check (Gender = 'Male' or Gender = 'Female' or Gender = 'not_answered'),
     Age int,
     Ethnicity TEXT,
     Race TEXT,

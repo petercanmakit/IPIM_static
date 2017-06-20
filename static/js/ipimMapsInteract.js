@@ -291,7 +291,7 @@ $(document).ready(function () {
       // alert(answers.length);
 
       if(!flag_answered_all) {
-          alert("Please answer all the questions.");
+          // alert("Please answer all the questions.");
           $('#confirmBox').css('display', 'block');
           return;
       }
@@ -302,15 +302,15 @@ $(document).ready(function () {
       ins_box.innerText = txt_6.textContent;
   });
 
-  doConfirm("Are you sure?",
+  doConfirm("Some questions are not answered. Press \"Answer\" to answer them or press \"Next\" to go to next section.",
             function yes() {
                 // continue_anwser
-                alert("yes is pressed");
+                // alert("yes is pressed");
                 return;
             },
             function no() {
                 // not continue_anwser
-                alert("no is pressed");
+                // alert("no is pressed");
                 // hide step5, start step6
                 step_5.style.display = 'none';
                 step_6.style.display = 'block';
@@ -327,7 +327,15 @@ $(document).ready(function () {
       ins_box.innerText = txt_8.textContent;
 
       gender = $('#gender').val().trim();
-      age = $('#age').val();
+      var age_element = document.getElementById('age');
+      if(age_element.value == ""){
+          alert("age is null");
+          age = -1;
+      }
+      else {
+          alert("age is not null");
+          age = $('#age').val();
+      }
       ethnicity = $('#ethn').val().trim();
       race = $('#race').val().trim();
 
@@ -344,6 +352,7 @@ $(document).ready(function () {
       answer_form['answer_gender'].value = gender;
       answer_form['answer_ethnicity'].value = ethnicity;
       answer_form['answer_race'].value = race;
+      alert(age);
       answer_form['answer_age'].value = age;
       sessionStorage.setItem('path', path);
       var hostname = ""+window.location.hostname;

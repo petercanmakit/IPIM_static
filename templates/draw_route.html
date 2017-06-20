@@ -194,24 +194,24 @@
         }
 
         #confirmBox button {
-    background-color: #ccc;
-    display: inline-block;
-    border-radius: 3px;
-    border: 1px solid #aaa;
-    padding: 2px;
-    text-align: center;
-    width: 80px;
-    cursor: pointer;
-}
-#confirmBox button:hover
-{
-    background-color: #ddd;
-}
-#confirmBox .message
-{
-    text-align: left;
-    margin-bottom: 8px;
-}
+        background-color: #ccc;
+        display: inline-block;
+        border-radius: 3px;
+        border: 1px solid #aaa;
+        padding: 2px;
+        text-align: center;
+        width: 80px;
+        cursor: pointer;
+        }
+        #confirmBox button:hover
+        {
+            background-color: #ddd;
+        }
+        #confirmBox .message
+        {
+            text-align: left;
+            margin-bottom: 8px;
+        }
 
       </style>
 
@@ -499,6 +499,7 @@
                                         <label class="control-label col-sm-4" for="gender" align="right">Gender:</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" name="gender" id="gender" align="right">
+                                                <option value="not_answered"> </option>
                                                 <option>Male</option>
                                                 <option>Female</option>
                                             </select><br>
@@ -507,13 +508,14 @@
                                     <div class="row">
                                         <label class="control-label col-sm-4" for="age" align="right" >Age:</label>
                                         <div class="col-sm-8">
-                                          <input type="number" name="age" min="0" max="120" required id="age">
+                                          <input type="number" name="age" min="0" max="120" id="age">
                                         </div>
                                     </div><br>
                                     <div class="row">
                                         <label class="control-label col-sm-4" for="ethn" align="right">Ethnicity:</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" name="ethn" id="ethn">
+                                                <option value="not_answered"></option>
                                                 <option>Hispanic</option>
                                                 <option>Non-hispanic</option>
                                             </select><br>
@@ -523,6 +525,7 @@
                                         <label class="control-label col-sm-4" for="race" align="right">Race:</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" name="race" id="race">
+                                                <option value="not_answered"></option>
                                                 <option>Asian</option>
                                                 <option>Black</option>
                                                 <option>White</option>
@@ -617,11 +620,19 @@
         <!-- Pop up for anserwing all questions in step 5 -->
         <div id="confirmBox" class="modal" style="display: none;">
           <!-- Modal content -->
-          <div class="row modal-content">
+          <div class="modal-content" style="align: center; margin-top: 150px; width: 400px; height: 160px;">
               <div >
                 <div class="message"></div>
-                <button class="yes">Yes</button>
-                <button class="no">No</button>
+                <div class="row" style="align: center;">
+                    <div class="col-sm-6" style="text-align: center;">
+                        <button class="yes ">Answer</button>
+                    </div>
+                    <div class="col-sm-6" style="text-align: center;">
+                        <button class="no ">Next</button>
+                    </div>
+
+                </div>
+
               </div>
           </div>
         </div>
