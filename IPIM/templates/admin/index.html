@@ -1,0 +1,182 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <title>
+
+        Overview &middot;
+
+    </title>
+
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+
+      <link href="../../static/assets/css/toolkit-inverse.css" rel="stylesheet">
+
+
+    <link href="../../static/assets/css/application.css" rel="stylesheet">
+
+    <style>
+      /* note: this is a hack for ios iframe for bootstrap themes shopify page */
+      /* this chunk of css is not part of the toolkit :) */
+      body {
+        width: 1px;
+        min-width: 100%;
+        *width: 100%;
+      }
+    </style>
+  </head>
+
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-header">
+            <button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
+              <span class="sr-only">Toggle nav</span>
+            </button>
+            <a class="sidebar-brand img-responsive" href="/admin/">
+              <span class="icon icon-info-with-circle sidebar-brand-icon"></span>
+            </a>
+          </div>
+
+          <div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="nav-header">Dashboards</li>
+              <li class="active">
+                <a href="/admin/">Overview</a>
+              </li>
+              <li >
+                <a href="/admin/collisions/">
+                  Collisions
+                </a>
+              </li>
+
+              <li class="nav-header">Analysis</li>
+              <li >
+                <a href="/admin/download/">
+                  Download
+                </a>
+              </li>
+              <li>
+                <a href="/admin/mark_analyzed/">
+                  Mark analyzed
+                </a>
+              </li>
+            </ul>
+            <hr class="visible-xs m-t">
+          </div>
+        </nav>
+      </div>
+      <div class="col-sm-10 content">
+        <div class="dashhead">
+  <div class="dashhead-titles">
+    <h6 class="dashhead-subtitle">Dashboards</h6>
+    <h2 class="dashhead-title">Overview</h2>
+  </div>
+</div>
+
+<hr class="m-t">
+
+<div class="row text-center m-t-lg">
+  <div class="col-sm-6 m-b-md">
+    <div class="w-lg m-x-auto">
+      <canvas id="dougnut_for_analyzed"
+        class="ex-graph"
+        width="200" height="200"
+        data-chart="doughnut"
+        data-value="[{ value: 1, color: '#1ca8dd', label: 'Analyzed' }, { value: 1, color: '#1bc98e', label: 'Un-analyzed' }]"
+        data-segment-stroke-color="#252830">
+      </canvas>
+    </div>
+    <strong class="text-muted">Number of cases</strong>
+    <h3>Analyzed vs Un-analyzed</h3>
+  </div>
+
+  <div class="col-sm-6 m-b-md">
+    <div class="w-lg m-x-auto">
+      <canvas id="dougnut_for_daytime"
+        class="ex-graph"
+        width="200" height="200"
+        data-chart="doughnut"
+        data-value="[{ value: 330, color: '#1ca8dd', label: 'Daytime' }, { value: 30, color: '#1bc98e', label: 'nighttime' }]"
+        data-segment-stroke-color="#252830">
+      </canvas>
+    </div>
+    <strong class="text-muted">Time of day</strong>
+    <h3>Daytime vs Nighttime</h3>
+  </div>
+</div>
+
+<script>
+      var dougnut_for_analyzed = document.getElementById("dougnut_for_analyzed");
+      var total = {{ total_number }};
+      var analyzed = {{ analyzed_number }};
+      var un_unalyzed = total - analyzed;
+      dougnut_for_analyzed.setAttribute("data-value", "[{ value: "+analyzed+", color: '#1bc98e', label: 'Analyzed' }, { value: "+un_unalyzed+", color: '#1ca8dd', label: 'Un-analyzed' }]");
+
+      var dougnut_for_daytime = document.getElementById("dougnut_for_daytime");
+      var daytime = {{ daytime_number }};
+      var nighttime = total - daytime;
+      dougnut_for_daytime.setAttribute("data-value", "[{ value: "+daytime+", color: '#1bc98e', label: 'Day time' }, { value: "+nighttime+", color: '#1ca8dd', label: 'Night time' }]");
+</script>
+
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
+</div>
+
+<div class="row statcards">
+  <div class="col-sm-6 col-lg-6 m-b">
+    <div class="statcard statcard-success">
+      <div class="p-a">
+        <span class="statcard-desc">Page views</span>
+        <h2 class="statcard-number">
+          12,938
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a','b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-6 m-b">
+    <div class="statcard statcard-danger">
+      <div class="p-a">
+        <span class="statcard-desc">Collisions</span>
+        <h2 class="statcard-number">
+          {{ total_number }}
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<hr class="m-t">
+
+      </div>
+    </div>
+  </div>
+
+
+    <script src="../../static/assets/js/jquery.min.js"></script>
+    <script src="../../static/assets/js/chart.js"></script>
+    <script src="../../static/assets/js/tablesorter.min.js"></script>
+    <script src="../../static/assets/js/toolkit.js"></script>
+    <script src="../../static/assets/js/application.js"></script>
+    <script>
+      // execute/clear BS loaders for docs
+      $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+    </script>
+  </body>
+</html>

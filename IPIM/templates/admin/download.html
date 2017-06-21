@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <title>
+
+        Download &middot;
+
+    </title>
+
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+
+      <link href="../../static/assets/css/toolkit-inverse.css" rel="stylesheet">
+
+
+    <link href="../../static/assets/css/application.css" rel="stylesheet">
+
+    <style>
+      /* note: this is a hack for ios iframe for bootstrap themes shopify page */
+      /* this chunk of css is not part of the toolkit :) */
+      body {
+        width: 1px;
+        min-width: 100%;
+        *width: 100%;
+      }
+    </style>
+  </head>
+
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-header">
+            <button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
+              <span class="sr-only">Toggle nav</span>
+            </button>
+            <a class="sidebar-brand img-responsive" href="/admin/">
+              <span class="icon icon-info-with-circle sidebar-brand-icon"></span>
+            </a>
+          </div>
+
+          <div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="nav-header">Dashboards</li>
+              <li >
+                <a href="/admin/">Overview</a>
+              </li>
+              <li >
+                <a href="/admin/collisions/">
+                  Collisions
+                </a>
+              </li>
+
+              <li class="nav-header">Analysis</li>
+              <li class="active">
+                <a href="/admin/download/">
+                  Download
+                </a>
+              </li>
+              <li>
+                <a href="/admin/mark_analyzed/">
+                  Mark analyzed
+                </a>
+              </li>
+            </ul>
+            <hr class="visible-xs m-t">
+          </div>
+        </nav>
+      </div>
+      <div class="col-sm-10 content">
+            <div class="dashhead">
+                    <div class="dashhead-titles">
+                        <h6 class="dashhead-subtitle">Analysis</h6>
+                        <h2 class="dashhead-title">Download</h2>
+                    </div>
+            </div>
+
+            <hr class="m-t">
+
+            <div class="row m-t-lg">
+                <!--- download all --->
+                <div class="container">
+                    <a class="btn btn-primary" href="/admin/download_all/">
+                        <span class="icon icon-download"></span> download all
+                    </a>
+                </div>
+            </div>
+
+            <hr class="m-t">
+            <div class="row m-t-lg">
+                <div class="btn">
+                  <div class="btn-toolbar-item input-with-icon">
+                    <input type="number" value="" class="form-control">
+                    <span class="icon">#</span>
+                  </div>
+                </div>
+            </div>
+
+            <hr class="m-t">
+
+            <!--- dake picker --->
+            <div class="row m-t-lg">
+                <div class="btn">
+                  <div class="btn-toolbar-item input-with-icon">
+                    <input type="text" value="" class="form-control" data-provide="datepicker">
+                    <span class="icon icon-calendar"></span>
+                  </div>
+                </div>
+            </div>
+
+            <hr class="m-t">
+
+        </div>
+    </div>
+ </div>
+
+    <script src="../../static/assets/js/jquery.min.js"></script>
+    <script src="../../static/assets/js/chart.js"></script>
+    <script src="../../static/assets/js/tablesorter.min.js"></script>
+    <script src="../../static/assets/js/toolkit.js"></script>
+    <script src="../../static/assets/js/application.js"></script>
+    <script>
+      // execute/clear BS loaders for docs
+      $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+    </script>
+  </body>
+</html>
