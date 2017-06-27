@@ -8,13 +8,14 @@ from database import dbConnect
 
 from collision import Collision
 
-# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
-DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
+# DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
 engine = dbConnect(DATABASEURI)
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-app.secret_key = "joyce_secret_hhhh"
+app.secret_key = 'Jiajun_is_the_best'
+
 
 @app.before_request
 def before_request():

@@ -5,6 +5,7 @@ setup(
     packages=['IPIM'],
     include_package_data=True,
     install_requires=[
-        'flask',
+        'Flask>=0.2',
+        'SQLAlchemy>=0.6'
     ],
 )
