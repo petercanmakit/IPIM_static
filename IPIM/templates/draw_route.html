@@ -95,6 +95,8 @@
         #map_container {
             margin-top:40px;
             margin-bottom: 10px;
+            margin-left: 50px;
+            margin-right: 50px;
             text-align:center;
         }
 
@@ -105,18 +107,19 @@
 
         #ins_container {
             height: 600px;
-            float: left;
             overflow:auto;
             -moz-box-shadow: 0px 5px 20px #ccc;
             -webkit-box-shadow: 0px 5px 20px #ccc;
             box-shadow: 0px 5px 20px #ccc;
         }
 
-        #ins_content {
+        .ins_content {
             margin-top:10px;
             clear: both;
             height: 240px;
             position: relative;
+            width: 95%;
+            text-align: center;
         }
 
         #ins_box {
@@ -145,7 +148,7 @@
             display: block; /* block by default */
             position: fixed; /* Stay in place */
             z-index: 1; /* Sit on top */
-            padding-top: 100px; /* Location of the box */
+            padding-top: 70px; /* Location of the box */
             left: 0;
             top: 0;
             width: 100%; /* Full width */
@@ -247,7 +250,7 @@
 
   <body >
 
-        <div class="container" id="map_container">
+        <div class="row" id="map_container">
             <!-- flash message
             <p>
                 {% with messages = get_flashed_messages() %}
@@ -260,29 +263,24 @@
             </p>
             -->
             <div class="row">
-                <div class="col-sm-9 col-lg-9" id="map_box" >
+                <div class="col-sm-8 col-lg-8" id="map_box" >
                     <div class="row">
                         <div id="map"></div>
                       </div>
                     <br>
                 </div>
-                <div class="col-sm-3 col-lg-3" id="ins_container">
-                    <div id="ins_content">
-                        <div align="left">
-                            <span id="ins_box"></span>
-                        </div>
+                <div class="col-sm-4 col-lg-4" id="ins_container">
+                    <div class="ins_content">
 
                         <div class="steps" id="step1">
-                            <form method="post" id="date_form">
-                                <div class="input" align="center">
-                                    <label for="accident_date">Month and Year:</label>
-                                    <input type="text" id="accident_date" name="accident_date" class="date-picker"/>
-                                    <input type="submit" class="btn btn-primary btn-sm" value="Next" />
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="steps" id="step2">
+                            <div class="row container">
+                                <p>
+                                    <b>Step 1: Locate the area near where you were hit</b>
+                                </p>
+                                <p>
+                                    You can either type in the state, city, street and nearest cross-street where you were hit by a vehicle to locate the maps. Or if your current location is near the location where you were hit, you may use "locate me" to let the browser use your current position. After the area is located, press "Next" to continue.
+                                </p>
+                            </div>
                             <div align="center">
                                 <button class="btn btn-primary btn-sm" id="locate_me_button">Locate me</button>
                             </div>
@@ -363,23 +361,69 @@
                                       </div>
                                   </div>
                                 </form>
-                                <button class="btn btn-primary btn-sm" id="step2_next">Next</button>
+                                <button class="btn btn-primary btn-sm" id="step1_next">Next</button>
+                            </div>
+                        </div>
+
+                        <div class="steps" id="step2">
+                            <div class="row container">
+                                <p>
+                                    <b>Step 2: Locate the spot of collision</b>
+                                </p>
+                                <p>
+                                    Use the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press "Next" when finishing.
+                                </p>
+                            </div>
+                            <div align="center">
+                                <button class="btn btn btn-sm" id="step2_back">Back</button>
                             </div>
                         </div>
 
                         <div class="steps" id="step3">
-                            <div align="center">
-                                <button class="btn btn-primary btn-sm" id="place_pin_end">Next</button>
+                            <div class="row container">
+                                <p>
+                                    <b>Step 3: Draw the route</b>
+                                </p>
+                                <p>
+                                    Use the cross-hairs tool to map out the route you walked along before you were hit.” Move the crosshair to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing "remove last intersection" on the map. Press "Next" after finishing.
+                                </p>
                             </div>
-                        </div>
-
-                        <div class="steps" id="step4">
                             <div align="center">
+                                <button class="btn btn btn-sm" id="step3_back">Back</button>
                                 <button class="btn btn-primary btn-sm" id="draw_end">Next</button>
                             </div>
                         </div>
 
+                        <div class="steps" id="step4">
+                            <div class="row container">
+                                <p>
+                                    <b>Step 4: Time the accident occured</b>
+                                </p>
+                                <p>
+                                    Tell us the Month/Year in which you were injured. Press "Next" to continue.
+                                </p>
+                            </div>
+                            <div class="row">
+                                <form method="post" id="date_form">
+                                    <div class="input" align="center">
+                                        <label for="accident_date">Month and Year:</label>
+                                        <input type="text" id="accident_date" name="accident_date" class="date-picker"/>
+                                        <button class="btn btn btn-sm" id="step4_back">Back</button>
+                                        <input type="submit" class="btn btn-primary btn-sm" value="Next" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                         <div class="steps" id="step5">
+                                <div class="row container">
+                                    <p>
+                                        <b>Step 5: Collision Information</b>
+                                    </p>
+                                    <p>
+                                        Please press "Next" after answering the questions below.
+                                    </p>
+                                </div>
                                 <form>
                                     <p>1. Were you hit by a:</p>
                                     <div class="row">
@@ -487,12 +531,21 @@
 
                              </form>
                              <div align="center">
+                                 <button class="btn btn btn-sm" id="step5_back">Back</button>
                                  <button class="btn btn-primary btn-sm" id="tell_end">Next</button>
                              </div>
 
                         </div>
 
                         <div class="steps" id="step6">
+                            <div class="row container">
+                                <p>
+                                    <b>Step 6: A little bit about youserlf</b>
+                                </p>
+                                <p>
+                                    Please answer them and then press "Done".
+                                </p>
+                            </div>
                             <form class="form-horizontal" method="POST" id="person_info_form">
                                 <div class="form-group">
                                     <div class="row">
@@ -535,6 +588,7 @@
                                     </div>
 
                                     <div align="center">
+                                        <button class="btn btn btn-sm" id="step6_back">Back</button>
                                         <button type="submit" class="btn btn-primary btn-sm" >Done</button>
                                     </div>
                                 </div>
@@ -577,10 +631,17 @@
 
           <!-- Modal content -->
           <div class="row modal-content">
-            <iframe class="col-sm-10" id="consent_text" src="../static/text/ConsentForm2.pdf" style="overflow:auto;height:550px;" frameborder="0"></iframe>
-            <div align="center" class="col-sm-2">
-                <button  class="btn btn-primary" id="i_agree">I agree</button>
-            </div>
+              <div class="col-sm-10">
+                  <p><br>Because this is a research project we need to tell you the details and get your official consent that you want to take part!  The form shown below explains our plans and provides contact information if you want to know more. Press "I agree" if you agree with the statement below.</p>
+              </div>
+              <div align="center" class="col-sm-2">
+                  <button  class="btn btn-primary" id="i_agree">I agree</button>
+              </div>
+              <div class="col-sm-12">
+                  <iframe  id="consent_text" src="../static/text/ConsentForm2.pdf" style="overflow:auto;height:550px;width: 99%;" frameborder="0"></iframe>
+              </div>
+
+
           </div>
 
         </div>

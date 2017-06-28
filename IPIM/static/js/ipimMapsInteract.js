@@ -24,25 +24,26 @@ $(document).ready(function () {
     });
 
   ins_box = document.getElementById("ins_box");
+  /*
   txt_1 = document.createTextNode("Step 1: Time the accident occured\nTell us the Month/Year in which you were injured. Press \"Next\" to continue.");
-  txt_2 = document.createTextNode("Step 2: Locate the area\nYou can either type in the state, city, street and nearest cross-street where you were hit by a vehicle to locate the maps. Or if your current location is around the spot, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
+  txt_2 = document.createTextNode("Step 2: Locate the area near where you were hit.\nYou can either type in the state, city, street and nearest cross-street where you were hit by a vehicle to locate the maps. Or if your current location is near the location where you were hit, you may use \"locate me\" to let the browser use your current position. After the area is located, press \"Next\" to continue.");
   txt_3 = document.createTextNode("Step 3: Locate the spot of collision\nUse the mouse to place the pin at the place where you were hit by a vehicle. You can edit the spot as many times as you want. Press \"Next\" when finishing.");
-  txt_4 = document.createTextNode("Step 4: Draw the route\nUse the crosshair tool to draw lines on the map showing us the streets you walked along before you were hit. Move the crosshair to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
+  txt_4 = document.createTextNode("Step 4: Draw the route\nUse the cross-hairs tool to map out the route you walked along before you were hit.” Move the crosshair to the previous intersection and click the mouse and then the next intersection and click the mouse and so on. You can delete a most recent intersection that you draw by pressing \"remove last intersection\" on the map. Press \"Next\" after finishing.");
   txt_5 = document.createTextNode("Step 5: Collision Information\nPlease press \"Next\" after answering all the questions below.");
   txt_6 = document.createTextNode("Step 6: A little bit about youserlf\nPlease answer them and then press \"Done\"");
   // txt_7 = document.createTextNode("Review: Here is all the information about this accident.\nPress \"Submit\"");
   txt_8 = document.createTextNode("Completed: Your report is submitted.\nThank you!");
+  */
   step_1 = document.getElementById('step1');
   step_2 = document.getElementById('step2');
   step_3 = document.getElementById('step3');
   step_4 = document.getElementById('step4');
   step_5 = document.getElementById('step5');
   step_6 = document.getElementById('step6');
-  step_7 = document.getElementById('step7');
 
   // step1 starts
   step_1.style.display = 'block';
-  ins_box.innerText = txt_1.textContent;
+  // ins_box.innerText = txt_1.textContent;
 
   var now = new Date(),
     maxDate = now.toLocaleDateString().substring(0,10);
@@ -54,6 +55,195 @@ $(document).ready(function () {
   var street = "";
   var cross_street = "";
 
+  function acc_spot_start()
+  {
+      map.setOptions({draggableCursor:'url(../static/cursors/Locate.cur), auto'});
+
+      GMaps.on('click', map.map, function(event) {
+        // var index = map.markers.length;
+        map.removeMarkers();
+        var lat = event.latLng.lat();
+        var lng = event.latLng.lng();
+
+        start_point = [lat, lng];
+        map.addMarker({
+          lat: lat,
+          lng: lng,
+          title: 'Marker',
+          infoWindow: {
+            content : "This is a spot of the accident: \n".concat([lat, lng])
+          }
+        });
+
+        map.setOptions({draggableCursor:''});
+
+        GMaps.off('click', map.map, function(event) {
+            event.preventDefault();
+        });
+
+        /*************************** step 3:  Draw the route ***********************************/
+        // hide step3, start step4
+        step_2.style.display = 'none';
+        step_3.style.display = 'block';
+
+        draw_route_start();
+
+      });
+  };
+
+  function draw_route_start()
+  {
+      map.setOptions({draggableCursor:'url(../static/cursors/Locate0.cur), auto'});
+
+      path = [start_point];
+
+      ctrl_rm_last_inter = map.addControl({
+          position: 'TOP_RIGHT',
+          content: 'remove last intersection',
+          style: {
+            textAlign: 'center',
+            height: '30px',
+            lineHeight: '18px',
+            fontSize : '16px',
+            margin: '5px',
+            padding: '1px 6px',
+            border: 'solid 4px #717B87',
+            background: '#fff'
+          },
+          events: {
+            click: function(){
+              if (path.length>1) {
+                  path.pop();
+                  map.removePolylines();
+                  drawRoute(path, map);
+              }
+            }
+          }
+       });
+
+      GMaps.on('click', map.map, function(event) {
+        var lat = event.latLng.lat();
+        var lng = event.latLng.lng();
+        path.push([lat, lng]);
+
+        drawRouteOneStep(path, map);
+      });
+  };
+
+  function draw_route_end()
+  {
+      if(path.length == 1) {
+          alert("Please draw the route with at least one intersection before the accident.");
+          return;
+      }
+      // document.getElementById('map').style.cursor='url(Pencil.cur), auto';
+      map.setOptions({draggableCursor:''});
+      GMaps.off('click', map.map, function(event) {
+          event.preventDefault();
+      });
+
+      map.removeControl(ctrl_rm_last_inter);
+  };
+
+  // back buttons
+  $('#step2_back').click(function(e){
+      e.preventDefault();
+      step_2.style.display = 'none';
+      step_1.style.display = 'block';
+      // clean locate cursor
+  });
+  $('#step3_back').click(function(e){
+      e.preventDefault();
+      step_3.style.display = 'none';
+      step_2.style.display = 'block';
+      // clean crosshair cursor, clean remove last button
+      // enable locate cursor
+  });
+  $('#step4_back').click(function(e){
+      e.preventDefault();
+      step_4.style.display = 'none';
+      step_3.style.display = 'block';
+      // enable crosshair cursor, enable remove last button
+  });
+  $('#step5_back').click(function(e){
+      e.preventDefault();
+      step_5.style.display = 'none';
+      step_4.style.display = 'block';
+      //
+  });
+  $('#step6_back').click(function(e){
+      e.preventDefault();
+      step_6.style.display = 'none';
+      step_5.style.display = 'block';
+  });
+
+  /*************************** step 1: Locate the area ***********************************/
+  $('#locate_me_button').click(function(e){
+      e.preventDefault();
+      // alert("Locating! Please allow the browser to locate.");
+      GMaps.geolocate({
+        success: function(position){
+          map.setCenter(position.coords.latitude, position.coords.longitude);
+        },
+        error: function(error){
+          alert('Geolocation failed: '+error.message);
+        },
+        not_supported: function(){
+          alert("Your browser does not support geolocation");
+        },
+        always: function(){
+        }
+      });
+  });
+
+  $('#geocoding_form').submit(function(e){
+    e.preventDefault();
+    state = $('#state').val().trim();
+    city = $('#city').val().trim();
+    street = $('#street').val().trim();
+    cross_street = $('#cross_street').val().trim();
+
+    var address_list = [state, ', ', city, ', ', street, ', ', cross_street];
+    var address_in = "".concat(...address_list);
+    // alert(address_in);
+    state_city_st_cst = address_in; // "state, city, street, cross_street"
+    // e.g. Main Street & everett st, Lafayette, IN
+    address_list = [street, ' & ', cross_street, ', ', city, ', ', state];
+    address_in = "".concat(...address_list);
+    GMaps.geocode({
+      address: address_in,
+      callback: function(results, status){
+        if(status=='OK'){
+          var latlng = results[0].geometry.location;
+          map.setCenter(latlng.lat(), latlng.lng());
+          map.setZoom(17);
+        }
+      }
+    });
+  });
+
+  /*************************** step 2: acc spot ***********************************/
+  $('#step1_next').click(function(e) {
+      e.preventDefault();
+      // hide step2, start step3
+      step_1.style.display = 'none';
+      step_2.style.display = 'block';
+      acc_spot_start();
+      // ins_box.innerText = txt_3.textContent;
+  });
+
+  /*************************** step 3.1: route confirm ***********************************/
+  $('#draw_end').click(function(e){
+      e.preventDefault();
+      // alert("end drawing!");
+      draw_route_end();
+      // hide step4, start step5
+      step_3.style.display = 'none';
+      step_4.style.display = 'block';
+      // ins_box.innerText = txt_5.textContent;
+  });
+
+  /*************************** step 4: date ***********************************/
   $('#date_form').submit(function(e){
       e.preventDefault();
       var acc_date_t = document.getElementById("accident_date");
@@ -85,187 +275,11 @@ $(document).ready(function () {
       }
       acc_date = input_date;
 
-      // hide step1, start step2
-      step_1.style.display = 'none';
-      step_2.style.display = 'block';
-      ins_box.innerText = txt_2.textContent;
-  });
-
-  $('#locate_me_button').click(function(e){
-      e.preventDefault();
-      alert("Locating! Please allow the browser to locate.");
-      GMaps.geolocate({
-        success: function(position){
-          map.setCenter(position.coords.latitude, position.coords.longitude);
-        },
-        error: function(error){
-          alert('Geolocation failed: '+error.message);
-        },
-        not_supported: function(){
-          alert("Your browser does not support geolocation");
-        },
-        always: function(){
-          alert("You are located!");
-        }
-      });
-  });
-
-  $('#geocoding_form').submit(function(e){
-    e.preventDefault();
-    state = $('#state').val().trim();
-    city = $('#city').val().trim();
-    street = $('#street').val().trim();
-    cross_street = $('#cross_street').val().trim();
-
-    var address_list = [state, ', ', city, ', ', street, ', ', cross_street];
-    var address_in = "".concat(...address_list);
-    // alert(address_in);
-    state_city_st_cst = address_in; // "state, city, street, cross_street"
-    // e.g. Main Street & everett st, Lafayette, IN
-    address_list = [street, ' & ', cross_street, ', ', city, ', ', state];
-    address_in = "".concat(...address_list);
-    GMaps.geocode({
-      address: address_in,
-      callback: function(results, status){
-        if(status=='OK'){
-          var latlng = results[0].geometry.location;
-          map.setCenter(latlng.lat(), latlng.lng());
-          /*
-          map.addMarker({
-            lat: latlng.lat(),
-            lng: latlng.lng()
-          });
-          */
-          map.setZoom(17);
-        }
-      }
-    });
-  });
-
-  $('#step2_next').click(function(e) {
-      e.preventDefault();
-      // hide step2, start step3
-      step_2.style.display = 'none';
-      step_3.style.display = 'block';
-      ins_box.innerText = txt_3.textContent;
-
-      map.setOptions({draggableCursor:'url(../static/cursors/Locate.cur), auto'});
-
-      GMaps.on('click', map.map, function(event) {
-        // var index = map.markers.length;
-        map.removeMarkers();
-        var lat = event.latLng.lat();
-        var lng = event.latLng.lng();
-
-        // var template = $('#edit_marker_template').text();
-
-        // var content = template.replace(/{{index}}/g, index).replace(/{{lat}}/g, lat).replace(/{{lng}}/g, lng);
-        start_point = [lat, lng];
-        map.addMarker({
-          lat: lat,
-          lng: lng,
-          title: 'Marker',
-          infoWindow: {
-            content : "This is a spot of the accident: \n".concat([lat, lng])
-          }
-        });
-      });
-  })
-
-  $('#place_pin_end').click(function(e){
-      e.preventDefault();
-      if(start_point == null) {
-          alert("Please set the spot of accident on the map.");
-          return;
-      }
-      // alert("Spot set!");
-      map.setOptions({draggableCursor:''});
-
-      GMaps.off('click', map.map, function(event) {
-          event.preventDefault();
-      });
-
-      // hide step3, start step4
-      step_3.style.display = 'none';
-      step_4.style.display = 'block';
-      ins_box.innerText = txt_4.textContent;
-
-      // alert("start drawing!");
-      map.setOptions({draggableCursor:'url(../static/cursors/Locate0.cur), auto'});
-
-      path = [start_point];
-
-      ctrl_rm_last_inter = map.addControl({
-          position: 'TOP_RIGHT',
-          content: 'remove last intersection',
-          style: {
-            textAlign: 'center',
-            height: '30px',
-            lineHeight: '18px',
-            fontSize : '16px',
-            margin: '5px',
-            padding: '1px 6px',
-            border: 'solid 4px #717B87',
-            background: '#fff'
-          },
-          events: {
-            click: function(){
-              if (path.length>1) {
-                  path.pop();
-                  map.removePolylines();
-                  drawRoute(path, map);
-                  /*
-                  map.removePolylines();
-                  map.drawPolyline({
-                    path: path,
-                    strokeColor: '#131540',
-                    strokeOpacity: 0.6,
-                    strokeWeight: 6
-                  });
-                  */
-              }
-            }
-          }
-       });
-
-      GMaps.on('click', map.map, function(event) {
-        var lat = event.latLng.lat();
-        var lng = event.latLng.lng();
-        path.push([lat, lng]);
-
-        drawRouteOneStep(path, map);
-        /*
-        map.removePolylines();
-        map.drawPolyline({
-          path: path,
-          strokeColor: '#131540',
-          strokeOpacity: 0.6,
-          strokeWeight: 6
-        });
-        */
-      });
-  });
-
-  $('#draw_end').click(function(e){
-      e.preventDefault();
-      // alert("end drawing!");
-      if(path.length == 1) {
-          alert("Please draw the route with at least one intersection before the accident.");
-          return;
-      }
-      // document.getElementById('map').style.cursor='url(Pencil.cur), auto';
-      map.setOptions({draggableCursor:''});
-      GMaps.off('click', map.map, function(event) {
-          event.preventDefault();
-      });
-
-      map.removeControl(ctrl_rm_last_inter);
-      // hide step4, start step5
       step_4.style.display = 'none';
       step_5.style.display = 'block';
-      ins_box.innerText = txt_5.textContent;
   });
 
+  /*************************** step 5: questions ***********************************/
   $('#tell_end').click(function(e){
       e.preventDefault();
       // alert("tell ending");
@@ -304,7 +318,7 @@ $(document).ready(function () {
       // hide step5, start step6
       step_5.style.display = 'none';
       step_6.style.display = 'block';
-      ins_box.innerText = txt_6.textContent;
+      // ins_box.innerText = txt_6.textContent;
   });
 
   doConfirm("Some questions are not answered. Press \"Answer\" to answer them or press \"Next\" to go to next section.",
@@ -319,17 +333,19 @@ $(document).ready(function () {
                 // hide step5, start step6
                 step_5.style.display = 'none';
                 step_6.style.display = 'block';
-                ins_box.innerText = txt_6.textContent;
+                // ins_box.innerText = txt_6.textContent;
             }
   );
+
+  /*************************** step 6: personal info ***********************************/
 
   $('#person_info_form').submit(function(e){
       e.preventDefault();
 
       // hide step6, start step7
       step_6.style.display = 'none';
-      step_7.style.display = 'block';
-      ins_box.innerText = txt_8.textContent;
+
+      // ins_box.innerText = txt_8.textContent;
 
       gender = $('#gender').val().trim();
       var age_element = document.getElementById('age');
@@ -365,8 +381,8 @@ $(document).ready(function () {
       else answer_form.submit(); // server will ask it goto thanks screen
       // alert("Submitting drawing!");
       // hide step7
-      step_7.style.display = 'none';
-      ins_box.innerText = txt_8.textContent;
+
+      // ins_box.innerText = txt_8.textContent;
 
 
       /*
@@ -519,4 +535,4 @@ function doConfirm(msg, yesFn, noFn)
     confirmBox.find(".yes").click(yesFn);
     confirmBox.find(".no").click(noFn);
     // confirmBox.show();
-}
+};
