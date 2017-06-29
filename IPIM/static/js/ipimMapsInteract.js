@@ -83,9 +83,9 @@ $(document).ready(function () {
 
         /*************************** step 3:  Draw the route ***********************************/
         // hide step3, start step4
-        step_2.style.display = 'none';
-        step_3.style.display = 'block';
-
+        // step_2.style.display = 'none';
+        // step_3.style.display = 'block';
+        $("#step2").fadeOut(function(){$("#step3").fadeIn();});
         draw_route_start();
 
       });
@@ -149,8 +149,11 @@ $(document).ready(function () {
   // back buttons
   $('#step2_back').click(function(e){
       e.preventDefault();
+      // step_2.style.display = 'none';
+      // step_1.style.display = 'block';
+      $("#step2").fadeOut();
       step_2.style.display = 'none';
-      step_1.style.display = 'block';
+      $("#step1").fadeIn();
       // clean start_point
       start_point = null;
       map.removeMarkers();
@@ -163,8 +166,11 @@ $(document).ready(function () {
   });
   $('#step3_back').click(function(e){
       e.preventDefault();
+      // step_3.style.display = 'none';
+      // step_2.style.display = 'block';
+      $("#step3").fadeOut();
       step_3.style.display = 'none';
-      step_2.style.display = 'block';
+      $("#step2").fadeIn();
       // clean crosshair cursor, clean remove last button, clean path
       map.setOptions({draggableCursor:''});
       GMaps.off('click', map.map, function(event) {
@@ -179,20 +185,29 @@ $(document).ready(function () {
   });
   $('#step4_back').click(function(e){
       e.preventDefault();
+      // step_4.style.display = 'none';
+      // step_3.style.display = 'block';
+      $("#step4").fadeOut();
       step_4.style.display = 'none';
-      step_3.style.display = 'block';
+      $("#step3").fadeIn();
       // enable crosshair cursor, enable remove last button
       draw_route_start();
   });
   $('#step5_back').click(function(e){
       e.preventDefault();
+      // step_5.style.display = 'none';
+      // step_4.style.display = 'block';
+      $("#step5").fadeOut();
       step_5.style.display = 'none';
-      step_4.style.display = 'block';
+      $("#step4").fadeIn();
   });
   $('#step6_back').click(function(e){
       e.preventDefault();
+      // step_6.style.display = 'none';
+      // step_5.style.display = 'block';
+      $("#step6").fadeOut();
       step_6.style.display = 'none';
-      step_5.style.display = 'block';
+      $("#step5").fadeIn();
   });
 
   /*************************** step 1: Locate the area ***********************************/
@@ -244,8 +259,9 @@ $(document).ready(function () {
   $('#step1_next').click(function(e) {
       e.preventDefault();
       // hide step2, start step3
-      step_1.style.display = 'none';
-      step_2.style.display = 'block';
+      // step_1.style.display = 'none';
+      // step_2.style.display = 'block';
+      $("#step1").fadeOut(function(){$("#step2").fadeIn();});
       acc_spot_start();
       // ins_box.innerText = txt_3.textContent;
   });
@@ -256,9 +272,9 @@ $(document).ready(function () {
       // alert("end drawing!");
       if(draw_route_end() == -1) return;
       // hide step4, start step5
-      step_3.style.display = 'none';
-      step_4.style.display = 'block';
-      // ins_box.innerText = txt_5.textContent;
+      // step_3.style.display = 'none';
+      // step_4.style.display = 'block';
+      $("#step3").fadeOut(function(){$("#step4").fadeIn();});
   });
 
   /*************************** step 4: date ***********************************/
@@ -293,8 +309,9 @@ $(document).ready(function () {
       }
       acc_date = input_date;
 
-      step_4.style.display = 'none';
-      step_5.style.display = 'block';
+      // step_4.style.display = 'none';
+      // step_5.style.display = 'block';
+      $("#step4").fadeOut(function(){$("#step5").fadeIn();});
   });
 
   /*************************** step 5: questions ***********************************/
@@ -334,8 +351,9 @@ $(document).ready(function () {
       }
 
       // hide step5, start step6
-      step_5.style.display = 'none';
-      step_6.style.display = 'block';
+      // step_5.style.display = 'none';
+      // step_6.style.display = 'block';
+      $("#step5").fadeOut(function(){$("#step6").fadeIn();});
       // ins_box.innerText = txt_6.textContent;
   });
 
@@ -349,9 +367,9 @@ $(document).ready(function () {
                 // not continue_anwser
                 // alert("no is pressed");
                 // hide step5, start step6
-                step_5.style.display = 'none';
-                step_6.style.display = 'block';
-                // ins_box.innerText = txt_6.textContent;
+                // step_5.style.display = 'none';
+                // step_6.style.display = 'block';
+                $("#step5").fadeOut(function(){$("#step6").fadeIn();});
             }
   );
 
@@ -361,7 +379,8 @@ $(document).ready(function () {
       e.preventDefault();
 
       // hide step6, start step7
-      step_6.style.display = 'none';
+      // step_6.style.display = 'none';
+      $("#step6").fadeOut();
 
       // ins_box.innerText = txt_8.textContent;
 
