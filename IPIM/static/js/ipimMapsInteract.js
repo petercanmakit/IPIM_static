@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     var map;
     var start_point;
-    var path;
+    var path = [];
     var acc_date;
     var txt_1, txt_2, txt_3, txt_4, txt_5;
     var step_1, step_2, step_3, step_4, step_5;
@@ -55,7 +55,7 @@ $(document).ready(function () {
   var street = "";
   var cross_street = "";
 
-  function acc_spot_start()
+  function acc_spot_start() // take step element for html element transform
   {
       map.setOptions({draggableCursor:'url(../static/cursors/Locate.cur), auto'});
 
@@ -95,7 +95,7 @@ $(document).ready(function () {
   {
       map.setOptions({draggableCursor:'url(../static/cursors/Locate0.cur), auto'});
 
-      path = [start_point];
+      if(path.length == 0) path = [start_point];
 
       ctrl_rm_last_inter = map.addControl({
           position: 'TOP_RIGHT',
@@ -134,7 +134,7 @@ $(document).ready(function () {
   {
       if(path.length == 1) {
           alert("Please draw the route with at least one intersection before the accident.");
-          return;
+          return -1; // fail
       }
       // document.getElementById('map').style.cursor='url(Pencil.cur), auto';
       map.setOptions({draggableCursor:''});
@@ -143,6 +143,7 @@ $(document).ready(function () {
       });
 
       map.removeControl(ctrl_rm_last_inter);
+      return 0; // success
   };
 
   // back buttons
@@ -150,26 +151,43 @@ $(document).ready(function () {
       e.preventDefault();
       step_2.style.display = 'none';
       step_1.style.display = 'block';
-      // clean locate cursor
+      // clean start_point
+      start_point = null;
+      map.removeMarkers();
+      // disable locate cursor
+      map.setOptions({draggableCursor:''});
+
+      GMaps.off('click', map.map, function(event) {
+          event.preventDefault();
+      });
   });
   $('#step3_back').click(function(e){
       e.preventDefault();
       step_3.style.display = 'none';
       step_2.style.display = 'block';
-      // clean crosshair cursor, clean remove last button
+      // clean crosshair cursor, clean remove last button, clean path
+      map.setOptions({draggableCursor:''});
+      GMaps.off('click', map.map, function(event) {
+          event.preventDefault();
+      });
+      map.removeControl(ctrl_rm_last_inter);
+      path = [];
+      // clean route stroke on map
+      map.removePolylines();
       // enable locate cursor
+      acc_spot_start();
   });
   $('#step4_back').click(function(e){
       e.preventDefault();
       step_4.style.display = 'none';
       step_3.style.display = 'block';
       // enable crosshair cursor, enable remove last button
+      draw_route_start();
   });
   $('#step5_back').click(function(e){
       e.preventDefault();
       step_5.style.display = 'none';
       step_4.style.display = 'block';
-      //
   });
   $('#step6_back').click(function(e){
       e.preventDefault();
@@ -236,7 +254,7 @@ $(document).ready(function () {
   $('#draw_end').click(function(e){
       e.preventDefault();
       // alert("end drawing!");
-      draw_route_end();
+      if(draw_route_end() == -1) return;
       // hide step4, start step5
       step_3.style.display = 'none';
       step_4.style.display = 'block';
