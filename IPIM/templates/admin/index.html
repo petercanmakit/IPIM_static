@@ -24,6 +24,9 @@
 
     <link href="../../static/assets/css/application.css" rel="stylesheet">
 
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+    <script type="text/javascript" src="../../static/js/admin.js"></script>
     <style>
       /* note: this is a hack for ios iframe for bootstrap themes shopify page */
       /* this chunk of css is not part of the toolkit :) */
@@ -86,6 +89,64 @@
   </div>
 </div>
 
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
+</div>
+
+<div class="row statcards">
+  <div class="col-sm-6 col-lg-6 m-b">
+    <div class="statcard statcard-success">
+      <div class="p-a">
+        <span class="statcard-desc">Page views</span>
+        <h2 class="statcard-number">
+          12,938
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a','b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-6 m-b">
+    <div class="statcard statcard-danger">
+      <div class="p-a">
+        <span class="statcard-desc">Collisions</span>
+        <h2 class="statcard-number">
+          {{ total_number }}
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Complete sets per time period</h3>
+</div>
+
+<canvas id="myChart" height="100"></canvas>
+<script type="text/javascript">
+    drawBarChart([15,2,35,45,10], "Sets per month", ["Jan", "Feb", "Mar", "Apr", "May"], "rgb(24, 179, 126)", 'myChart');
+</script>
+
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Page views per time period</h3>
+</div>
+
+<div>
+  <canvas
+    class="ex-line-graph"
+    width="600" height="400"
+    data-chart="bar"
+    data-scale-line-color="transparent"
+    data-scale-grid-line-color="rgba(255,255,255,.05)"
+    data-scale-font-color="#a2a2a2"
+    data-labels="['August','September','October','November','December','January','February']"
+    data-value="[{ label: 'First dataset', data: [65, 59, 80, 70, 56, 55, 40] }]">
+  </canvas>
+</div>
+
+
 <hr class="m-t">
 
 <div class="row text-center m-t-lg">
@@ -131,38 +192,7 @@
       dougnut_for_daytime.setAttribute("data-value", "[{ value: "+daytime+", color: '#1bc98e', label: 'Day time' }, { value: "+nighttime+", color: '#1ca8dd', label: 'Night time' }]");
 </script>
 
-<div class="hr-divider m-t-md m-b">
-  <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
-</div>
 
-<div class="row statcards">
-  <div class="col-sm-6 col-lg-6 m-b">
-    <div class="statcard statcard-success">
-      <div class="p-a">
-        <span class="statcard-desc">Page views</span>
-        <h2 class="statcard-number">
-          12,938
-        </h2>
-        <hr class="statcard-hr m-b-0">
-      </div>
-      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a','b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
-    </div>
-  </div>
-  <div class="col-sm-6 col-lg-6 m-b">
-    <div class="statcard statcard-danger">
-      <div class="p-a">
-        <span class="statcard-desc">Collisions</span>
-        <h2 class="statcard-number">
-          {{ total_number }}
-        </h2>
-        <hr class="statcard-hr m-b-0">
-      </div>
-      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
-    </div>
-  </div>
-</div>
-
-<hr class="m-t">
 
       </div>
     </div>
