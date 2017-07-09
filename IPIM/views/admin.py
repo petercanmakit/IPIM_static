@@ -6,6 +6,11 @@ from IPIM import app
 from IPIM.collision import Collision
 from IPIM.main import engine
 
+from IPIM.ga import *
+# ga init
+ga_analytics = initialize_analyticsreporting()
+ga_response = get_report(ga_analytics)
+
 def adminLogin(name, password):
     cur = g.conn.execute('''
         SELECT pass FROM Users WHERE name=%s LIMIT 1;
@@ -66,10 +71,12 @@ def admin():
     daytime_number = cur.fetchone()[0]
     cur.close()
 
-    # nighttime number
-    # nighttime_number = total_number - daytime_number
+    ######## get pageviews #########
+    ga_pageviews = get_pageviews(ga_response)
+    # print "pageviews is " +  ga_pageviews
+    ######## get day pageviews #########
 
-    re = dict(total_number = total_number, analyzed_number = analyzed_number, daytime_number = daytime_number)
+    re = dict(total_number = total_number, pageviews = ga_pageviews)
 
     return render_template('/admin/index.html', **re)
   else:

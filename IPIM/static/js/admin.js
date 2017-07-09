@@ -44,44 +44,44 @@ function getMaxOfArray(numArray) {
  */
 var drawBarChart = function(dataArray, label, labelArray, barColor, canvasId) {
     var ctx = document.getElementById(canvasId);
+    // alert(typeof ctx);
     var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: labelArray,
-        datasets: [{
-            label: label,
-            data: dataArray,
-            backgroundColor: barColor
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                afterTickToLabelConversion: function(scaleInstance) {
-                    // set the first and last tick to null so it does not display
-                    // note, ticks[0] is the last tick and ticks[length - 1] is the first
-                    scaleInstance.ticks[0] = null;
-                    // scaleInstance.ticks[scaleInstance.ticks.length - 1] = null;
-
-                    // need to do the same thing for this similiar array which is used internally
-                    scaleInstance.ticksAsNumbers[0] = null;
-                    // scaleInstance.ticksAsNumbers[scaleInstance.ticksAsNumbers.length - 1] = null;
-                },
-                id: 'y-axis-1',
-                ticks: {
-                    beginAtZero:true,
-                    max: getMaxOfArray(dataArray) * 1.1,
-
-                },
-                gridLines: {
-                    color: 'rgba(255,255,255,.05)'
-                }
+        type: 'bar',
+        data: {
+            labels: labelArray,
+            datasets: [{
+                label: label,
+                data: dataArray,
+                backgroundColor: barColor
             }]
         },
-        legend: {
-            display: false
-        }
-    }
-});
+        options: {
+            scales: {
+                yAxes: [{
+                    afterTickToLabelConversion: function(scaleInstance) {
+                        // set the first and last tick to null so it does not display
+                        // note, ticks[0] is the last tick and ticks[length - 1] is the first
+                        scaleInstance.ticks[0] = null;
+                        // scaleInstance.ticks[scaleInstance.ticks.length - 1] = null;
 
+                        // need to do the same thing for this similiar array which is used internally
+                        scaleInstance.ticksAsNumbers[0] = null;
+                        // scaleInstance.ticksAsNumbers[scaleInstance.ticksAsNumbers.length - 1] = null;
+                    },
+                    id: 'y-axis-1',
+                    ticks: {
+                        beginAtZero:true,
+                        max: getMaxOfArray(dataArray) * 1.1,
+
+                    },
+                    gridLines: {
+                        color: 'rgba(255,255,255,.05)'
+                    }
+                }]
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
 };
