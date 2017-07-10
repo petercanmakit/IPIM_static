@@ -99,7 +99,7 @@
       <div class="p-a">
         <span class="statcard-desc">Page views</span>
         <h2 class="statcard-number">
-          {{ pageviews }}
+          {{ pv_total[1][0] }}
         </h2>
         <hr class="statcard-hr m-b-0">
       </div>
@@ -151,10 +151,10 @@
 <canvas id="yearsChartPv" height="100" style="display: none;"></canvas>
 
 <script type="text/javascript">
-    drawBarChart([15,2,35,45,1,4,0], "Page views per day", ["July 1", "July 2", "July 3", "July 4", "July 5", "July 6", "July 7"], "rgb(24, 179, 126)", 'daysChartPv');
-    drawBarChart([15,2,35,45,1,4,0,2], "Page views per week", ["1", "2", "3", "4", "5", "6", "7", "8"], "rgb(24, 179, 126)", 'weeksChartPv');
-    drawBarChart([2,35,45,1,4,2], "Page views per month", ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], "rgb(24, 179, 126)", 'monthsChartPv');
-    drawBarChart([15], "Page views per year", ["2017"], "rgb(24, 179, 126)", 'yearsChartPv');
+    drawBarChart({{ pv_day[1]|safe }}, "Page views per day", {{ pv_day[0]|safe }}, "rgb(24, 179, 126)", 'daysChartPv');
+    drawBarChart({{ pv_week[1]|safe }}, "Page views per week", {{ pv_week[0]|safe }}, "rgb(24, 179, 126)", 'weeksChartPv');
+    drawBarChart({{ pv_month[1]|safe }}, "Page views per month", {{ pv_month[0]|safe }}, "rgb(24, 179, 126)", 'monthsChartPv');
+    drawBarChart({{ pv_year[1]|safe }}, "Page views per year", {{ pv_year[0]|safe }}, "rgb(24, 179, 126)", 'yearsChartPv');
 
 </script>
 

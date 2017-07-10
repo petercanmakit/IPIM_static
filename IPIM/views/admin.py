@@ -71,12 +71,15 @@ def admin():
     daytime_number = cur.fetchone()[0]
     cur.close()
 
-    ######## get pageviews #########
-    ga_pageviews = get_pageviews(ga_response)
-    # print "pageviews is " +  ga_pageviews
-    ######## get day pageviews #########
+    ######## get pageviews ######### [label array<str>, pageviews array<int>]
+    pv_day = get_pageviews_array(ga_analytics, '6daysAgo', 'today', 'day')
+    pv_week = get_pageviews_array(ga_analytics, '27daysAgo', 'today', 'week')
+    pv_month = get_pageviews_array(ga_analytics, '2017-05-01', 'today', 'month')
+    pv_year = get_pageviews_array(ga_analytics, '2017-01-01', 'today', 'year')
+    pv_total = get_pageviews_array(ga_analytics, '2017-01-01', 'today', 'total')
 
-    re = dict(total_number = total_number, pageviews = ga_pageviews)
+    re = dict(total_number = total_number, pv_day = pv_day, pv_week = pv_week,
+                pv_month = pv_month, pv_year=pv_year, pv_total=pv_total)
 
     return render_template('/admin/index.html', **re)
   else:
