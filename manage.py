@@ -1,6 +1,6 @@
 import datetime
 import time
-import radar 
+import radar
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import sessionmaker
@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 def createSchema(some_engine):
 	DB_Session = sessionmaker(bind=some_engine)
 	db_session = DB_Session()
-	
+
 	try:
 		db_session.execute('''
 			DROP TABLE IF EXISTS Users CASCADE;
@@ -17,10 +17,10 @@ def createSchema(some_engine):
 				Name TEXT,
 				Pass TEXT
 			);
-			
+
 			INSERT INTO Users(uid, name, pass)
 			VALUES (1, 'admin', 'ipim_admin');
-			
+
 			DROP TABLE IF EXISTS Collisions CASCADE;
 			CREATE TABLE Collisions(
 				Cid bigserial PRIMARY KEY,
@@ -72,7 +72,7 @@ def generateRandomDate(startstr, stopstr):
 def insertTestData(some_engine, some_accdate, some_submitdate):
 	DB_Session = sessionmaker(bind=some_engine)
 	db_session = DB_Session()
-	
+
 	try:
 		db_session.execute('''
 			INSERT INTO Collisions (
@@ -99,7 +99,7 @@ def insertTestData(some_engine, some_accdate, some_submitdate):
 	except:
 		db_session.rollback()
 		raise
-	
+
 
 if __name__ == "__main__":
 	import click
@@ -122,12 +122,12 @@ if __name__ == "__main__":
 		if create :
 			createSchema(engine)
 		elif insert :
-			for i in range(SETS): 
+			for i in range(SETS):
 				acc_date = generateRandomDate("2017-04-01", 'now')
 				sub_date = generateRandomDate(acc_date , 'now')
 				# print sub_date
 				insertTestData(engine, acc_date, sub_date)
 		else:
 			print "arguments wrong..."
-	
+
 	run()
