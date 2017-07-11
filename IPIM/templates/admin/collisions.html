@@ -128,14 +128,8 @@
 
         <div class="map_axu">
             Collision ID: {{ collisionId }},
-            Analyzed: {% if analyzed == 'True' %}
-                        Yes
-                      {% else %}
-                        No
-                      {% endif %}<br>
+            Submit Type: {{ submittype }}<br>
             Route: <span id="path_str">{{ path }}</span>
-
-
         </div>
 
         <div class="container" id="map_container">

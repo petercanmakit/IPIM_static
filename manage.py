@@ -116,8 +116,8 @@ if __name__ == "__main__":
 		SETS for number fo test datasets of insersion
 		"""
 		SETS = sets
-		DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
-		# DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+		# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
+		DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
 		engine = create_engine(DATABASEURI)
 		if create :
 			createSchema(engine)

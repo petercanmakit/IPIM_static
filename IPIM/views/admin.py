@@ -161,18 +161,18 @@ def collisions():
         cid = request.form['cid']
         if cid != "":
             cur = g.conn.execute('''
-                SELECT ST_asText(c.geom), c.analyzed
+                SELECT ST_asText(c.geom), c.SubmitType
                 FROM Collisions c
                 WHERE c.cid = %s
             ''', (str(cid),)
             )
             result = cur.fetchone()
             path = lineStringToArray(str(result[0]))
-            analyzed = str(result[1])
+            submittype = str(result[1])
             # print analyzed
             cur.close()
 
-            re = dict(path = path, collisionId = cid, analyzed = analyzed)
+            re = dict(path = path, collisionId = cid, submittype=submittype)
             # print path, cid
             cur.close()
             return render_template('/admin/collisions.html', **re)
