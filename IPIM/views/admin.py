@@ -6,6 +6,8 @@ from IPIM import app
 from IPIM.collision import Collision
 from IPIM.main import engine
 
+import datetime
+
 from IPIM.ga import *
 # ga init
 ga_analytics = initialize_analyticsreporting()
@@ -23,6 +25,86 @@ def adminLogin(name, password):
         return True
     else :
         return False
+
+def dateStrNdaysAgo2Date(ndays, later):
+    '''get the date objects for date->later and ndays before that
+    Args: nadays, later
+    Returns: [earlierdate<datetime.date>, laterdate<datetime.date>]
+    '''
+    laterdatetime = datetime.datetime.now()
+    laterdate = laterdatetime.date()
+    if later == 'now':
+        pass
+    else:
+        laterdatetime = datetime.datetime.strptime(later, '%Y-%m-%d')
+        laterdate = laterdatetime.date()
+    earlierdatetime = laterdatetime - datetime.timedelta(days=ndays)
+    earlierdate = earlierdatetime.date()
+    return [earlierdate, laterdate]
+
+def dateStr2Date(datestr):
+    '''
+    Args: <string> datestr
+    Returns: <datetime.date> dateobject
+    '''
+    date = datetime.datetime.now().date()
+    if datestr == 'now':
+        pass
+    else:
+        date = datetime.datetime.strptime(datestr, '%Y-%m-%d').date()
+    return date
+
+def dateobject2str(dateobject, bywhat):
+    '''turn a date object into string according to bywhat
+    Args:
+        @dateobject:
+        @bywhat: 'day', 'week', 'month', 'year'
+    '''
+    if bywhat == 'day':
+        return str(dateobject)
+    if bywhat == 'week':
+        return str(dateobject.year) + '-' + str(dateobject.isocalendar()[1])
+    if bywhat == 'month':
+        return str(dateobject.year) + '-' + str(dateobject.month)
+    if bywhat == 'year':
+        return str(dateobject.year)
+
+def getCount(start, end, bywhat): # datetime.date, inclusive
+    '''get the number of datasets submmited dated from start to end
+    Args:
+        start, end: in datetime.date() object,
+        bywhat: string -> 'day', 'week', 'month', 'year', 'total'
+    Returns:
+        [[<label>],[<count>]]
+    '''
+
+    if bywhat == 'total':
+        cur = g.conn.execute('''
+        SELECT count(*)
+        from collisions
+        ''')
+        result = cur.fetchone()[0]
+        cur.close()
+        return [['total'], [result]]
+
+    labels = []
+    counts = []
+    cur = g.conn.execute('''
+    SELECT date_trunc(%s, submitteddate) as bywhat, count(*)
+    from collisions
+    where submitteddate >= %s and submitteddate <= %s
+    group by bywhat
+    order by bywhat
+    ''',
+    (bywhat, str(start), str(end))
+    )
+    rows = cur.fetchall()
+    cur.close()
+    for row in rows:
+        labels.append(dateobject2str(row[0].date(), bywhat))
+        counts.append(int(row[1]))
+
+    return [labels, counts]
 
 # admin interface admin.html
 @app.route('/admin/', methods=['GET', 'POST'])
@@ -44,32 +126,14 @@ def admin():
       logged = True
 
   if logged:
-    # print "logged"
-    # total number
-    cur = g.conn.execute('''
-    SELECT count(*)
-    FROM Collisions
-    ''')
-    total_number = cur.fetchone()[0]
-    cur.close()
-
-    # analyzed number
-    cur = g.conn.execute('''
-    SELECT count(*)
-    FROM Collisions c
-    WHERE c.analyzed = 't'
-    ''')
-    analyzed_number = cur.fetchone()[0]
-    cur.close()
-
-    # daytime number
-    cur = g.conn.execute('''
-    SELECT count(*)
-    FROM Collisions c
-    WHERE c.TimeOfDay = 'Day time'
-    ''')
-    daytime_number = cur.fetchone()[0]
-    cur.close()
+    ######## get datasets count ######### [label array<str>, counts array<int>]
+    dates_for_day = dateStrNdaysAgo2Date(7, 'now')
+    cnt_day = getCount(dates_for_day[0], dates_for_day[1], 'day')
+    dates_for_week = dateStrNdaysAgo2Date(28, 'now')
+    cnt_week = getCount(dates_for_week[0], dates_for_week[1], 'week')
+    cnt_month = getCount(dateStr2Date('2017-04-01'), 'now', 'month')
+    cnt_year = getCount(dateStr2Date('2017-04-01'), 'now', 'year')
+    cnt_total = getCount(dateStr2Date('2017-04-01'), 'now', 'total')
 
     ######## get pageviews ######### [label array<str>, pageviews array<int>]
     pv_day = get_pageviews_array(ga_analytics, '6daysAgo', 'today', 'day')
@@ -78,8 +142,10 @@ def admin():
     pv_year = get_pageviews_array(ga_analytics, '2017-01-01', 'today', 'year')
     pv_total = get_pageviews_array(ga_analytics, '2017-01-01', 'today', 'total')
 
-    re = dict(total_number = total_number, pv_day = pv_day, pv_week = pv_week,
-                pv_month = pv_month, pv_year=pv_year, pv_total=pv_total)
+    re = dict(cnt_day=cnt_day, cnt_week=cnt_week, cnt_month=cnt_month,
+              cnt_year=cnt_year, cnt_total=cnt_total,
+              pv_day=pv_day, pv_week=pv_week, pv_month=pv_month,
+              pv_year=pv_year, pv_total=pv_total)
 
     return render_template('/admin/index.html', **re)
   else:

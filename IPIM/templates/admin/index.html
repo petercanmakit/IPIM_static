@@ -110,7 +110,7 @@
       <div class="p-a">
         <span class="statcard-desc">Collisions</span>
         <h2 class="statcard-number">
-          {{ total_number }}
+          {{ cnt_total[1][0] }}
         </h2>
         <hr class="statcard-hr m-b-0">
       </div>
@@ -250,11 +250,10 @@
 <canvas id="yearsChart" height="100" style="display: none;"></canvas>
 
 <script type="text/javascript">
-    drawBarChart([15,2,35,45,1,4,0], "Sets per day", ["July 1", "July 2", "July 3", "July 4", "July 5", "July 6", "July 7"], "rgb(25, 151, 198)", 'daysChart');
-    drawBarChart([15,2,35,45,1,4,0,2], "Sets per week", ["1", "2", "3", "4", "5", "6", "7", "8"], "rgb(25, 151, 198)", 'weeksChart');
-    drawBarChart([2,35,45,1,4,2], "Sets per month", ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], "rgb(25, 151, 198)", 'monthsChart');
-    drawBarChart([15], "Sets per year", ["2017"], "rgb(25, 151, 198)", 'yearsChart');
-
+    drawBarChart({{ cnt_day[1]|safe }}, "Sets per day", {{ cnt_day[0]|safe }}, "rgb(25, 151, 198)", 'daysChart');
+    drawBarChart({{ cnt_week[1]|safe }}, "Sets per week", {{ cnt_week[0]|safe }}, "rgb(25, 151, 198)", 'weeksChart');
+    drawBarChart({{ cnt_month[1]|safe }}, "Sets per month", {{ cnt_month[0]|safe }}, "rgb(25, 151, 198)", 'monthsChart');
+    drawBarChart({{ cnt_year[1]|safe }}, "Sets per year", {{ cnt_year[0]|safe }}, "rgb(25, 151, 198)", 'yearsChart');
 </script>
 
 <script type="text/javascript">
@@ -317,9 +316,6 @@
 
 }());
 </script>
-
-
-
 
 
 
