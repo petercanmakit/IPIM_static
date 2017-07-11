@@ -111,6 +111,9 @@ if __name__ == "__main__":
 	# @click.argument('PORT', default=8111, type=int)
 	def run(create, insert, sets):
 		"""
+		--create for create table schema\n
+		--insert for inserting test sets\n
+		SETS for number fo test datasets of insersion
 		"""
 		SETS = sets
 		DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
