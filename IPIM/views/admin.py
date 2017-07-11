@@ -157,6 +157,7 @@ def admin():
 # admin see the collisions
 @app.route('/admin/collisions/', methods=['POST', 'GET'])
 def collisions():
+    re = dict()
     if request.method == 'POST':
         cid = request.form['cid']
         if cid != "":
@@ -171,13 +172,31 @@ def collisions():
             submittype = str(result[1])
             # print analyzed
             cur.close()
-
-            re = dict(path = path, collisionId = cid, submittype=submittype)
+            # re = dict(path = path, collisionId = cid, submittype=submittype)
+            re['path'] = path
+            re['collisionId'] = cid
+            re['submittype'] = submittype
             # print path, cid
             cur.close()
-            return render_template('/admin/collisions.html', **re)
-    # print "just get"
-    return render_template('/admin/collisions.html')
+
+    # worldmap
+    cur = g.conn.execute('''
+        SELECT ST_AsText(ST_PointN(c.geom,1)), c.cid
+        FROM Collisions c
+    '''
+    )
+    # POINT(3 2)
+    rows = cur.fetchall()
+    cur.close()
+    spots = []
+    cids = []
+    for row in rows:
+        spots.append(pointStringToArray(row[0]))
+        cids.append(str(row[1]))
+    re['spots'] = spots
+    re['cids'] = cids
+
+    return render_template('/admin/collisions.html', **re)
 
 def lineStringToArray(line_str): #'LINESTRING(0 0, 1 1, 2 1, 2 2)'
     # in js: var path = []; // [[lat, lng], [lat, lng], ...]
@@ -190,6 +209,16 @@ def lineStringToArray(line_str): #'LINESTRING(0 0, 1 1, 2 1, 2 2)'
         path.append(float(str_pairs[0]))
         path.append(float(str_pairs[1]))
     return path
+
+def pointStringToArray(point_str): # POINT(3 2)
+    # return point = [lat, lng]
+    # in js: var spots = []; // [[lat, lng], [lat, lng], ...]
+    point_str = point_str.replace("POINT(", "").replace(")","")
+    point_strs = point_str.split(" ")
+    point = []
+    point.append(float(point_strs[0]))
+    point.append(float(point_strs[1]))
+    return point
 
 # download dashboard
 @app.route('/admin/download/', methods=['GET'])

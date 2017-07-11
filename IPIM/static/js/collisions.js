@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var path_element = document.getElementById("path_str");
     var path_str; // [40.7657215004278, -73.9642524719238, 40.764421348742, -73.9589309692383]
     if (path_element != null) {
@@ -8,6 +7,7 @@ $(document).ready(function () {
     else {
         return;
     }
+
     var path = [];
     // var path = []; // [[lat, lng], [lat, lng], ...]
 
@@ -124,3 +124,49 @@ var drawRoute = function(path, map) {
         walk = walk_next;
     }
 };
+
+var drawWorldMap = function(spots, cids, mapElement) {
+    var lat_lng_object_array = [];
+    var map = new GMaps({
+        el: mapElement,
+        lat: 40.763836272185216,
+        lng: -73.9619779586792
+    });
+
+
+    var start_point = [spots[0][0], spots[0][1]]; // [lat, lng]
+    // compute center
+    var lat_min = start_point[0];
+    var lat_max = start_point[1];
+    var lng_min = start_point[0];
+    var lng_max = start_point[1];
+    i = 0
+    for(var cord of spots) {
+        map.addMarker({
+          lat: cord[0],
+          lng: cord[1],
+          title: 'cid: '.concat([cids[i]]),
+          infoWindow: {
+            content :  "Cid: ".concat([cids[i]]) + "\nspot: \n".concat([cord[0], cord[1]])
+          }
+        });
+
+        lat_lng_object_array.push(new google.maps.LatLng(cord[0], cord[1]));
+        if(lat_max < cord[0])
+            lat_max = cord[0];
+        if(lat_min > cord[0])
+            lat_min = cord[0];
+        if(lng_max < cord[1])
+            lng_max = cord[1];
+        if(lng_min > cord[1])
+            lng_min = cord[1];
+        i+=1
+    }
+    var center_lat = (lat_max+lat_min)/2;
+    var center_lng = (lng_max+lng_min)/2;
+
+    map.setCenter(center_lat, center_lng);
+    map.fitLatLngBounds(lat_lng_object_array);
+
+    return map;
+}

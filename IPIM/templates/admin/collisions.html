@@ -33,7 +33,7 @@
       /* note: this is a hack for ios iframe for bootstrap themes shopify page */
       /* this chunk of css is not part of the toolkit :) */
 
-      #map_container {
+      .map_container {
           margin-top:20px;
           margin-bottom: 10px;
           text-align:center;
@@ -45,7 +45,11 @@
       }
 
       #map {
-          height: 600px;
+          height: 400px;
+          margin-right:30px;
+      }
+      #worldmap {
+          height: 400px;
           margin-right:30px;
       }
 
@@ -110,6 +114,20 @@
 
 <hr class="m-t">
 
+<div class="row m-t-sm">
+    <div class="container map_container">
+        <div class="row">
+            <div id="worldmap"></div>
+        </div><br>
+    </div>
+</div>
+<script type="text/javascript">
+    spots = {{ spots }}
+    cids = {{ cids|safe }}
+    var worldmap = drawWorldMap(spots, cids, '#worldmap');
+</script>
+
+
 <div class="row m-t-lg">
     <!--- slelect by cid --->
     <form class="select_route" action="/admin/collisions/" method="post">
@@ -132,7 +150,7 @@
             Route: <span id="path_str">{{ path }}</span>
         </div>
 
-        <div class="container" id="map_container">
+        <div class="container map_container">
             <div class="row">
                 <div id="map"></div>
             </div><br>
