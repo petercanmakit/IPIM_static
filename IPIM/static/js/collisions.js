@@ -125,14 +125,13 @@ var drawRoute = function(path, map) {
     }
 };
 
-var drawWorldMap = function(spots, cids, mapElement) {
+var drawWorldMap = function(spots, cids, mapElement, cluserImgPath) {
+    
     var lat_lng_object_array = [];
-    var map = new GMaps({
-        el: mapElement,
-        lat: 40.763836272185216,
-        lng: -73.9619779586792
+    var map = new google.maps.Map(document.getElementById(mapElement), {
+          zoom: 3,
+          center: {lat: 40.763836272185216, lng: -73.9619779586792}
     });
-
 
     var start_point = [spots[0][0], spots[0][1]]; // [lat, lng]
     // compute center
@@ -140,8 +139,12 @@ var drawWorldMap = function(spots, cids, mapElement) {
     var lat_max = start_point[1];
     var lng_min = start_point[0];
     var lng_max = start_point[1];
-    i = 0
+    i = 0;
+
+    var markers = [];
+
     for(var cord of spots) {
+        /*
         map.addMarker({
           lat: cord[0],
           lng: cord[1],
@@ -150,8 +153,13 @@ var drawWorldMap = function(spots, cids, mapElement) {
             content :  "Cid: ".concat([cids[i]]) + "\nspot: \n".concat([cord[0], cord[1]])
           }
         });
+        */
 
-        lat_lng_object_array.push(new google.maps.LatLng(cord[0], cord[1]));
+        var latLng = new google.maps.LatLng(cord[0], cord[1]);
+        var marker = new google.maps.Marker({'position': latLng});
+        markers.push(marker);
+
+        lat_lng_object_array.push(latLng);
         if(lat_max < cord[0])
             lat_max = cord[0];
         if(lat_min > cord[0])
@@ -160,13 +168,18 @@ var drawWorldMap = function(spots, cids, mapElement) {
             lng_max = cord[1];
         if(lng_min > cord[1])
             lng_min = cord[1];
-        i+=1
+        i+=1;
     }
     var center_lat = (lat_max+lat_min)/2;
     var center_lng = (lng_max+lng_min)/2;
 
-    map.setCenter(center_lat, center_lng);
-    map.fitLatLngBounds(lat_lng_object_array);
+    map.setCenter({lat: center_lat, lng: center_lng});
+    // map.fitLatLngBounds(lat_lng_object_array);
+
+
+    var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: cluserImgPath});
+
 
     return map;
 }
