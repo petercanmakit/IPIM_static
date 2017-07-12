@@ -113,9 +113,14 @@
           </div>
         </div>
 
-<hr class="m-t">
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Cluster of collision spots</h3>
+</div>
 
 <div class="row m-t-sm">
+    <div class="map_axu">
+        Click circles to see the spots in the cluster, click markers to see the information.
+    </div>
     <div class="container map_container">
         <div class="row">
             <div id="worldmap"></div>
@@ -129,7 +134,14 @@
 </script>
 
 
-<div class="row m-t-lg">
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Check a route by CID</h3>
+</div>
+
+<div class="row m-t-sm">
+    <div class="map_axu">
+        Select one route by inserting CID. CID is show on the marker.
+    </div>
     <!--- slelect by cid --->
     <form class="select_route" action="/admin/collisions/" method="post">
         <div class="btn">

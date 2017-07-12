@@ -126,11 +126,12 @@ var drawRoute = function(path, map) {
 };
 
 var drawWorldMap = function(spots, cids, mapElement, cluserImgPath) {
-    
+
     var lat_lng_object_array = [];
-    var map = new google.maps.Map(document.getElementById(mapElement), {
-          zoom: 3,
-          center: {lat: 40.763836272185216, lng: -73.9619779586792}
+    var map = new GMaps({
+        el: document.getElementById(mapElement),
+        lat: 40.763836272185216,
+        lng: -73.9619779586792
     });
 
     var start_point = [spots[0][0], spots[0][1]]; // [lat, lng]
@@ -144,19 +145,16 @@ var drawWorldMap = function(spots, cids, mapElement, cluserImgPath) {
     var markers = [];
 
     for(var cord of spots) {
-        /*
-        map.addMarker({
-          lat: cord[0],
-          lng: cord[1],
-          title: 'cid: '.concat([cids[i]]),
-          infoWindow: {
-            content :  "Cid: ".concat([cids[i]]) + "\nspot: \n".concat([cord[0], cord[1]])
-          }
-        });
-        */
 
         var latLng = new google.maps.LatLng(cord[0], cord[1]);
-        var marker = new google.maps.Marker({'position': latLng});
+        var marker = new google.maps.Marker({
+            'position': latLng,
+            map: map.map,
+            title: "cid: " + cids[i]
+        });
+        var contentString = '<div id="content'+cids[i]+'" style="color: black;">'+
+              'spot: '+cids[i]+'</div>';
+        addInfoWindow(map.map, marker, contentString);
         markers.push(marker);
 
         lat_lng_object_array.push(latLng);
@@ -174,12 +172,21 @@ var drawWorldMap = function(spots, cids, mapElement, cluserImgPath) {
     var center_lng = (lng_max+lng_min)/2;
 
     map.setCenter({lat: center_lat, lng: center_lng});
-    // map.fitLatLngBounds(lat_lng_object_array);
+    map.fitLatLngBounds(lat_lng_object_array);
 
 
-    var markerCluster = new MarkerClusterer(map, markers,
+    var markerCluster = new MarkerClusterer(map.map, markers,
             {imagePath: cluserImgPath});
-
-
     return map;
+}
+
+function addInfoWindow(map, marker, message) {
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: message
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
+    });
 }
