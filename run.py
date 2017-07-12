@@ -1,8 +1,8 @@
 import IPIM
 
 from IPIM.main import app
-# from IPIM.main import engine
-# from IPIM.database import dbConnect
+
+import IPIM.config as cfg
 
 if __name__ == "__main__":
   import click
@@ -15,7 +15,7 @@ if __name__ == "__main__":
   @click.argument('PORT', default=8111, type=int)
   def run(debug, threaded, deploy, host, port):
     """
-   
+
     Show the help text using
 
         python server.py --help
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     HOST, PORT = host, port
     print "running on %s:%d" % (HOST, PORT)
 
-    context = ('ipim.crt', 'ipim.key')
+    context = (cfg.ssl_config['CRT_PATH'], cfg.ssl_config['KEY_PATH'])
 
     '''
     if deploy:
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     print DATABASEURI
     engine = dbConnect(DATABASEURI)
     '''
-	
+
     app.run(host=HOST, port=PORT, debug=debug, threaded=threaded, ssl_context=context)
 
   run()

@@ -3,6 +3,10 @@ from setuptools import setup
 setup(
     name='IPIM',
     packages=['IPIM'],
+    version='v1.0.0',
+    url='https://github.com/petercanmakit/IPIM',
+    license='Some License',
+    author='Jiajun Zhang',
     include_package_data=True,
     install_requires=[
         'click>=6.7',

@@ -8,8 +8,11 @@ from database import dbConnect
 
 from collision import Collision
 
+import config as cfg
+
 # DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
-DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+# DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+DATABASEURI = cfg.DATABASE_URI
 engine = dbConnect(DATABASEURI)
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')

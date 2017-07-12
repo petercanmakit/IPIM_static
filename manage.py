@@ -5,6 +5,8 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import sessionmaker
 
+import IPIM.config as cfg
+
 def createSchema(some_engine):
 	DB_Session = sessionmaker(bind=some_engine)
 	db_session = DB_Session()
@@ -116,8 +118,7 @@ if __name__ == "__main__":
 		SETS for number fo test datasets of insersion
 		"""
 		SETS = sets
-		# DATABASEURI = "postgresql://peter:940611@127.0.0.1/geo" # mac
-		DATABASEURI = "postgresql://ipim:admin_ipim@127.0.0.1/ipim" # gg cloud linux vm
+		DATABASEURI = cfg.DATABASE_URI
 		engine = create_engine(DATABASEURI)
 		if create :
 			createSchema(engine)
@@ -127,6 +128,7 @@ if __name__ == "__main__":
 				sub_date = generateRandomDate(acc_date , 'now')
 				# print sub_date
 				insertTestData(engine, acc_date, sub_date)
+			print str(SETS) + " test datasets inserted on success"
 		else:
 			print "arguments wrong..."
 

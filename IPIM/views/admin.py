@@ -1,3 +1,4 @@
+import StringIO
 from flask import Flask, session, request, render_template, g, redirect, Response, flash, url_for, make_response
 from flask_session import Session
 from jinja2 import Template
@@ -220,6 +221,13 @@ def pointStringToArray(point_str): # POINT(3 2)
     point.append(float(point_strs[1]))
     return point
 
+def lineStringToCsvElement(line_str):
+    """
+    'LINESTRING(0 0,1 1,2 1,2 2)' ->0 0#1 1#2 1#2 2
+    """
+    line_str = line_str.replace("LINESTRING(", "").replace(")","").replace(',','#')
+    return line_str
+
 # download dashboard
 @app.route('/admin/download/', methods=['GET'])
 def download():
@@ -229,16 +237,38 @@ def download():
 @app.route('/admin/download_all/', methods=['POST', 'GET'])
 def download_all():
     cur = g.conn.execute('''
-    SELECT c.cid, ST_asText(c.geom)
+    SELECT  Cid,
+            AccDate,
+            State,
+            City,
+            Street,
+            CrossStreet,
+            Cartype,
+            TimeOfDay,
+            PoliceFiled,
+            MedEvaluatedAtScene,
+            TakenToHosFromScene,
+            SeekedCareAfterward,
+            ST_asText(geom) as route,
+            Gender,
+            Age,
+            Ethnicity,
+            Race,
+            SubmitType,
+            SubmittedDate
     FROM Collisions c
     ORDER BY c.cid
     ''')
-    stringIO = StringIO()
+    stringIO = StringIO.StringIO()
+    # title of each column
+    stringIO.write('Cid,AccDate,State,City,Street,CrossStreet,Cartype,TimeOfDay,PoliceFiled,MedEvaluatedAtScene,TakenToHosFromScene,SeekedCareAfterward,route,Gender,Age,Ethnicity,Race,SubmitType,SubmittedDate\n')
     results = cur.fetchall()
     for a_row in results:
         for an_ele in a_row:
-            stringIO.write(str(an_ele))
-            # stringIO.write(an_ele.encode('utf-8'))
+            if (type(an_ele) == unicode or type(an_ele) == str) and an_ele.startswith('LINESTRING('):
+                stringIO.write(lineStringToCsvElement(an_ele))
+            else:
+                stringIO.write(str(an_ele))
             stringIO.write(',')
         stringIO.seek(-1,2) # SEEK_END = 2
         stringIO.write("\n")

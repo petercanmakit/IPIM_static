@@ -3,11 +3,12 @@
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
+import config as cfg
 
-SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
-KEY_FILE_LOCATION = 'IPIM-742550970c79.json'
-VIEW_ID = '153403983'
-
+# GA Configuration
+SCOPES = cfg.ga_config['SCOPES']
+KEY_FILE_LOCATION = cfg.ga_config['KEY_FILE_LOCATION']
+VIEW_ID = cfg.ga_config['VIEW_ID']
 
 def initialize_analyticsreporting():
 	"""Initializes an Analytics Reporting API V4 service object.
