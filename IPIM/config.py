@@ -13,8 +13,8 @@ db_config_develop = {
 
 db_config_deploy = {
 	'host': '127.0.0.1',
-    'user': 'peter',
-    'passwd': '940611',
+    'user': 'ipim',
+    'passwd': 'admin_ipim',
     'db': 'ipim',
     'dbtype': 'postgresql'
 }
