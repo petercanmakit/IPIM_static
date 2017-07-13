@@ -179,8 +179,6 @@
                 </div>
                 <script type="text/javascript">
                     try {
-                        window.twttr.ready(() => {
-                            alert("twttr ready");
                             window.twttr.events.bind(
                                 'tweet',
                                 function (event) {
@@ -189,9 +187,10 @@
                                     alert("twitter msg sent to ga.")
                                 }
                             );
-                        });
+                        }
                     } catch(err) {
                         // Do nothing.
+                        alert("not ready");
                     }
                 </script>
 
