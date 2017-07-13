@@ -111,6 +111,20 @@
               version    : 'v2.9'
             });
             FB.AppEvents.logPageView();
+            FB.ui(
+            {
+            method: 'share',
+            href: 'https://developers.facebook.com/docs/',
+            },
+            // callback
+            function(response) {
+            if (response && !response.error_message) {
+            alert('Posting completed.');
+            } else {
+            alert('Error while posting.');
+            }
+            }
+            );
           };
 
           (function(d, s, id){
@@ -190,22 +204,7 @@
                 <div id="map"></div>
             </div>
         </div>
-<script type="text/javascript">
-FB.ui(
-{
-method: 'share',
-href: 'https://developers.facebook.com/docs/',
-},
-// callback
-function(response) {
-if (response && !response.error_message) {
-alert('Posting completed.');
-} else {
-alert('Error while posting.');
-}
-}
-);
-</script>
+
 
 
         <div id="footer">
