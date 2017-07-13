@@ -19,8 +19,20 @@
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
       <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDksCOY76WD68PM33lEu7o1YyMBnxcGXs4"></script>
       <script type="text/javascript" src="../static/js/gmaps.js"></script>
+      <!-- GoogleAnalyticsObject -->
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-101335445-1', 'auto', 'thankYouPageTracker');
+        ga('thankYouPageTracker.send', 'pageview');
+
+      </script>
       <script type="text/javascript" src="../static/js/thanks.js"></script>
       <link rel="stylesheet" type="text/css" href="../static/css/examples.css" />
+
       <style>
         .jumbotron {
             background-image: url(../static/images/background_walk.png);
@@ -153,16 +165,26 @@
             <div class="row" id="share_buttions">
                 <!-- facebook share button code -->
                 <div class="col-sm-3" style="text-align: center;">
-                    <div class="fb-share-button btn-xs  btn-sm"
+                    <div class="fb-share-button btn-xs  btn-sm" id="facebookBtn"
                         data-href="https://petercanmakit.github.io/IPIM/"
                         data-size="large"
                         data-layout="button_count"
                     ></div>
                 </div>
+                <script type="text/javascript">
+                    $('#facebookBtn').click(function() {
+                        ga('send', 'social', 'Facebook', 'share', 'https://petercanmakit.github.io/IPIM/');
+                    });
+                </script>
                 <!-- tweet button code -->
                 <div class="col-sm-3" style="text-align: center;">
-                    <a class="twitter-share-button  btn-sm btn-xs" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fpetercanmakit.github.io%2FIPIM%2F&text=I%20have%20reported%20a%20collision%20on%20I-PIM%2C%20which%20contributes%20to%20the%20research%20at%20Department%20of%20Epidemiology%2CCUMC%2E&size=large">Tweet</a>
+                    <a id="tweetBtn" class="twitter-share-button  btn-sm btn-xs" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fpetercanmakit.github.io%2FIPIM%2F&text=I%20have%20reported%20a%20collision%20on%20I-PIM%2C%20which%20contributes%20to%20the%20research%20at%20Department%20of%20Epidemiology%2CCUMC%2E&size=large">Tweet</a>
                 </div>
+                <script type="text/javascript">
+                    $('#tweetBtn').click(function() {
+                        ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
+                    });
+                </script>
                 <div class="col-sm-3" style="text-align: center;">
                     <button class="btn btn-success btn-sm btn-xs" id="shareEmail"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
                 </div>

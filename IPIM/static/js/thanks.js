@@ -19,6 +19,7 @@ $(document).ready(function () {
     print_btn.onclick = function() {myFunction()};
 
     function myFunction() {
+        ga('send', 'social', 'Facebook', 'like', 'https://petercanmakit.github.io/IPIM/');
         window.open('mailto:test@example.com?subject=Use%20I-PIM%20to%20report%20a%20collision&body=https%3A%2F%2Fpetercanmakit.github.io%2FIPIM%2F%2E%20I%20have%20reported%20a%20collision%20on%20I-PIM%2C%20which%20contributes%20to%20the%20research%20at%20Department%20of%20Epidemiology%2CCUMC%2E');
     }
 
