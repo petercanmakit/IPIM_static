@@ -111,20 +111,7 @@
               version    : 'v2.9'
             });
             FB.AppEvents.logPageView();
-            $('#facebook-share').click(function () {
-                FB.ui({
-                    method: 'share',
-                    link: 'https://petercanmakit.github.io/IPIM/',
-                    caption: 'example',
-                }, function (response) {
-                    if (response === null) {
-                        // do nothing
-                    } else {
-                        alert('fb shared!')
-                        ga('send', 'social', 'Facebook', 'like', 'https://petercanmakit.github.io/IPIM/');
-                    }
-                });
-            });
+            
           };
 
           (function(d, s, id){
@@ -178,7 +165,14 @@
             <div class="row" id="share_buttions">
                 <!-- facebook share button code -->
                 <div class="col-sm-3" style="text-align: center;">
-                    <div class="share-button btn-xs  btn-sm" id="facebook-share"
+                    <!-- Your like button code -->
+                      <div class="fb-like"
+                        data-href="https://petercanmakit.github.io/IPIM/"
+                        data-layout="standard"
+                        data-action="like"
+                        data-show-faces="true">
+                      </div>
+                    <div class="fb-share-button btn-xs  btn-sm" id="facebook-share"
                         data-href="https://petercanmakit.github.io/IPIM/"
                         data-size="large"
                         data-layout="button_count"
