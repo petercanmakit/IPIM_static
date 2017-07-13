@@ -63,6 +63,15 @@ $(document).ready(function () {
           $printContainer.remove();
           $patchedStyle.remove();
       });
+
+          $('#facebookBtn').on('click', function sendFacebookAction() {
+              ga('send', 'social', 'Facebook', 'share', 'https://petercanmakit.github.io/IPIM/');
+              alert("facebook msg sent to ga.")
+          });
+          $('#tweetBtn').on('click', function sendTweetAction() {
+              ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
+              alert("twitter msg sent to ga.")
+          });
 });
 
 // take the path and present on the map
