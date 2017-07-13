@@ -27,10 +27,7 @@
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
         ga('create', 'UA-101335445-1', 'auto');
-        ga('create', 'UA-101335445-1', 'auto', 'thankYouPageTracker');
-        ga('send', 'pageview');
-        ga('thankYouPageTracker.send', 'pageview');
-
+        ga('send', 'pageview', location.pathname);
       </script>
       <script type="text/javascript" src="../static/js/thanks.js"></script>
       <link rel="stylesheet" type="text/css" href="../static/css/examples.css" />
@@ -174,7 +171,7 @@
                     ></div>
                 </div>
                 <script type="text/javascript">
-                    $('#facebookBtn').click(function() {
+                    $('#facebookBtn').on('click', function() {
                         ga('send', 'social', 'Facebook', 'share', 'https://petercanmakit.github.io/IPIM/');
                         alert("facebook msg sent to ga.")
                     });
@@ -184,7 +181,7 @@
                     <a id="tweetBtn" class="twitter-share-button  btn-sm btn-xs" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fpetercanmakit.github.io%2FIPIM%2F&text=I%20have%20reported%20a%20collision%20on%20I-PIM%2C%20which%20contributes%20to%20the%20research%20at%20Department%20of%20Epidemiology%2CCUMC%2E&size=large">Tweet</a>
                 </div>
                 <script type="text/javascript">
-                    $('#tweetBtn').click(function() {
+                    $('#tweetBtn').on('click', function() {
                         ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
                         alert("twitter msg sent to ga.")
                     });
