@@ -113,14 +113,15 @@
             FB.AppEvents.logPageView();
             $('#facebook-share').click(function () {
                 FB.ui({
-                    method: 'feed',
+                    method: 'share',
                     link: 'https://petercanmakit.github.io/IPIM/',
                     caption: 'example',
                 }, function (response) {
                     if (response === null) {
                         // do nothing
                     } else {
-                        alert('fb liked!')
+                        alert('fb shared!')
+                        ga('send', 'social', 'Facebook', 'like', 'https://petercanmakit.github.io/IPIM/');
                     }
                 });
             });
