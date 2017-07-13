@@ -123,7 +123,15 @@
            }(document, 'script', 'facebook-jssdk'));
         </script>
         <script>
-            window.twttr = function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            var twttr = function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            twttr.events.bind(
+                'tweet',
+                function (event) {
+                    // Do something there
+                    ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
+                    alert("twitter msg sent to ga.")
+                }
+            );
         </script>
 
 
@@ -177,21 +185,6 @@
                 <div class="col-sm-3" style="text-align: center;">
                     <a id="tweetBtn" class="twitter-share-button  btn-sm btn-xs" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fpetercanmakit.github.io%2FIPIM%2F&text=I%20have%20reported%20a%20collision%20on%20I-PIM%2C%20which%20contributes%20to%20the%20research%20at%20Department%20of%20Epidemiology%2CCUMC%2E&size=large">Tweet</a>
                 </div>
-                <script type="text/javascript">
-                    try {
-                            window.twttr.events.bind(
-                                'tweet',
-                                function (event) {
-                                    // Do something there
-                                    ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
-                                    alert("twitter msg sent to ga.")
-                                }
-                            );
-                    } catch(err) {
-                        // Do nothing.
-                        alert("not ready");
-                    }
-                </script>
 
                 <div class="col-sm-3" style="text-align: center;">
                     <button class="btn btn-success btn-sm btn-xs" id="shareEmail"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
