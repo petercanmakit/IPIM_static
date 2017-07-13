@@ -139,9 +139,9 @@
             });
         }(document, "script", "twitter-wjs"));
         window.twttr.events.bind('tweet', function(event) {
-alert("tweet!");
-alert("ag");
-});
+            ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
+            alert("twitter msg sent to ga.")
+        });
         </script>
 
 

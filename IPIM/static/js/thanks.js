@@ -64,10 +64,6 @@ $(document).ready(function () {
           $patchedStyle.remove();
       });
 
-          $('#tweetBtn').on('click', function sendTweetAction() {
-              ga('send', 'social', 'Twitter', 'tweet', 'https://petercanmakit.github.io/IPIM/');
-              alert("twitter msg sent to ga.")
-          });
 });
 
 // take the path and present on the map
