@@ -143,10 +143,14 @@ def admin():
     pv_year = get_pageviews_array(ga_analytics, '2017-01-01', 'today', 'year')
     pv_total = get_pageviews_array(ga_analytics, '2017-01-01', 'today', 'total')
 
+    ######## get socialclicks ######### [label array<str>, socialclicks array<int>]
+    social = get_socialclicks_array(ga_analytics)
+
     re = dict(cnt_day=cnt_day, cnt_week=cnt_week, cnt_month=cnt_month,
               cnt_year=cnt_year, cnt_total=cnt_total,
               pv_day=pv_day, pv_week=pv_week, pv_month=pv_month,
-              pv_year=pv_year, pv_total=pv_total)
+              pv_year=pv_year, pv_total=pv_total,
+              social = social)
 
     return render_template('/admin/index.html', **re)
   else:
