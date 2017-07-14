@@ -317,7 +317,20 @@
 }());
 </script>
 
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Social Networks</h3>
+</div>
 
+<canvas id="socialPieChart" height="150" style="display: block;"></canvas>
+<script type="text/javascript">
+    socialcolors = {
+        Facebook: 'rgb(59,89,152)',
+        Twitter: 'rgb(0,172,237)',
+        Email: 'rgb(24, 179, 126)'
+    };
+    labels = {{ social[0]|safe }};
+    drawDoughnutChart({{ social[1]|safe }},labels, [socialcolors[labels[0]],socialcolors[labels[1]],socialcolors[labels[2]]], 'socialPieChart');
+</script>
 
       </div>
     </div>

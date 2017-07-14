@@ -85,3 +85,23 @@ var drawBarChart = function(dataArray, label, labelArray, barColor, canvasId) {
         }
     });
 };
+
+function drawDoughnutChart(dataArray, labelArray, barColorsArray, canvasId) {
+    var ctx = document.getElementById(canvasId).getContext('2d');
+    data = {
+    datasets: [{
+        data: dataArray,
+        backgroundColor: barColorsArray,
+        borderColor: 'rgb(37, 40, 48)',
+        borderWidth: 5
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: labelArray
+    };
+
+    var myPieChart = new Chart(ctx,{
+    type: 'doughnut',
+    data: data
+    });
+}

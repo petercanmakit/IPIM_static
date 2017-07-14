@@ -138,6 +138,87 @@ def get_pageviews_array(analytics, startdate_str='2017-01-01', enddate_str='toda
 	response = get_report(analytics, startdate_str, enddate_str, bywhat)
 	return get_pageviews(response)
 
+def get_social_report(analytics):
+	"""Queries the Analytics Reporting API V4.
+
+	Args:
+		analytics: An authorized Analytics Reporting API V4 service object.
+	Returns:
+		The Analytics Reporting API V4 response.
+	"""
+	dimension_array = [{'name': 'ga:socialInteractionNetworkAction'}]
+
+	return analytics.reports().batchGet(
+		body={
+				'reportRequests': [
+				{
+					'viewId': VIEW_ID,
+					'dateRanges': [{'startDate': '2017-05-01', 'endDate': 'today'}],
+					'metrics': [{'expression': 'ga:socialInteractions'}] ,
+					'dimensions': dimension_array,
+					"includeEmptyRows": True
+				}]
+			}
+	).execute()
+
+def get_socialclicks(response):
+	"""parse response, get the socialclicks # array
+
+	Args:
+		response: An Analytics Reporting API V4 response.
+	Returns:
+		[label array<str>, socialclicks array<int>]
+	"""
+	label_array = []
+	socialclicks_array = []
+	for report in response.get('reports', []):
+		columnHeader = report.get('columnHeader', {})
+		dimensionHeaders = columnHeader.get('dimensions', [])
+		metricHeaders = columnHeader.get('metricHeader', {}).get('metricHeaderEntries', [])
+
+		for row in report.get('data', {}).get('rows', []):
+			dimensions = row.get('dimensions', [])
+			dateRangeValues = row.get('metrics', [])
+
+			# generate one label
+			labelstr = ""
+			for ele in dimensions:
+				labelstr = str(ele)
+			label_array.append(str(labelstr))
+			# generate one pageviews
+			socialclicksint = 0
+			for ele in dateRangeValues:
+				socialclicksint = int(ele[u'values'][0])
+			socialclicks_array.append(socialclicksint)
+
+	new_label_array = []
+	new_socialclicks_array = []
+	facebook = 0
+	for i in range(len(label_array)):
+		if label_array[i].startswith('Facebook :'):
+			facebook += socialclicks_array[i]
+		else :
+			new_label_array.append(label_array[i].replace(' ','').split(':')[0])
+			new_socialclicks_array.append(socialclicks_array[i])
+	if facebook > 0:
+		new_label_array.append('Facebook')
+		new_socialclicks_array.append(facebook)
+	return [new_label_array, new_socialclicks_array]
+
+def get_socialclicks_array(analytics):
+	"""get the pageviews # array
+
+	Args:
+		analytics: an initialized analytics object,
+		startdate_str='2017-01-01',
+		enddate_str='today',
+		bywhat='total' or 'day' or 'week' or 'month' or 'year'
+	Returns:
+		[label array<str>, pageviews array<int>]
+	"""
+	response = get_social_report(analytics)
+	return get_socialclicks(response)
+
 def main():
 	analytics = initialize_analyticsreporting()
 
@@ -146,6 +227,8 @@ def main():
 	print get_pageviews_array(analytics, '2017-05-01', 'today', 'month')
 	print get_pageviews_array(analytics, '2017-01-01', 'today', 'year')
 	print get_pageviews_array(analytics, '2017-01-01', 'today', 'total')
+
+	print get_socialclicks_array(analytics)
 
 if __name__ == '__main__':
 	main()
