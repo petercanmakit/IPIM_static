@@ -13,7 +13,7 @@
 
     <title>
 
-        Mark Analyzed &middot;
+        Mark tag &middot;
 
     </title>
 
@@ -69,8 +69,8 @@
                 </a>
               </li>
               <li class="active">
-                <a href="/admin/mark_analyzed/">
-                  Mark analyzed
+                <a href="/admin/mark_tag/">
+                  Mark tag
                 </a>
               </li>
             </ul>
@@ -82,38 +82,35 @@
         <div class="dashhead">
   <div class="dashhead-titles">
     <h6 class="dashhead-subtitle">Analysis</h6>
-    <h2 class="dashhead-title">Mark Analyzed</h2>
+    <h2 class="dashhead-title">Mark tag</h2>
   </div>
 </div>
 
 <hr class="m-t">
 
-<div class="row m-t-lg">
+<div class="row m-t-md">
     <!--- mark by cid --->
-    <form class="analyzed_update" action="/admin/mark_analyzed/" method="post">
-        <div class="btn">
-          <div class="btn-toolbar-item input-with-icon">
-            <input type="number" value="" class="form-control" name="cid" min="1" placeholder="Collision ID">
-            <input type="text" value="mark" class="form-control" name="is_mark" style="display:none;">
-            <span class="icon">#</span>
-          </div>
-        </div>
-        <input class="btn btn-success" type="submit" name="mark_analyzed" value="mark as analyzed" ></input>
-    </form>
-    <!--- unmark --->
-    <form class="analyzed_update" action="/admin/mark_analyzed/" method="post">
-        <div class="btn">
-          <div class="btn-toolbar-item input-with-icon">
-            <input type="number" value="" class="form-control" name="cid" min="1" placeholder="Collision ID">
-            <input type="text" value="unmark" class="form-control" name="is_mark" style="display:none;">
-            <span class="icon">#</span>
-          </div>
-        </div>
-        <input class="btn btn-danger" type="submit" name="mark_analyzed" value="Unmark" ></input>
-    </form>
+    <form action="/admin/mark_tag/" method="post">
 
-
+        <div class="btn-toolbar-item input-with-icon">
+            <input type="number" class="form-control" name="cid" min="1" placeholder="Collision ID">
+            <span class="icon">#</span>
+        </div>
+        <select class="custom-select" name="tagname">
+              <option value="test">test</option>
+              <option value="garbage">garbage</option>
+              <option value="user">user</option>
+        </select>
+        <input class="btn btn-success" type="submit" name="mark_tag" value="Tag"></input>
+    </form>
 </div>
+
+{% if cid %}
+    <div class="row m-t-md">
+        Collision {{ cid }} is tagged as {{ tagname }}.
+    </div>
+{% endif %}
+
 
 
 <hr class="m-t">
