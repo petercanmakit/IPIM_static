@@ -259,13 +259,15 @@ def download_all():
 			Ethnicity,
 			Race,
 			SubmitType,
-			SubmittedDate
+			SubmittedDate,
+            TimeSpent,
+            ReferURL
 	FROM Collisions c
 	ORDER BY c.cid
 	''')
 	stringIO = StringIO.StringIO()
 	# title of each column
-	stringIO.write('Cid,AccDate,State,City,Street,CrossStreet,Cartype,TimeOfDay,PoliceFiled,MedEvaluatedAtScene,TakenToHosFromScene,SeekedCareAfterward,route,Gender,Age,Ethnicity,Race,SubmitType,SubmittedDate\n')
+	stringIO.write('Cid,AccDate,State,City,Street,CrossStreet,Cartype,TimeOfDay,PoliceFiled,MedEvaluatedAtScene,TakenToHosFromScene,SeekedCareAfterward,route,Gender,Age,Ethnicity,Race,SubmitType,SubmittedDate,TimeSpent,ReferURL\n')
 	results = cur.fetchall()
 	for a_row in results:
 		for an_ele in a_row:

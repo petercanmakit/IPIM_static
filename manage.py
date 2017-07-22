@@ -43,7 +43,9 @@ def createSchema(some_engine):
 				Ethnicity TEXT,
 				Race TEXT,
 				SubmitType TEXT default 'user',
-				SubmittedDate Date default CURRENT_DATE
+				SubmittedDate Date default CURRENT_DATE,
+                TimeSpent int,
+                ReferURL TEXT
 			);
 			'''
 		)

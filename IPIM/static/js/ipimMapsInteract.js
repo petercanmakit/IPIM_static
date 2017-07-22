@@ -15,6 +15,9 @@ $(document).ready(function () {
     var ethnicity = "";
     var race = "";
 
+    // for time spent for answering the report
+    var time_start_to_report = (new Date).getTime();
+
     map = new GMaps({
     el: '#map',
     lat: 40.74959782183326,
@@ -410,6 +413,17 @@ $(document).ready(function () {
       answer_form['answer_race'].value = race;
       answer_form['answer_age'].value = age;
       sessionStorage.setItem('path', path);
+
+      // for time spent
+      var time_end_to_report = (new Date).getTime();
+      var time_interval_in_second = parseInt((time_end_to_report - time_start_to_report) / 1000);
+      answer_form['timespent'].value = time_interval_in_second;
+
+      // for refer url
+      var referURL = document.referrer;
+      answer_form['referURL'].value = referURL;
+
+      // for submit
       var hostname = ""+window.location.hostname;
       if(hostname == "petercanmakit.github.io" || hostname == "") {
           // var child_thankspage = window.open("thanks.html");

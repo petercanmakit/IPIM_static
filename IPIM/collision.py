@@ -26,6 +26,9 @@ class Collision(object):
     ethnicity = ""
     race = ""
 
+    timespent = 0
+    referURL = ''
+
     def __init__(self, form):
 
         self.gender = ""
@@ -77,6 +80,9 @@ class Collision(object):
         self.ethnicity = form['answer_ethnicity']
         self.race = form['answer_race']
 
+        self.timespent = form['timespent']
+        self.referURL = form['referURL']
+
         # self.printCollisionInfo()
 
     # insert into collisions table
@@ -92,20 +98,23 @@ class Collision(object):
                 Cartype, TimeOfDay,
                 PoliceFiled, MedEvaluatedAtScene, TakenToHosFromScene, SeekedCareAfterward,
                 geom,
-                Gender, Age, Ethnicity, Race )
+                Gender, Age, Ethnicity, Race,
+                TimeSpent, ReferURL )
                 VALUES (
                 :acc_date, :state, :city, :street, :cross,
                 :cartype, :time_of_day,
                 :police, :med, :taken, :seek,
                 :geom,
-                :gender, :age, :enth, :race )
+                :gender, :age, :enth, :race,
+                :TimeSpent, :ReferURL )
                 ''', {
                 "acc_date":self.acc_date,"state":self.state,"city":self.city, "street":self.street, "cross":self.cross_street,
                 "cartype":self.cartype, "time_of_day": self.time_of_day,
                 "police":str(self.police_filed), "med":str(self.med_evaluated_at_scene),
                 "taken":str(self.taken_to_hos_from_scene), "seek":str(self.seeked_care_afterward),
                 "geom":self.geom,
-                "gender":self.gender, "age":self.age, "enth":self.ethnicity, "race":self.race
+                "gender":self.gender, "age":self.age, "enth":self.ethnicity, "race":self.race,
+                "TimeSpent":self.timespent, "ReferURL":self.referURL
                 }
             )
             cur = db_session.execute('''
