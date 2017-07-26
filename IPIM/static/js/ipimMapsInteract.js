@@ -5,7 +5,7 @@ $(document).ready(function () {
     var path = [];
     var acc_date;
     var txt_1, txt_2, txt_3, txt_4, txt_5;
-    var step_1, step_2, step_3, step_4, step_5;
+    var step_1, step_2, step_3, step_4, step_5, step_6;
     var ctrl_rm_last_inter;
     var answers = [];
     var state_city_st_cst = "";
@@ -17,6 +17,26 @@ $(document).ready(function () {
 
     // for time spent for answering the report
     var time_start_to_report = (new Date).getTime();
+
+    // for recording which step the user quited for incomplete datasets
+    var cur_step = 0;
+    var max_step = 0;
+    ga('send', 'maxstep', max_step);
+    //  0,            1,        2,      3,        4,        5,          6,          7
+    //  consent form, locate,  spot,    draw,    time,    questions, personalInfo, submitted
+
+    var inFormOrLink = false;
+    $('a').on('click', function() { inFormOrLink = true; });
+    $('form').on('submit', function() { inFormOrLink = true; });
+
+    $(window).on("beforeunload", function() {
+        if(inFormOrLink) {
+            return null;
+        }
+        else {
+            return "Are you sure?";
+        }
+    });
 
     map = new GMaps({
     el: '#map',
@@ -261,11 +281,21 @@ $(document).ready(function () {
   /*************************** step 2: acc spot ***********************************/
   $('#step1_next').click(function(e) {
       e.preventDefault();
+      cur_step = 2;
+      if(cur_step > max_step) {
+          max_step = cur_step;
+          ga('send', 'maxstep', max_step);
+      }
       // hide step2, start step3
       // step_1.style.display = 'none';
       // step_2.style.display = 'block';
       $("#step1").fadeOut(function(){$("#step2").fadeIn();});
       acc_spot_start();
+      cur_step = 3;
+      if(cur_step > max_step) {
+          max_step = cur_step;
+          ga('send', 'maxstep', max_step);
+      }
       // ins_box.innerText = txt_3.textContent;
   });
 
@@ -278,11 +308,17 @@ $(document).ready(function () {
       // step_3.style.display = 'none';
       // step_4.style.display = 'block';
       $("#step3").fadeOut(function(){$("#step4").fadeIn();});
+      cur_step = 4;
+      if(cur_step > max_step) {
+          max_step = cur_step;
+          ga('send', 'maxstep', max_step);
+      }
   });
 
   /*************************** step 4: date ***********************************/
   $('#date_form').submit(function(e){
       e.preventDefault();
+
       var acc_date_t = document.getElementById("accident_date");
       if(acc_date_t.value.length==0) {
           alert("Please input Month/Year.");
@@ -315,6 +351,12 @@ $(document).ready(function () {
       // step_4.style.display = 'none';
       // step_5.style.display = 'block';
       $("#step4").fadeOut(function(){$("#step5").fadeIn();});
+      cur_step = 5;
+      if(cur_step > max_step) {
+          max_step = cur_step;
+          ga('send', 'maxstep', max_step);
+      }
+
   });
 
   /*************************** step 5: questions ***********************************/
@@ -358,6 +400,11 @@ $(document).ready(function () {
       // step_6.style.display = 'block';
       $("#step5").fadeOut(function(){$("#step6").fadeIn();});
       // ins_box.innerText = txt_6.textContent;
+      cur_step = 6;
+      if(cur_step > max_step) {
+          max_step = cur_step;
+          ga('send', 'maxstep', max_step);
+      }
   });
 
   doConfirm("Some questions are not answered. Press \"Answer\" to answer them or press \"Next\" to go to next section.",
@@ -373,6 +420,11 @@ $(document).ready(function () {
                 // step_5.style.display = 'none';
                 // step_6.style.display = 'block';
                 $("#step5").fadeOut(function(){$("#step6").fadeIn();});
+                cur_step = 6;
+                if(cur_step > max_step) {
+                    max_step = cur_step;
+                    ga('send', 'maxstep', max_step);
+                }
             }
   );
 
@@ -384,7 +436,11 @@ $(document).ready(function () {
       // hide step6, start step7
       // step_6.style.display = 'none';
       $("#step6").fadeOut();
-
+      cur_step = 7;
+      if(cur_step > max_step) {
+          max_step = cur_step;
+          ga('send', 'maxstep', max_step);
+      }
       // ins_box.innerText = txt_8.textContent;
 
       gender = $('#gender').val().trim();

@@ -627,6 +627,15 @@
                             </form>
                         </div>
 
+                        <div style="display:none">
+                            this is a submitting form for uncomplete datasets
+                            <form id="incomplete_form" name="incomplete_form" method="POST" action="/incomplete_set/">
+                                <input type="number" name="TimeSpent" id="TimeSpent">
+                                <input type="number" name="StepStop" id="StepStop">
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
+
                         <div class="steps" id="step7">
                             <div align="center" >
                                 <button class="btn btn-primary btn-sm" id="submit_route">Submit</button>
@@ -687,6 +696,7 @@
 
             agree_btn.onclick = function() {
                 modal.style.display = "none";
+                ga('send', 'maxstep', 1);
             }
         </script>
 

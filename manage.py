@@ -47,6 +47,12 @@ def createSchema(some_engine):
                 TimeSpent int,
                 ReferURL TEXT
 			);
+
+            DROP TABLE IF EXISTS IncompleteSets CASCADE;
+			CREATE TABLE IncompleteSets(
+				TimeSpent int,
+                StepStop int
+			);
 			'''
 		)
 		db_session.commit()
