@@ -21,7 +21,12 @@ $(document).ready(function () {
     // for recording which step the user quited for incomplete datasets
     var cur_step = 0;
     var max_step = 0;
-    ga('send', 'maxstep', max_step);
+    ga('send', 'event', {
+            'eventCategory': 'maxstep',
+            'eventAction': max_step.toString()
+        }
+    );
+    // ga('send', 'maxstep', max_step);
     //  0,            1,        2,      3,        4,        5,          6,          7
     //  consent form, locate,  spot,    draw,    time,    questions, personalInfo, submitted
 
@@ -34,7 +39,8 @@ $(document).ready(function () {
             return null;
         }
         else {
-            return "Are you sure?";
+            return null;
+            // return "Are you sure?";
         }
     });
 
@@ -284,7 +290,12 @@ $(document).ready(function () {
       cur_step = 2;
       if(cur_step > max_step) {
           max_step = cur_step;
-          ga('send', 'maxstep', max_step);
+          ga('send', 'event', {
+                  'eventCategory': 'maxstep',
+                  'eventAction': max_step.toString()
+              }
+          );
+          //ga('send', 'maxstep', max_step);
       }
       // hide step2, start step3
       // step_1.style.display = 'none';
@@ -294,7 +305,12 @@ $(document).ready(function () {
       cur_step = 3;
       if(cur_step > max_step) {
           max_step = cur_step;
-          ga('send', 'maxstep', max_step);
+          ga('send', 'event', {
+                  'eventCategory': 'maxstep',
+                  'eventAction': max_step.toString()
+              }
+          );
+          // ga('send', 'maxstep', max_step);
       }
       // ins_box.innerText = txt_3.textContent;
   });
@@ -311,7 +327,12 @@ $(document).ready(function () {
       cur_step = 4;
       if(cur_step > max_step) {
           max_step = cur_step;
-          ga('send', 'maxstep', max_step);
+          ga('send', 'event', {
+                  'eventCategory': 'maxstep',
+                  'eventAction': max_step.toString()
+              }
+          );
+          // ga('send', 'maxstep', max_step);
       }
   });
 
@@ -354,7 +375,12 @@ $(document).ready(function () {
       cur_step = 5;
       if(cur_step > max_step) {
           max_step = cur_step;
-          ga('send', 'maxstep', max_step);
+          ga('send', 'event', {
+                  'eventCategory': 'maxstep',
+                  'eventAction': max_step.toString()
+              }
+          );
+          // ga('send', 'maxstep', max_step);
       }
 
   });
@@ -403,7 +429,12 @@ $(document).ready(function () {
       cur_step = 6;
       if(cur_step > max_step) {
           max_step = cur_step;
-          ga('send', 'maxstep', max_step);
+          ga('send', 'event', {
+                  'eventCategory': 'maxstep',
+                  'eventAction': max_step.toString()
+              }
+          );
+          // ga('send', 'maxstep', max_step);
       }
   });
 
@@ -423,23 +454,33 @@ $(document).ready(function () {
                 cur_step = 6;
                 if(cur_step > max_step) {
                     max_step = cur_step;
-                    ga('send', 'maxstep', max_step);
+                    ga('send', 'event', {
+                            'eventCategory': 'maxstep',
+                            'eventAction': max_step.toString()
+                        }
+                    );
+                    // ga('send', 'maxstep', max_step);
                 }
             }
   );
 
   /*************************** step 6: personal info ***********************************/
 
-  $('#person_info_form').submit(function(e){
+  $('#person_info_form').click(function(e){
       e.preventDefault();
-
+      inFormOrLink = true;
       // hide step6, start step7
       // step_6.style.display = 'none';
       $("#step6").fadeOut();
       cur_step = 7;
       if(cur_step > max_step) {
           max_step = cur_step;
-          ga('send', 'maxstep', max_step);
+          ga('send', 'event', {
+                  'eventCategory': 'maxstep',
+                  'eventAction': max_step.toString()
+              }
+          );
+          // ga('send', 'maxstep', max_step);
       }
       // ins_box.innerText = txt_8.textContent;
 
@@ -478,6 +519,7 @@ $(document).ready(function () {
       // for refer url
       var referURL = document.referrer;
       answer_form['referURL'].value = referURL;
+
 
       // for submit
       var hostname = ""+window.location.hostname;

@@ -332,6 +332,56 @@
     drawDoughnutChart({{ social[1]|safe }},labels, [socialcolors[labels[0]],socialcolors[labels[1]],socialcolors[labels[2]]], 'socialPieChart');
 </script>
 
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Incomplete datasets</h3>
+</div>
+
+<div class="row">
+    <p>At which step the user quit reporting</p>
+    <table style="width:100%">
+      <tr>
+        <th>Step</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Read consent form</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Locate blocks</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Locate the spot of collision</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Draw the route</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Time occured</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Collision Information</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Personal info</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Submit</td>
+      </tr>
+    </table>
+</div>
+<canvas id="maxstepChart" height="100"></canvas>
+<script type="text/javascript">
+    drawBarChart({{ maxsteps[1]|safe }}, "Step user quited at", {{ maxsteps[0]|safe }}, "rgb(25, 151, 198)", 'maxstepChart');
+</script>
+
       </div>
     </div>
   </div>
