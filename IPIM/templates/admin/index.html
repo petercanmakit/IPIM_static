@@ -336,50 +336,38 @@
   <h3 class="hr-divider-content hr-divider-heading">Incomplete datasets</h3>
 </div>
 
-<div class="row">
-    <p>At which step the user quit reporting</p>
-    <table style="width:100%">
-      <tr>
-        <th>Step</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td>0</td>
-        <td>Read consent form</td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Locate blocks</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Locate the spot of collision</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Draw the route</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Time occured</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Collision Information</td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>Personal info</td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td>Submit</td>
-      </tr>
-    </table>
+<div class="row" style="width:30%;" >
+
+        <p>At which step the user quit reporting</p>
+
+        <ul class="list-group">
+          <li class="list-group-header"><span class="pull-right">Action</span>Step</li>
+          <li class="list-group-item"><span class="pull-right">Read consent form</span>0</li>
+          <li class="list-group-item"><span class="pull-right">Locate blocks</span>1</li>
+          <li class="list-group-item"><span class="pull-right">Locate the spot of collision</span>2</li>
+          <li class="list-group-item"><span class="pull-right">Draw the route</span>3</li>
+          <li class="list-group-item"><span class="pull-right">Time occured</span>4</li>
+          <li class="list-group-item"><span class="pull-right">Collision Information</span>5</li>
+          <li class="list-group-item"><span class="pull-right">Personal info</span>6</li>
+          <li class="list-group-item"><span class="pull-right">Submit</span>7</li>
+        </ul>
+
 </div>
 <canvas id="maxstepChart" height="100"></canvas>
 <script type="text/javascript">
     drawBarChart({{ maxsteps[1]|safe }}, "Step user quited at", {{ maxsteps[0]|safe }}, "rgb(25, 151, 198)", 'maxstepChart');
+</script>
+
+
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Social and Search Engine Referral</h3>
+</div>
+<div class="container">
+    * Note that these are fake numbers
+</div>
+<canvas id="SocialReferralChart" height="100"></canvas>
+<script type="text/javascript">
+    drawBarChart([1,2,3,1,2,10,20], "Step user quited at", ['Facebook','Twitter','Google','Bing','Yahoo','Other','Direct'], "rgb(25, 151, 198)", 'SocialReferralChart');
 </script>
 
       </div>
