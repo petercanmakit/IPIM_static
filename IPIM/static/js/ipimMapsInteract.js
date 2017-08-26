@@ -468,7 +468,7 @@ $(document).ready(function () {
 
   /*************************** step 6: personal info ***********************************/
 
-  $('#person_info_form').click(function(e){
+  $('#person_info_form').submit(function(e){
       e.preventDefault();
       // inFormOrLink = true;
       // hide step6, start step7
