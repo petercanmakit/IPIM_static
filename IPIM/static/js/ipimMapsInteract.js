@@ -30,6 +30,7 @@ $(document).ready(function () {
     //  0,            1,        2,      3,        4,        5,          6,          7
     //  consent form, locate,  spot,    draw,    time,    questions, personalInfo, submitted
 
+    /*
     var inFormOrLink = false;
     $('a').on('click', function() { inFormOrLink = true; });
     $('form').on('submit', function() { inFormOrLink = true; });
@@ -43,6 +44,7 @@ $(document).ready(function () {
             // return "Are you sure?";
         }
     });
+    */
 
     map = new GMaps({
     el: '#map',
@@ -468,7 +470,7 @@ $(document).ready(function () {
 
   $('#person_info_form').click(function(e){
       e.preventDefault();
-      inFormOrLink = true;
+      // inFormOrLink = true;
       // hide step6, start step7
       // step_6.style.display = 'none';
       $("#step6").fadeOut();
