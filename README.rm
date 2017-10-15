@@ -1,2 +1,5 @@
-export FLASK_APP=IPIM
-flask run
+    export FLASK_APP=IPIM
+    flask run
+
+Or
+    python run --threaded
