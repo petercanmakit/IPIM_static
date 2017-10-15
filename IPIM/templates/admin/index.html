@@ -57,22 +57,22 @@
             <ul class="nav nav-pills nav-stacked">
               <li class="nav-header">Dashboards</li>
               <li class="active">
-                <a href="/admin/">Overview</a>
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/">Overview</a>
               </li>
               <li >
-                <a href="/admin/collisions/">
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/collisions.html">
                   Collisions
                 </a>
               </li>
 
               <li class="nav-header">Analysis</li>
               <li >
-                <a href="/admin/download/">
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/download.html">
                   Download
                 </a>
               </li>
               <li>
-                <a href="/admin/mark_tag/">
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/mark_tag.html">
                   Mark tag
                 </a>
               </li>
@@ -99,7 +99,7 @@
       <div class="p-a">
         <span class="statcard-desc">Page views</span>
         <h2 class="statcard-number">
-          {{ pv_total[1][0] }}
+          15876
         </h2>
         <hr class="statcard-hr m-b-0">
       </div>
@@ -110,7 +110,7 @@
       <div class="p-a">
         <span class="statcard-desc">Collisions</span>
         <h2 class="statcard-number">
-          {{ cnt_total[1][0] }}
+          256
         </h2>
         <hr class="statcard-hr m-b-0">
       </div>
@@ -151,10 +151,42 @@
 <canvas id="yearsChartPv" height="100" style="display: none;"></canvas>
 
 <script type="text/javascript">
-    drawBarChart({{ pv_day[1]|safe }}, "Page views per day", {{ pv_day[0]|safe }}, "rgb(24, 179, 126)", 'daysChartPv');
-    drawBarChart({{ pv_week[1]|safe }}, "Page views per week", {{ pv_week[0]|safe }}, "rgb(24, 179, 126)", 'weeksChartPv');
-    drawBarChart({{ pv_month[1]|safe }}, "Page views per month", {{ pv_month[0]|safe }}, "rgb(24, 179, 126)", 'monthsChartPv');
-    drawBarChart({{ pv_year[1]|safe }}, "Page views per year", {{ pv_year[0]|safe }}, "rgb(24, 179, 126)", 'yearsChartPv');
+    var d = new Date();
+    d.setDate(d.getDate()-6);
+
+    var daysOfWeek = [];
+    for(i = 0; i < 7; i++) {
+        d.setDate(d.getDate()+1);
+        var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+        daysOfWeek.push(date);
+    }
+
+    d = new Date();
+    d.setDate(d.getDate()- 7 * 4);
+
+    var weeksOfMonth = [];
+    for(i = 0; i < 5; i++) {
+        d.setDate(d.getDate() + 7);
+        var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+        weeksOfMonth.push(date);
+    }
+
+    d = new Date();
+    d.setMonth(d.getMonth()- 5);
+
+    var monthsOfHalfYear = [];
+    for(i = 0; i < 6; i++) {
+        d.setMonth(d.getMonth() + 1);
+        var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+        monthsOfHalfYear.push(date);
+    }
+</script>
+
+<script type="text/javascript">
+    drawBarChart([12,23,5,7,34,3,11], "Page views per day", daysOfWeek, "rgb(24, 179, 126)", 'daysChartPv');
+    drawBarChart([40,55,30,23,60,19,29], "Page views per week", weeksOfMonth, "rgb(24, 179, 126)", 'weeksChartPv');
+    drawBarChart([102,290,150,430,341,222], "Page views per month", monthsOfHalfYear, "rgb(24, 179, 126)", 'monthsChartPv');
+    drawBarChart([605], "Page views per year", ["2017"], "rgb(24, 179, 126)", 'yearsChartPv');
 
 </script>
 
@@ -250,10 +282,11 @@
 <canvas id="yearsChart" height="100" style="display: none;"></canvas>
 
 <script type="text/javascript">
-    drawBarChart({{ cnt_day[1]|safe }}, "Sets per day", {{ cnt_day[0]|safe }}, "rgb(25, 151, 198)", 'daysChart');
-    drawBarChart({{ cnt_week[1]|safe }}, "Sets per week", {{ cnt_week[0]|safe }}, "rgb(25, 151, 198)", 'weeksChart');
-    drawBarChart({{ cnt_month[1]|safe }}, "Sets per month", {{ cnt_month[0]|safe }}, "rgb(25, 151, 198)", 'monthsChart');
-    drawBarChart({{ cnt_year[1]|safe }}, "Sets per year", {{ cnt_year[0]|safe }}, "rgb(25, 151, 198)", 'yearsChart');
+
+    drawBarChart([1,2,5,7,11,4,0], "Sets per day", daysOfWeek, "rgb(25, 151, 198)", 'daysChart');
+    drawBarChart([4,15,13,12,16,11,9], "Sets per week", weeksOfMonth, "rgb(25, 151, 198)", 'weeksChart');
+    drawBarChart([21,29,50,30,41,22], "Sets per month", monthsOfHalfYear, "rgb(25, 151, 198)", 'monthsChart');
+    drawBarChart([205], "Sets per year", ["2017"], "rgb(25, 151, 198)", 'yearsChart');
 </script>
 
 <script type="text/javascript">
@@ -328,8 +361,8 @@
         Twitter: 'rgb(0,172,237)',
         Email: 'rgb(24, 179, 126)'
     };
-    labels = {{ social[0]|safe }};
-    drawDoughnutChart({{ social[1]|safe }},labels, [socialcolors[labels[0]],socialcolors[labels[1]],socialcolors[labels[2]]], 'socialPieChart');
+    labels = ["Facebook","Twitter","Email"];
+    drawDoughnutChart([221, 145, 160],labels, [socialcolors["Facebook"],socialcolors["Twitter"],socialcolors["Email"]], 'socialPieChart');
 </script>
 
 <div class="hr-divider m-t-md m-b">
@@ -355,7 +388,7 @@
 </div>
 <canvas id="maxstepChart" height="100"></canvas>
 <script type="text/javascript">
-    drawBarChart({{ maxsteps[1]|safe }}, "Step user quited at", {{ maxsteps[0]|safe }}, "rgb(25, 151, 198)", 'maxstepChart');
+    drawBarChart([21,9,4,0,11,1,1,2], "Step user quited at", ["0","1","2","3","4","5","6","7"], "rgb(25, 151, 198)", 'maxstepChart');
 </script>
 
 

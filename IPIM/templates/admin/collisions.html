@@ -80,23 +80,23 @@
           <div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
             <ul class="nav nav-pills nav-stacked">
               <li class="nav-header">Dashboards</li>
-              <li >
-                <a href="/admin/">Overview</a>
-              </li>
               <li class="active">
-                <a href="/admin/collisions/">
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/">Overview</a>
+              </li>
+              <li >
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/collisions.html">
                   Collisions
                 </a>
               </li>
 
               <li class="nav-header">Analysis</li>
               <li >
-                <a href="/admin/download/">
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/download.html">
                   Download
                 </a>
               </li>
-              <li >
-                <a href="/admin/mark_tag/">
+              <li>
+                <a href="https://petercanmakit.github.io/IPIM_static/IPIM/templates/admin/mark_tag.html">
                   Mark tag
                 </a>
               </li>
@@ -128,8 +128,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    spots = {{ spots }}
-    cids = {{ cids|safe }}
+    spots = [[40.806435, -73.953484], [40.808124, -73.956137], [44.369586, -100.330134], [40.7576601499703, -73.969144821167], [42.326498708299, -72.6392197608948], [39.794141, 116.327383], [39.802417, 116.314011]];
+    cids = [1,2,3,4,5,6,7];
     var worldmap = drawWorldMap(spots, cids, 'worldmap', "../../static/clusterimg/m");
 </script>
 
@@ -155,12 +155,11 @@
 </div>
 
 <div class="row m-t-sm">
-{% if collisionId %}
 
         <div class="map_axu">
-            Collision ID: {{ collisionId }},
-            Submit Type: {{ submittype }}<br>
-            Route: <span id="path_str">{{ path }}</span>
+            Collision ID: 1,
+            Submit Type: User<br>
+            Route: <span id="path_str">[40.7626010936513, -73.982105255127, 40.7644863569303, -73.9847660064697, 40.7667616034633, -73.9828777313232]</span>
         </div>
 
         <div class="container map_container">
@@ -172,9 +171,6 @@
         <div class="map_axu">
             <button class="btn btn-primary" id="mapPrint"><span class="icon icon-print"></span> Print</button>
         </div>
-
-
-{% endif %}
 </div>
 
 
